@@ -1,0 +1,732 @@
+{% extends "base.html" %}
+
+{% block title %}Web Sites with AR/VR{% endblock %}
+
+{% block content %}
+
+  <!-- Основний контент -->
+  <div id="main-content" style="padding: 2rem; height:90vh; overflow-y: auto; transition: opacity 0.3s; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800;">
+   <!-- Стилі для цього блоку -->
+  <style>
+    .vr-section h2 { color: #2c3e50; margin-top: 0; }
+    .vr-section h3 { color: #34495e; }
+    .vr-section img { max-width: 100%; height: auto; margin: 10px 0; }
+    .vr-section pre { background: #f4f4f4; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    .vr-section code { font-family: Consolas, monospace; }
+    .vr-section .badge { display: inline-block; padding: 2px 6px; background: #3498db; color: #fff; border-radius: 3px; font-size: 0.9em; }
+    .vr-section details summary { cursor: pointer; font-weight: bold; color: #2c3e50; }
+    .vr-section details ul,
+    .vr-section details ol { margin:10px 0 0 20px; color:#34495e; overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+    .vr-section details[open] ul,
+    .vr-section details[open] ol { max-height: 1000px; }
+  </style>
+      
+      <div style="font-family: 'Old English Text MT', Georgia, serif; color: #2e2e2e; background: #fcf8f0; padding: 20px; border: 2px solid #c2b7a6; border-radius: 10px; animation: fadeIn 1.5s ease-out;">
+
+      <h2 style="font-size: 42px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"> 
+      Особливості та переваги VR‑продуктів</h2>
+      <ul style="font-size: 31px; font-style: italic; color: #004080;">
+        <li><span class="badge">Імерсивність</span> — повне залучення користувача у середовище без відволікаючих факторів.</li>
+        <li><span class="badge">Адаптивність</span> — динамічне підлаштування складності сценарію за реакцією учасника.</li>
+        <li><span class="badge">Аналітика</span> — збір детальних метрик (час реакції, помилки, маршрут руху).</li>
+        <li><span class="badge">Повторюваність</span> — нескінченне тренування без зносу обладнання чи ризику для здоров’я.</li>
+        <li><span class="badge">Масштабованість</span> — тисячі одночасних сесій, централізоване оновлення контенту.</li>
+      </ul>
+  
+      <!--  Архітектура VR‑додатків -->
+      <h2 style="font-size:41px; margin-bottom:1rem; color:#54708d; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+      Архітектура VR‑додатків</h2>
+      <img src="https://example.com/vr_architecture_diagram.png" alt="Приклад архітектури VR-додатку">
+      <ol>
+        <li>
+          <strong>Клієнтський рушій (Client Engine)</strong>
+          <ul>
+            <li>Unity 3D / Unreal Engine / WebXR</li>
+            <li>Input Module: контролери, гловери, датчики руху</li>
+            <li>Render Module: OpenGL/Vulkan/DirectX</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Серверний бекенд (Cloud / On‑Premise)</strong>
+          <ul>
+            <li>REST / GraphQL API для отримання сценаріїв та збереження аналітики</li>
+            <li>База даних (SQL / NoSQL) для метрик і користувачів</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Адмін‑панель</strong>
+          <ul>
+            <li>Web‑інтерфейс на React / Vue для створення та налаштування сценаріїв</li>
+            <li>Модуль export/import сцен і персонажів</li>
+          </ul>
+        </li>
+        <li>
+          <strong>CDN / Asset Server</strong>
+          <ul>
+            <li>3D-моделі (glTF, FBX), текстури, аудіо</li>
+            <li>Streaming для зменшення часу завантаження</li>
+          </ul>
+        </li>
+      </ol>
+  
+      <!--  Технології та стек розробки -->
+      <h2 style="font-size:41px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+      Технології та стек розробки</h2>
+
+      <img src="https://asgatech.com/wp-content/uploads/2019/09/How-to-Create-an-Augmented-Reality-App-Step-by-Step.jpg" style="width: 1100px; height: 820px;">
+
+
+     
+
+
+      <details>
+        <summary>a) Рушії та середовища</summary>
+        <ul>
+          <li><strong>Unity 3D (C#)</strong> – найпопулярніший VR-рушій з пакетом <code>XR Interaction Toolkit</code>.</li>
+          <li><strong>Unreal Engine (C++)</strong> – високий рівень графіки, Blueprints для швидкої прототипізації.</li>
+          <li><strong>WebXR (JavaScript / TypeScript)</strong> – браузерні VR/AR‑досвіди з A-Frame, Three.js, Babylon.js.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>b) Фреймворки та залежності</summary>
+        <ul>
+          <li><code>com.unity.xr.interaction.toolkit</code> – базовий інтерфейс взаємодії у Unity.</li>
+          <li><code>OpenXR</code> – крос‑платформений API для роботи з VR/AR-пристроями.</li>
+          <li><code>Vive SRWorks</code>, <code>Oculus Integration</code> – плагіни для конкретних пристроїв.</li>
+          <li><code>three</code>, <code>aframe</code> (npm-пакети) для WebXR.</li>
+          <li><code>socket.io</code> або <code>SignalR</code> для реального часу (спільні сесії, моніторинг).</li>
+        </ul>
+      </details>
+       
+      <h2 style="font-size:41px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"> 
+       Висновки та майбутнє AR/VR в веб-дизайні</h2>
+
+    <p>Технології AR і VR вже сьогодні змінюють ландшафт веб-дизайну, пропонуючи нові можливості для створення більш інтерактивних, персоналізованих і захоплюючих досвідів для користувачів. Однак, для того, щоб ці технології 
+    стали більш доступними і популярними, необхідно продовжувати працювати над оптимізацією та інтеграцією нових інструментів, які дозволяють створювати креативні і функціональні AR/VR-досвіди в реальному часі.
+    Майбутнє веб-дизайну лежить у поєднанні новітніх технологій, таких як AR і VR, з класичними принципами юзабіліті та зручності. Веб-сайти, що використовують ці технології, можуть змінити не тільки спосіб взаємодії користувачів 
+    з контентом, але й надавати абсолютно нові можливості для онлайн-комерції, освіти та розваг." </p>  
+  </div>
+  </div>
+
+  <!-- Детальний контент (розділ 1) -->
+  <div id="detail-1" style="display:none; padding:2rem; height:90vh; overflow-y:auto; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800;">
+
+    <h1
+  style="
+    font-size: 38px;
+    margin-bottom: 1rem;
+    color: #2c2117;
+    transition: color 0.3s;
+  "
+  onmouseover="this.style.color='#1e90ff';"
+  onmouseout="this.style.color='#004080';"
+>
+      Розробка AR/VR: концептуальні основи та архітектура</h1>
+    
+    <!-- 1. Концептуальні основи -->
+    <div style="margin-bottom:20px;">
+
+      <h1
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+        
+        1. Концептуальні основи</h1>
+
+      <p style="font-size: 28px; line-height:1.5; margin-bottom: 8px; font-style: italic;">
+        AR (Augmented Reality) та VR (Virtual Reality) розрізняють за ступенем втягнення користувача:
+      </p>
+      <ul style="list-style:disc;padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        <li style="margin-bottom:6px;"><strong>VR</strong> — повне занурення у штучне середовище, ізольоване від реального.</li>
+        <li style="margin-bottom:6px;"><strong>AR</strong> — накладення цифрових об’єктів на реальний світ у реальному часі.</li>
+        <li><strong>MR</strong> (Mixed Reality) — взаємодія віртуальних об’єктів з реальними.</li>
+      </ul>
+    </div>
+    
+    <!-- 2. Логічні блоки AR/VR-додатка -->
+    <div style="margin-bottom:20px;">
+
+      <h1
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+        2. Логічні блоки AR/VR-застосунку</h1>
+
+      <ol style="padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        <li style="margin-bottom:12px;">
+          <strong>Сенсорний шар</strong><br>
+          Обробка даних з камер, IMU, GPS для позиціонування та трекінгу.
+        </li>
+        <li style="margin-bottom:12px;">
+          <strong>Пайплайн 3D-активів</strong><br>
+          Імпорт моделей (FBX, OBJ) з Blender/Maya, текстурування, оптимізація LOD.
+        </li>
+        <li style="margin-bottom:12px;">
+          <strong>Рендеринг-движок</strong><br>
+          Unity/Unreal або WebGL (Three.js), що відповідає за малювання кадрів.
+        </li>
+        <li style="margin-bottom:12px;">
+          <strong>Менеджер взаємодії</strong><br>
+          Обробка жестів, контролерів, клацань мишею або торкань.
+        </li>
+        <li style="margin-bottom:12px;">
+          <strong>Логіка програми</strong><br>
+          Сценарії, state-machine, UI/UX-елементи.
+        </li>
+        <li>
+          <strong>Мережевий шар</strong><br>
+          Синхронізація мультиплеєра або хмарні сервіси для спільної AR.
+        </li>
+      </ol>
+    </div>
+    
+    <!-- 3. Роль 3D-моделювання -->
+    <div style="margin-bottom:20px;">
+
+      <h1
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+        3. Роль 3D-моделювання</h1>
+
+      <p style="line-height:1.5;margin-bottom:8px; font-size: 28px; font-style: italic;">
+        3D-моделювання створює візуальні об’єкти, що використовуються в AR/VR:
+      </p>
+      <ul style="list-style:disc;padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        <li style="margin-bottom:6px;"><strong>Blender, Maya, 3ds Max</strong> — створення та анімація моделей.</li>
+        <li style="margin-bottom:6px;"><strong>Retopology</strong> — оптимізація топології для продуктивності.</li>
+        <li style="margin-bottom:6px;"><strong>Texturing/PBR</strong> — реалістичні матеріали через фізично коректні шейдери.</li>
+        <li><strong>Rigging та Animation</strong> — кістякова анімація персонажів.</li>
+      </ul>
+    </div>
+    
+    <!-- 4. Створення образів і персонажів -->
+    <div style="margin-bottom:20px;">
+
+      <h1
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+        4. Створення образів і персонажів</h1>
+
+      <p style="font-size:16px;line-height:1.5;margin-bottom:8px;">
+        Пайплайн художника та програміста:
+      </p>
+      <ol style="padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        <li style="margin-bottom:8px;">
+          Концеп-арт → моделювання → UV-розгортка → текстурування.
+        </li>
+        <li style="margin-bottom:8px;">
+          Експорт через FBX/GLTF → імпорт у движок → призначення матеріалів.
+        </li>
+        <li style="margin-bottom:8px;">
+          Налаштування анімаційних контролерів (Animator, Animation Blueprints).
+        </li>
+        <li>
+          Тестування LOD, світла та тіней у сцені.
+        </li>
+      </ol>
+    </div>
+    
+    <!-- 5. Мови програмування та середовища -->
+    <div style="margin-bottom:20px;">
+
+      <h1
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+        5. Мови програмування та середовища</h1>
+
+      <ul style="list-style:disc;padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        <li style="margin-bottom:6px;"><strong>C#</strong> — Unity, AR Foundation, XR Interaction Toolkit.</li>
+        <li style="margin-bottom:6px;"><strong>C++</strong> — Unreal Engine, низькорівневий контроль, Nanite.</li>
+        <li style="margin-bottom:6px;"><strong>JavaScript/TypeScript</strong> — WebXR, Three.js, A-Frame.</li>
+        <li style="margin-bottom:6px;"><strong>Swift/Kotlin</strong> — нативні ARKit/ARCore SDK.</li>
+        <li><strong>Python/ MEL</strong> — автоматизація в Blender/Maya для підготовки активів.</li>
+      </ul>
+    </div>
+    
+    <!-- 6. Види AR/VR-застосунків -->
+    <div style="margin-bottom:20px;">
+
+      <h1
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+        6. Види AR/VR-застосунків</h1>
+      
+      <!-- 6.1. Web-застосунки -->
+      <div style="margin-bottom:16px;">
+        <h4 style="font-weight: 700;margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">6.1. Web AR/VR</h4>
+        <p style="line-height:1.5;margin-bottom:8px; color:#4d230a; font-size:29px;">
+          Виконуються в браузері через WebXR API:
+        </p>
+        <ul style="list-style:disc;padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+          <li style="margin-bottom:6px;"><strong>Three.js</strong> — рендеринг, сцени, камери.</li>
+          <li style="margin-bottom:6px;"><strong>A-Frame</strong> — декларативний HTML-подібний фреймворк.</li>
+          <li style="margin-bottom:6px;"><strong>Vuforia Web Plugin</strong> — плагін для розпізнавання маркерів у браузері.</li>
+        </ul>
+      </div>
+      
+      <!-- 6.2. Мобільні застосунки -->
+      <div style="margin-bottom:16px;">
+        <h4 style="font-weight: 700; margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">6.2. AR/VR для смартфонів та планшетів</h4>
+        <p style="font-size:16px;line-height:1.5;margin-bottom:8px;">
+          Використовують камеру та сенсори для трекінгу:
+        </p>
+        <ul style="list-style:disc;padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+          <li style="margin-bottom:6px;"><strong>ARKit</strong> — Apple, face-tracking, scene understanding.</li>
+          <li style="margin-bottom:6px;"><strong>ARCore</strong> — Google, motion-tracking, поверхні.</li>
+          <li><strong>Vuforia</strong> — розпізнавання зображень, маркерів, VuMarks.</li>
+        </ul>
+      </div>
+      
+      <!-- 6.3. Девайси VR/AR -->
+      <div style="margin-bottom:16px;">
+        <h4 style="font-weight: 700; margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">6.3. Окуляри та VR-шоломи</h4>
+        <p style="font-size:16px;line-height:1.5;margin-bottom:8px;">
+          Платформи з власними SDK та контролерами:
+        </p>
+        <ul style="list-style:disc;padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+          <li style="margin-bottom:6px;"><strong>Oculus SDK</strong> — Quest, Rift, hand-tracking.</li>
+          <li style="margin-bottom:6px;"><strong>SteamVR</strong> — HTC Vive, Valve Index.</li>
+          <li><strong>HoloLens SDK</strong> — Microsoft MR-глаза, spatial mapping.</li>
+        </ul>
+      </div>
+      
+      <!-- 6.4. Інші типи -->
+      <div>
+        <h4 style="font-weight: 700;margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">6.4. Інші типи AR/VR</h4>
+        <p style="line-height:1.5; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+          Enterprise AR (глазні дисплеї), MR-конференції, індустріальні тренажери.
+        </p>
+      </div>
+    </div>
+    
+    <!-- 7. Реалістичний приклад проекту -->
+    <div style="margin-bottom:20px;">
+
+      <h1
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+        7. Реалістичний приклад: AR-додаток для дизайну інтер’єру</h1>
+
+      <p style="font-size:16px;line-height:1.5;margin-bottom:8px;">
+        <strong>Ідея:</strong> користувач розміщує віртуальні меблі в реальному просторі з прецизійним позиціонуванням.
+      </p>
+      <h4 style="font-weight: 700; margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">7.1. Структура проекту</h4>
+      <ul style="list-style:disc;padding-left:20px;margin-bottom:8px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        <li style="margin-bottom:6px;"><strong>SensorManager</strong>: обробка трекінгу ARKit/ARCore.</li>
+        <li style="margin-bottom:6px;"><strong>AssetLoader</strong>: динамічний імпорт FBX-моделей меблів.</li>
+        <li style="margin-bottom:6px;"><strong>PlacementSystem</strong>: алгоритми розміщення на поверхнях.</li>
+        <li><strong>UIController</strong>: меню вибору моделей, керування масштабом та обертанням.</li>
+      </ul>
+      
+      <h4 style="font-weight: 700; margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">7.2. Вибір мови та стека</h4>
+      <p style="font-size:16px;line-height:1.5;margin-bottom:8px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        <strong>Мова:</strong> C# — високий рівень інтеграції з Unity, AR Foundation.<br>
+        <strong>Стек:</strong> Unity 2024 LTS, AR Foundation, ARKit XR Plugin, ARCore XR Plugin.
+      </p>
+      
+      <h4 style="font-weight: 700; margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">7.3. Підготовка 3D-моделей</h4>
+      <p style="font-size:16px;line-height:1.5;margin-bottom:8px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        З Blender: моделювання віртуальних меблів → експортування FBX із одним LOD → текстурування в Substance Painter.
+      </p>
+      
+      <h4 style="font-weight: 700; margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">7.4. Семантика та синтаксис</h4>
+      <p style="font-size:16px;line-height:1.5;margin-bottom:8px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        Єдина система координат (метри), коректний порядок ініціалізації AR-сесії, асинхронний імпорт моделей через Addressables.
+      </p>
+      
+      <h4 style="font-weight: 700; margin-bottom:8px; color:#4d230a; font-size:29px; font-style: italic;">7.5. Інструменти та IDE</h4>
+      <ul style="list-style:disc;padding-left:20px; font-size: 30px; font-style: italic; color:#35283f; font-weight: 600;">
+        <li style="margin-bottom:6px;"><strong>Visual Studio 2022</strong> або <strong>Rider</strong> для коду C#.</li>
+        <li style="margin-bottom:6px;"><strong>Unity Editor</strong> з пакетом AR Foundation.</li>
+        <li><strong>Blender</strong> для моделювання, <strong>Substance Painter</strong> для текстур.</li>
+      </ul>
+    </div>
+    
+    <!-- 8. Основні висновки -->
+    <div>
+
+      <h1
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+        8. Висновки</h1>
+
+      <p style="line-height:1.5; font-size: 30px; font-style: italic; color:#4d230a; font-weight: 600;">
+        Розробка AR/VR вимагає міждисциплінарного підходу: від сенсорів до 3D-активів, від графіки до мережевого синхронного досвіду. Вибір інструментів залежить від платформи, цілей проєкту і бажаного рівня реалістичності. Студенти повинні освоїти і концептуальні основи, і практичні навички пайплайну створення контенту та інтеграції в движки.
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Детальний контент (розділ 2) -->
+  <div id="detail-2" style="display:none; padding:2rem; height:90vh; overflow-y:auto; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800;">
+    
+    
+<h3 style="color:#0e5c7f; margin-top:1.5rem;">На яких пристроях працює AR?</h3>
+<ul style="margin-left:1rem; color:#2b2b2b;">
+  <li style="margin-bottom:0.5rem;">📱 <strong>Мобільні пристрої</strong> (Android / iOS) — найпоширеніший спосіб використання AR: <a href="https://www.pokemongolive.com" target="_blank" style="color:#1e90ff;">Pokemon Go</a>, <a href="https://froggipedia.com" target="_blank" style="color:#1e90ff;">Froggipedia</a>, <a href="https://www.bbc.co.uk/taster/pilots/civilisations-ar" target="_blank" style="color:#1e90ff;">BBC Civilisations AR</a>.</li>
+  <li style="margin-bottom:0.5rem;">🕶 <strong>AR-окуляри</strong> — як-от <a href="https://www.microsoft.com/en-us/hololens" target="_blank" style="color:#1e90ff;">HoloLens</a>, Magic Leap.</li>
+  <li style="margin-bottom:0.5rem;">💻 <strong>Десктопні рішення</strong> — спеціалізовані проекційні або промислові системи з камерами та датчиками.</li>
+</ul>
+
+<h3 style="color:#0e5c7f; margin-top:1.5rem;">Як контролюється AR?</h3>
+<p>
+  Наразі користувач керує AR-сценами через екрани та жести, але вже сьогодні розробляються нейроінтерфейси. Наприклад, стартап <a href="https://www.neurable.com" target="_blank" style="color:#1e90ff;">Neurable</a> створює “мозкову мишу”, яка дозволяє керувати додатками силою думки. Це наступний етап у розвитку людино-комп’ютерної взаємодії.
+</p>
+
+<p style="margin-top:2rem; background:#d1f0d1; padding:1rem; border-radius:6px; border-left:6px solid #32a852;">
+  <strong>Чи можна вважати доповнену реальність віртуальною?</strong><br/>
+  Ні, <strong>доповнена реальність</strong> не є повністю віртуальною. Вона не замінює реальний світ, а лише <u>доповнює його віртуальними елементами</u>. Віртуальна реальність (VR), навпаки, створює повністю імітоване середовище.
+</p>
+
+ </div>
+
+  <!-- Детальний контент (розділ 3) -->
+  <div id="detail-3" style="display:none; padding:2rem; height:90vh; overflow-y:auto; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800;">
+   
+   <!-- Анімації -->
+  <style>
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  </style>
+
+  <!-- Програмне забезпечення доповненої реальності -->
+  <h2
+      style="
+        font-size: 32px;
+        margin-bottom: 1rem;
+        color: #2c2117;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+    Програмне забезпечення доповненої реальності
+  </h2>
+
+  <p style="animation: fadeIn 1s ease-out; margin-bottom: 15px; font-size: 29px; font-family: 'Garamond', 'Georgia', serif; color:  #75553d;">
+    Програмне забезпечення AR працює в поєднанні з такими пристроями, як планшети, телефони, гарнітури тощо.  
+
+    <br><p style="animation: fadeIn 1s 0.3s ease-out; font-size: 29px; font-family: 'Garamond', 'Georgia', serif; color:  #2c2117; text-decoration: underline; font-style: italic;">Ці інтегруючі пристрої містять датчики, цифрові проектори та відповідне програмне забезпечення,  
+    яке дозволяє проектувати комп’ютерні об’єкти у реальний світ.</p> 
+
+    <p style="animation: fadeIn 1s 0.3s ease-out; font-size: 29px; font-family: 'Garamond', 'Georgia', serif; color:  #2c2117; text-decoration: underline; font-style: italic;">Після того, як 3D‑модель накладена  
+    на реальний простір, користувачі можуть взаємодіяти з нею та маніпулювати елементами сцени.</p>
+  </p>
+  <p style="animation: fadeIn 1s 0.3s ease-out; font-size: 27px; font-family: 'Garamond', 'Georgia', serif; color:  #2F1B0C;">
+    Крім розміщення 3D‑об’єктів, AR‑рішення надають можливість інтерактивного відображення контекстної  
+    інформації, часто в розважальних додатках, таких як ігри, та в професійних інструментах.
+
+    <br><p style="animation: fadeIn 1s 0.3s ease-out; font-size: 29px; font-family: 'Garamond', 'Georgia', serif; color:  #2c2117; text-decoration: underline; font-style: italic;">Користувачі можуть навести камеру пристрою на реальний об’єкт і миттєво отримати корисні дані  
+    — технічні характеристики, історичну довідку чи інші вичерпні відомості.
+  </p>
+
+  </div>
+
+  <!-- Детальний контент (розділ 4) -->
+  
+  <div id="detail-4" style="display:none; padding:2rem; height:90vh; overflow-y:auto; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800; background:#ffffff; border:1px solid #ddd; border-radius:8px; font-family:Arial, sans-serif; line-height:1.6;">
+  
+  
+  <!-- Стилі для цього блоку -->
+  <style>
+    .vr-section h2 { color: #2c3e50; margin-top: 0; }
+    .vr-section h3 { color: #34495e; }
+    .vr-section img { max-width: 100%; height: auto; margin: 10px 0; }
+    .vr-section pre { background: #f4f4f4; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    .vr-section code { font-family: Consolas, monospace; }
+    .vr-section .badge { display: inline-block; padding: 2px 6px; background: #3498db; color: #fff; border-radius: 3px; font-size: 0.9em; }
+    .vr-section details summary { cursor: pointer; font-weight: bold; color: #2c3e50; }
+    .vr-section details ul,
+    .vr-section details ol { margin:10px 0 0 20px; color:#34495e; overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+    .vr-section details[open] ul,
+    .vr-section details[open] ol { max-height: 1000px; }
+  </style>
+
+  <!-- 1. Сфери застосування VR‑симуляторів -->
+  
+  <h2
+  style="
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #004080;
+    transition: color 0.3s;
+  "
+  onmouseover="this.style.color='#1e90ff';"
+  onmouseout="this.style.color='#004080';"
+> 
+  1. Сфери застосування VR‑симуляторів</h2>
+    <details>
+      <summary>Короткий перелік галузей</summary>
+      <ol>
+        <li>Охорона здоров'я: хірургія, терапія, реабілітація.</li>
+        <li>Автомобілебудування та авіація: обслуговування двигунів, перевірка систем безпеки.</li>
+        <li>Будівництво та архітектура: моделювання будмайданчиків, пожежні тренінги.</li>
+        <li>Військова підготовка: тактичні вправи, пілотажні симуляції.</li>
+        <li>Логістика та складська діяльність: управління автопарком, оптимізація складів.</li>
+        <li>Освіта та наукові дослідження: інтерактивні лабораторії, віртуальні експедиції.</li>
+        <li>Енергетика та промисловість: обслуговування ТЕС/АЕС, тренінги з безпеки.</li>
+      </ol>
+    </details>
+
+    <!-- 2. Особливості та переваги VR‑продуктів -->
+    <h2
+      style="
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #004080;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+      2. Особливості та переваги VR‑продуктів</h2>
+
+    <ul>
+      <li><span class="badge">Імерсивність</span> — повне залучення користувача у середовище без відволікаючих факторів.</li>
+      <li><span class="badge">Адаптивність</span> — динамічне підлаштування складності сценарію за реакцією учасника.</li>
+      <li><span class="badge">Аналітика</span> — збір детальних метрик (час реакції, помилки, маршрут руху).</li>
+      <li><span class="badge">Повторюваність</span> — нескінченне тренування без зносу обладнання чи ризику для здоров’я.</li>
+      <li><span class="badge">Масштабованість</span> — тисячі одночасних сесій, централізоване оновлення контенту.</li>
+    </ul>
+
+    <!-- 3. Архітектура VR‑додатків -->
+
+    <h2
+      style="
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #004080;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+      3. Архітектура VR‑додатків</h2>
+
+    <img src="https://example.com/vr_architecture_diagram.png" alt="Приклад архітектури VR-додатку">
+    <ol>
+      <li>
+        <strong>Клієнтський рушій (Client Engine)</strong>
+        <ul>
+          <li>Unity 3D / Unreal Engine / WebXR</li>
+          <li>Input Module: контролери, гловери, датчики руху</li>
+          <li>Render Module: OpenGL/Vulkan/DirectX</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Серверний бекенд (Cloud / On‑Premise)</strong>
+        <ul>
+          <li>REST / GraphQL API для отримання сценаріїв та збереження аналітики</li>
+          <li>База даних (SQL / NoSQL) для метрик і користувачів</li>
+        </ul>
+      </li>
+      <li>
+        <strong>Адмін‑панель</strong>
+        <ul>
+          <li>Web‑інтерфейс на React / Vue для створення та налаштування сценаріїв</li>
+          <li>Модуль export/import сцен і персонажів</li>
+        </ul>
+      </li>
+      <li>
+        <strong>CDN / Asset Server</strong>
+        <ul>
+          <li>3D-моделі (glTF, FBX), текстури, аудіо</li>
+          <li>Streaming для зменшення часу завантаження</li>
+        </ul>
+      </li>
+    </ol>
+
+    <!-- 4. Технології та стек розробки -->
+    <h2
+      style="
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #004080;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+      4. Технології та стек розробки</h2>
+
+    <details>
+      <summary>4.1. Рушії та середовища</summary>
+      <ul>
+        <li><strong>Unity 3D (C#)</strong> – найпопулярніший VR-рушій з пакетом <code>XR Interaction Toolkit</code>.</li>
+        <li><strong>Unreal Engine (C++)</strong> – високий рівень графіки, Blueprints для швидкої прототипізації.</li>
+        <li><strong>WebXR (JavaScript / TypeScript)</strong> – браузерні VR/AR‑досвіди з A-Frame, Three.js, Babylon.js.</li>
+      </ul>
+    </details>
+    <details>
+      <summary>4.2. Фреймворки та залежності</summary>
+      <ul>
+        <li><code>com.unity.xr.interaction.toolkit</code> – базовий інтерфейс взаємодії у Unity.</li>
+        <li><code>OpenXR</code> – крос‑платформений API для роботи з VR/AR-пристроями.</li>
+        <li><code>Vive SRWorks</code>, <code>Oculus Integration</code> – плагіни для конкретних пристроїв.</li>
+        <li><code>three</code>, <code>aframe</code> (npm-пакети) для WebXR.</li>
+        <li><code>socket.io</code> або <code>SignalR</code> для реального часу (спільні сесії, моніторинг).</li>
+      </ul>
+    </details>
+
+     
+    <h2
+      style="
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #004080;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+    >
+    5. Ключові технології</h2>
+    
+        
+      <ul>
+        <li><span class="badge">MediaPipe Selfie Segmentation</span> — GPU‑прискорена сегментація тіла.</li>
+        <li><span class="badge">PoseNet / BlazePose</span> — визначення ключових точок скелету.</li>
+        <li><span class="badge">Three.js</span> — рендеринг 3D моделей у браузері.</li>
+        <li><span class="badge">TensorFlow.js</span> — inference прямо в клієнті.</li>
+        <li><span class="badge">Node.js + Express</span> — ліцензування моделей, аналітика, сповіщення.</li>
+      </ul>
+
+  
+
+  <!-- Опціональний скрипт для плавної анімації <details> -->
+  <script>
+    document.querySelectorAll('.vr-section details').forEach(detail => {
+      detail.addEventListener('toggle', e => {
+        const list = e.target.querySelector('ul, ol');
+        if (list) {
+          list.style.maxHeight = e.target.open ? list.scrollHeight + 'px' : '0';
+        }
+      });
+    });
+  </script>
+  
+  <script>
+    // Плавне відкриття <details>
+    document.querySelectorAll('.gt-block details').forEach(d => {
+      d.addEventListener('toggle', e => {
+        const content = e.target.querySelector('ul');
+        if (content) content.style.maxHeight = e.target.open ? content.scrollHeight + 'px' : '0';
+      });
+    });
+  </script>
+
+</div>
+
+    <!-- Трикутні віджети -->
+  <div onclick="toggleDetail(1)" style="
+      position: absolute; top: 0; left: 0;
+      width: 0; height: 0;
+      border-top: 100px solid #ffe66d;
+      border-right: 100px solid transparent;
+      cursor: pointer;" title="wget"></div>
+
+  <div onclick="toggleDetail(2)" style="
+      position: absolute; top: 0; right: 0;
+      width: 0; height: 0;
+      border-top: 100px solid #4ecdc4;
+      border-left: 100px solid transparent;
+      cursor: pointer;" title="DevTools"></div>
+
+  <div onclick="toggleDetail(3)" style="
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 0;
+      border-bottom: 100px solid #4ecdc4;
+      border-right: 100px solid transparent;
+      cursor: pointer;" title="AI Tools"></div>
+
+  <div onclick="toggleDetail(4)" style="
+      position: absolute; bottom: 0; right: 0;
+      width: 0; height: 0;
+      border-bottom: 100px solid #ffe66d;
+      border-left: 100px solid transparent;
+      cursor: pointer;" title="Python"></div>
+
+  <!-- Скрипт -->
+  <script>
+    function toggleDetail(n) {
+      const main = document.getElementById('main-content');
+      const detail = document.getElementById('detail-' + n);
+      if (detail.style.display === 'none') {
+        main.style.opacity = 0;
+        setTimeout(() => { main.style.display = 'none'; }, 300);
+        detail.style.display = 'block';
+        detail.style.opacity = 0;
+        setTimeout(() => { detail.style.opacity = 1; }, 10);
+      } else {
+        detail.style.opacity = 0;
+        setTimeout(() => { detail.style.display = 'none'; }, 300);
+        main.style.display = 'block';
+        setTimeout(() => { main.style.opacity = 1; }, 10);
+      }
+    }
+  </script>
+
+</body>
+{% endblock %}

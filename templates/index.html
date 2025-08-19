@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Головна – Clone & AI Hub{% endblock %}
+
+{% block content %}
+<!-- Якщо хочеш, можна додати пояснення, яке буде внизу під draggable-вікнами -->
+
+<div class="p-6 text-justify text-gray-700 leading-relaxed max-w-3xl mx-auto bg-white rounded shadow-md" style=" font-family: 'Libre Baskerville', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800; line-height: 1.6;">
+    <h2 class="text-2xl font-bold mb-4 text-center text-indigo-700"
+      style="
+      font-size: 41px;
+      font-style: italic;
+      margin-bottom: 1rem;
+      color: #d6ca1d;
+      transition: color 0.3s;
+    "
+    onmouseover="this.style.color='#1e90ff';"
+    onmouseout="this.style.color='#004080';"
+    >
+    
+    Ласкаво просимо на сайт присвячений програмам і застосункам з використанням доповненої та віртуальної реальностей !</h2>
+    <div style="font-family: 'Old English Text MT', Georgia, serif; color: #2e2e2e; background: #fcf8f0; padding: 20px; border: 2px solid #d7c4a8; border-radius: 10px; animation: fadeIn 1.5s ease-out;">
+
+      <h2
+    style="
+      font-size: 41px;
+      font-style: italic;
+      margin-bottom: 1rem;
+      color: #08325c;
+      transition: color 0.3s;
+    "
+    onmouseover="this.style.color='#1e90ff';"
+    onmouseout="this.style.color='#004080';"
+    >
+        
+        Поринь у світ AR та VR</h2>
+      <p style="font-size: 1.1em;">Уявіть собі, як ви одягаєте легку гарнітуру, і навколо вас оживає зовсім інший світ. Чи навпаки — дивитесь на реальні вулиці міста та бачите плаваючі поруч цифрові об’єкти. Це — доповнена та віртуальна реальність, технології, що стрімко змінюють спосіб, яким ми вчимося, працюємо й розважаємося.</p>
+    
+      <h2
+    style="
+      font-size: 41px;
+      font-style: italic;
+      margin-bottom: 1rem;
+      color: #08325c;
+      transition: color 0.3s;
+    "
+    onmouseover="this.style.color='#1e90ff';"
+    onmouseout="this.style.color='#004080';"
+    >
+    1. Історичний екскурс: від ідеї до першої машини</h2>
+      <p>Наш шлях починається в 1960-х, коли винахідник <strong>Мортон Гайліг</strong> створив <em>Sensorama</em> — перший у світі пристрій, що поєднував зображення, звук, вібрацію та запахи. Уявіть, як відчуваєш вітер та чуєш сирени міста, занурившись у кіно — це був прорив у розумінні «занурення».</p>
+      
+      <img src="https://i.redd.it/ubt39pmeon251.png" style="width:310px; height:auto; float:left; margin:10px;">
+
+      <p>Через кілька років Іван Сазерленд презентував концепт <em>«Ultimate Display»</em>. У своїй статті 1965 року він передбачив не лише шоломи з двома екранами, які відстежують рух голови, а й можливість взаємодії з віртуальними об’єктами руками або інструментами. Його ідеї стали фундаментом, на якому згодом виросла індустрія VR.</p>
+      
+      <div>
+        <p>
+          У 1980-х Джарон Ланієр та його команда в <strong>VPL Research</strong> випустили 
+          <em>DataGlove</em> і <em>EyePhone</em> — 
+          <a href="#" onclick="toggleImage(event)">перші комерційні VR-системи</a>.
+        </p>
+        
+        <img id="vrImage" 
+             src="https://i.pinimg.com/736x/b0/17/1d/b0171d95bc17080e1acdcd724e2033a4.jpg" 
+             style="width:310px; height:220px; float:right; margin:10px; margin-top:5px; display:none;">
+        
+        <script>
+          function toggleImage(event) {
+            event.preventDefault(); // Забороняє переходити по посиланню
+            var img = document.getElementById('vrImage');
+            img.style.display = (img.style.display === 'none') ? 'block' : 'none';
+          }
+        </script>
+      </div>
+
+       <p> Кожен рух пальців передавався віртуальному персонажу, а зображення з екрану прикладалося до очей користувача. Так з’явився перший комерційний досвід «прогулянок» у цифровому світі.</p>
+      <p>Одночасно з VR розвивалася й ідея доповненої реальності. У 1990-х Boeing впровадив AR-системи, щоб допомогти технікам у прокладанні складних кабелів в літаках: вони бачили схему прямо на реальному корпусі,</p> 
+      <img src="https://media.istockphoto.com/id/1224034094/fi/valokuva/teollisuusinsin%C3%B6%C3%B6ri-k%C3%A4ytt%C3%A4%C3%A4-lis%C3%A4tyn-todellisuuden-digitaalista-tablettia-suuren.jpg?s=2048x2048&w=is&k=20&c=yN-sAs_0U1UW4UVTPXyTf5OfuHVHzeSsGqbr5rxTick=" style="width:350px; height:250px; float:left; margin:20px auto;">  
+        <p>не витягуючи важкі паперові документи.</p>
+   
+      <p>- У 2016 році <strong>Pokémon Go</strong> залучив у перший місяць понад 800 млн гравців по всьому світу, довівши, що AR може охопити масову аудиторію.</p>
+      <p>- Середня вага сучасних VR-шоломів зменшилась з 2 кг до менше ніж 500 г, що робить їх зручнішими для багатогодинних сесій.</p>
+
+      
+      <h2
+      style="
+        font-size: 41px;
+        font-style: italic;
+        margin-bottom: 1rem;
+        color: #08325c;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+      >
+      2. Як це працює: базові компоненти</h2>
+      <ul style="padding-left: 20px;">
+        <li><strong>Відстеження руху:</strong> інерційні сенсори та камери визначають положення голови чи смартфона з міліметровою точністю.</li>
+        <li><strong>Відображення:</strong> рушії Unity чи Unreal генерують 3D-сцени у реальному часі, використовуючи шейдери та оптимізовані алгоритми.</li>
+        <li><strong>Взаємодія:</strong> контролери або жести рук дозволяють «торкатися» й «переміщувати» віртуальні об’єкти.</li>
+      </ul>
+    
+      
+      <h2
+      style="
+        font-size: 41px;
+        font-style: italic;
+        margin-bottom: 1rem;
+        color: #08325c;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+      >
+    3. Крок за кроком: створення AR/VR-застосунку</h2>
+      <p>Розробка зазвичай проходить через чотири етапи:</p>
+      <ol style="padding-left: 20px;">
+        <li><strong>Ідея та прототип:</strong> визначте, для чого потрібен проєкт — навчання, розваги чи бізнес‑додаток — і створіть інтерактивний макет.</li>
+        <li><strong>Вибір технологій:</strong> для VR — Oculus SDK, SteamVR або OpenXR; для AR — ARCore (Android), ARKit (iOS) чи WebXR.</li>
+        <li><strong>Розробка й тестування:</strong> пишіть код у C# чи C++, імплементуйте фізику, оптимізуйте продуктивність, щоб уникнути нудоти від руху.</li>
+        <li><strong>Реліз та підтримка:</strong> публікуйте в Oculus Store, App Store чи Google Play, збирайте фідбек і випускайте оновлення.</li>
+      </ol>
+    
+      
+      
+      <h2
+      style="
+        font-size: 41px;
+        font-style: italic;
+        margin-bottom: 1rem;
+        color: #08325c;
+        transition: color 0.3s;
+      "
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';"
+      >4. Майбутнє доповненої (AR) та віртуальної (VR) реальності</h2>
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #2e1e1ebd;">
+
+     
+        <p>AR та VR перестали бути виключно елементами ігрової індустрії. Сьогодні ці технології поступово проникають у медицину, освіту, промисловість та навіть побут, а у найближче десятиліття вони можуть стати настільки ж повсякденними, як смартфони у 2010-х роках.</p>
+      
+        <h2 style="color:#34495e; font-size: 36px;">4.1. Стан технологій на сьогодні</h2>
+        <ul style="font-size: 26px;">
+          <li><b>AR-окуляри:</b> Ray-Ban Stories від Meta (камери, мікрофон, голосове керування), Nreal Air, Microsoft HoloLens 2 (розширений набір сенсорів, просторове картографування).</li>
+          <li><b>VR-шоломи:</b> Meta Quest 3, Valve Index, HTC Vive Pro 2 — висока роздільна здатність та підтримка відстеження рухів у реальному масштабі.</li>
+          <li><b>AR/VR-проекції:</b> технології проекцій на фізичні об’єкти (Lightform, проект Boeing для відображення схем прямо на поверхнях літака).</li>
+        </ul>
+      
+        <h2 style="color:#34495e; font-size: 36px;">4.2. Приклад із авіаційної галузі: Boeing</h2>
+        <p style="font-size: 26px;">Boeing запровадила систему AR для візуалізації електросхем прямо на фюзеляж літака під час монтажу та обслуговування. Завдяки гарнітурам HoloLens технік бачить 3D-проекцію проводки з точними маркуваннями.</p>
+        <p style="font-size: 26px;"><i>Технічна реалізація:</i> використовується поєднання 3D-моделювання, просторового позиціонування (SLAM) та інтеграція з CAD-системами. Гарнітура завантажує цифрову модель літака, співвідносить її з фізичним об’єктом і відображає потрібний шар інформації.</p>
+      
+        <h2 style="color:#34495e; font-size: 36px;">4.3. Інші глобальні приклади</h2>
+        <ol style="font-size: 26px;">
+          <li><b>Медицина:</b> компанія AccuVein використовує AR для проєкції вен пацієнта прямо на шкіру, полегшуючи введення катетерів.</li>
+          <img src="https://media.istockphoto.com/id/1530778794/fi/valokuva/kirurgi-joka-k%C3%A4ytt%C3%A4%C3%A4-ar-kuulokkeita-ja-k%C3%A4ytt%C3%A4%C3%A4-eritt%C3%A4in-tarkkoja-kauko-ohjattavia.jpg?s=612x612&w=0&k=20&c=lMbhYY4bd7OIpHpaf-N_5GYE53iZQ7OayCI5YSrJits=" style="width:400px; height:auto; float:right; margin:10px;">
+
+          <li><b>Будівництво:</b> Trimble XR10 для Microsoft HoloLens — проекція BIM-моделей на реальні будівельні об’єкти для зменшення помилок під час монтажу.</li>
+          <li><b>Освіта:</b> Labster створює VR-лабораторії, де студенти можуть проводити експерименти без ризику та витрат.</li>
+        </ol>
+      
+        <h2 style="color:#34495e; font-size: 36px;">4.4. Майбутні напрямки розвитку</h2>
+        <ul style="font-size: 26px;">
+          <li><b>Інтелектуальні окуляри:</b> тонші, легші, з інтегрованим ШІ для перекладу в реальному часі, розпізнавання об’єктів та контекстних підказок.</li>
+          <li><b>Нейроінтерфейси:</b> управління віртуальними об’єктами без жестів чи голосу (Neuralink, CTRL-Labs).</li>
+          <li><b>Голографічні проекції:</b> відображення даних без екранів, прямо у просторі.</li>
+          <li><b>Біосенсорні імпланти:</b> пристрої, що відстежують стан організму та поєднують дані з AR-візуалізацією.</li>
+        </ul>
+      
+        <h2 style="color:#34495e; font-size: 36px;">4.5. Програмно-апаратні виклики</h2>
+        <ul style="font-size: 26px;">
+          <li><b>Живлення:</b> впровадження графенових та твердотільних акумуляторів для зменшення ваги.</li>
+          <li><b>Продуктивність:</b> оптимізація обчислень через edge-computing та використання 5G/6G.</li>
+          <li><b>Інтеграція з ІІ:</b> контекстний аналіз середовища в реальному часі.</li>
+          <li><b>Сумісність:</b> відкриті API для об’єднання AR/VR-платформ у спільну екосистему.</li>
+        </ul>
+      
+        <h2 style="color:#34495e; font-size: 36px;">4.6. Перспектива 2030+</h2>
+        <p style="font-size: 26px;">На горизонті 2030-х років AR/VR стане не окремим пристроєм, а “шаром” реальності, доступним будь-де.  
+        Можливе поєднання гарнітур, тактильних сенсорів, імплантів та хмарних систем, де інформація накладається на фізичний світ без затримок.</p>
+      
+        <blockquote style="border-left: 4px solid #ccc; padding-left: 10px; color: #555; font-size: 28px;">
+          «Майбутнє обчислень — це не екрани, а простір навколо нас» — Мерлін Андерсон, дослідник HCI (Human-Computer Interaction).
+        </blockquote>
+      
+      </div>
+      
+        
+      <h2
+    style="
+      font-size: 41px;
+      font-style: italic;
+      margin-bottom: 1rem;
+      color: #08325c;
+      transition: color 0.3s;
+    "
+    onmouseover="this.style.color='#1e90ff';"
+    onmouseout="this.style.color='#004080';"
+    >
+    5. Що далі?</h2>
+      <p>Майбутнє за інтеграцією зі штучним інтелектом: уявіть віртуального гіда, який адаптує світ під ваші вподобання, або AR‑додаток, що миттєво аналізує об’єкти й дає інструкції в реальному часі.</p>
+      <p>Головний виклик — зробити ці технології доступними кожному. І вже сьогодні ти можеш стати частиною цього руху: досліджуй SDK, експериментуй з прототипами та втілюй найсміливіші ідеї.</p>
+    
+   
+    <p class="mt-6 text-center text-indigo-600 font-medium">
+      Оберіть розділ з меню — і почніть знайомство з окремими функціональними і технологічними особливостями програм / застосунків з AR / VR !
+    </p>
+  </div>
+</div>    
+{% endblock %}

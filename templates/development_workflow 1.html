@@ -1,0 +1,604 @@
+{% extends "base.html" %}
+
+{% block title %}AI Мобільні Засоби для Створення Сайтів{% endblock %}
+
+{% block content %}
+<body style="margin:0; background-color: #f9f9f9; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800;">
+  <!-- Основний контент сторінки -->
+  <div id="main-content" class="container" style="position: relative; padding: 2rem; transition: opacity 0.3s; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800; overflow-y: auto;">
+   
+   
+      <!-- Анімації -->
+      <style>
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .container {
+        position: relative; /* базова точка для absolute */
+        border: 1px solid #ccc;
+        padding: 50px;
+        }
+      </style>
+    
+      <!-- Заголовок -->
+      <h2 style="font-size: 42px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+        Програмне забезпечення доповненої реальності (AR): детальний погляд
+      </h2>
+    
+      <!-- Вступ -->
+      <p style="animation: fadeIn 1s ease-out; margin-bottom: 20px;">
+        Програмне забезпечення доповненої реальності (AR) об’єднує потужні алгоритми, сенсори й
+        цифрові проектори, щоб «розфарбувати» наш світ комп’ютерними об’єктами. Воно взаємодіє
+        з планшетами, телефонами, гарнітурами та іншими пристроями, що мають камери, датчики
+        руху та потужні процесори. У цій частині ми розберемо всі етапи: від зчитування даних
+        сенсорами до відображення тривимірних моделей у реальному світі та їхньої інтерактивності.
+      </p>
+    
+      <!-- Секція 1: Сенсори та камери -->
+      <h2 style="font-size:42px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+        1. Які сенсори й камери використовує AR
+      </h2>
+      <p style="animation: fadeIn 1s 0.4s ease-out; margin-bottom: 15px;">
+        • <strong>RGB-камера</strong>: найпоширеніша — знімає кольорове зображення середовища, 
+        дає базовий «фон» для накладення моделей.<br>
+        • <strong>Глибина (depth) сенсори</strong>: лазерний (LiDAR) або структуроване світло —
+        вимірюють відстань до об’єктів, щоб правильно вбудовувати 3D‑моделі в простір.<br>
+        • <strong>Інфрачервоні сенсори</strong>: працюють у темряві, дають контурну картину
+        об’єктів, допомагають відстежувати рух.<br>
+        • <strong>Інерціальні датчики (IMU)</strong>: набір акселерометра та гіроскопа — визначають
+        орієнтацію пристрою в просторі, фіксують хитання та рухи.
+      </p>
+    
+      <!-- Секція 2: Цифрові проектори -->
+      <h2 style="font-size: 42px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+        2. Роль цифрових проекторів
+      </h2>
+      <p style="animation: fadeIn 1s 0.6s ease-out; margin-bottom: 15px;">
+        • <strong>DLP-проектори</strong> (Digital Light Processing): використовують мікрозеркала для
+        швидкого формування зображень.<br>
+        • <strong>Лазерні проектори</strong>: створюють чіткіші та яскравіші зображення,
+        особливо в сонячну погоду.<br>
+        • <strong>LED-проектори</strong>: компактні, енергоефективні, підходять для портативних
+        AR-гарнітур.
+      </p>
+      <p style="animation: fadeIn 1s 0.8s ease-out; margin-bottom: 20px;">
+        Проектор «малює» цей цифровий світ прямо перед вашими очима — наприклад, в AR-окулярах
+        або смарт-контактних лінзах.
+      </p>
+    
+      <!-- Секція 3: Як збираються та накладаються моделі -->
+      <h2 style="font-size: 42px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+        3. Створення та накладення 3D‑моделей: покроково
+      </h2>
+      <ol style="animation: fadeIn 1s 1.2s ease-out; margin-left: 20px; margin-bottom: 20px;">
+        <li><strong>Моделювання:</strong> художник або інженер створює каркас (mesh) у Blender,
+        Maya чи іншому 3D-редакторі.</li>
+        <li><strong>Текстурування:</strong> надають поверхні деталізацію — кольори, відблиски,
+        тіні (за допомогою Substance Painter чи Photoshop).</li>
+        <li><strong>Експорт:</strong> у форматі .fbx, .obj чи glTF, сумісному з AR‑движком (ARKit,
+        ARCore, Unity з Vuforia тощо).</li>
+        <li><strong>Імпорт у движок:</strong> модель завантажується в середовище Unity/Unreal,
+        де додають компоненти відстеження та взаємодії.</li>
+        <li><strong>Визначення «якоря» (anchor):</strong> обчислюється, куди саме в просторі
+        прив’язати модель (маркер на стіні, площина підлоги, GPS‑координати).</li>
+        <li><strong>Відстеження середовища:</strong> алгоритми SLAM (Simultaneous Localization
+        and Mapping) обчислюють положення пристрою відносно точки прив’язки.</li>
+        <li><strong>Рендеринг:</strong> CPU/GPU пристрою об’єднують зображення камери та модель,
+        формуючи єдину картинку користувачу.
+      </ol>
+    
+      <!-- Секція 4: Взаємодія та маніпуляції -->
+      <h2 style="font-size: 42px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+        4. Інтерактивність: як користувач маніпулює моделлю
+      </h2>
+      <p style="animation: fadeIn 1s 1.6s ease-out; margin-bottom: 15px;">
+        <strong>Визначення:</strong> <em>Інтерактивність</em> — це здатність програми реагувати на дії
+        користувача в реальному часі та змінювати стан 3D‑моделі. Наприклад, у додатку IKEA Place
+        ви можете торкнутись екрана, щоб «перемістити» меблі у кімнаті, або в Pokémon GO — натиснути
+        на покемона, щоб зловити його.
+      </p>
+      <p style="animation: fadeIn 1s 1.8s ease-out; margin-bottom: 20px;">
+        • <strong>Дотики (touch):</strong> обробляються через події onTouch в iOS/Android, рух пальця
+        перетворюється на обертання або масштаб.<br>
+        • <strong>Жести (gestures):</strong> мультитач дозволяє розтягнути (pinch) або повертати
+        об’єкт.<br>
+        • <strong>Голос (voice):</strong> через API розпізнавання мови (SiriKit, Google Assistant)
+        можна віддалено активувати анімацію.<br>
+        • <strong>Сліди очей (eye-tracking):</strong> у флагманських гарнітурах визначають, куди
+        дивиться користувач, щоб підсвічувати інтерактивні елементи.
+      </p>
+    
+      <!-- Секція 5: Програмна архітектура інтерактивності -->
+      <h2 style="font-size: 42px; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+        5. Як програмно реалізується інтерактивність
+      </h2>
+      <p style="animation: fadeIn 1s 2.2s ease-out; margin-bottom: 15px;">
+        • <strong>Сцена та об’єкти:</strong> у Unity використовується Scene Graph — ієрархія об’єктів
+        з компонентами Transform (позиція, обертання, масштаб).<br>
+        • <strong>Hit‑testing:</strong> визначення точки перетину променя (raycast) з моделлю,
+        щоб зрозуміти, який об’єкт натиснули.<br>
+        • <strong>Слухачі подій:</strong> Event Listeners чекають на дотик/жест і викликають
+        колбеки для оновлення властивостей об’єктів.<br>
+        • <strong>Анімаційні контролери:</strong> Animator у Unity або Blueprint у Unreal
+        керують зміною станів (наприклад, відкриття дверей у моделі).
+      </p>
+      <p style="animation: fadeIn 1s 2.4s ease-out;">
+        Завдяки такій побудові ваш AR‑додаток відчувається «живим»: моделі реагують миттєво, а відчуття
+        доповненої реальності стає переконливим і захопливим.
+      </p>
+          
+     
+  </div>
+
+  <!-- Блок детальної інформації створення 3В -->
+  <div id="detail-2" style="display:none; position: relative; padding:2rem; line-height:1.6; background:#ffffff; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800; overflow-y: auto;">
+    
+      <!-- Animation Definitions -->
+      <style>
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(15px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      </style>
+    
+      <!-- Section 1: Introduction -->
+      <h3 style="font-size:1.6em; margin-bottom:12px; animation:fadeInUp 0.7s ease;">1. Вступ: значення 3D-моделювання для AR/VR</h3>
+      <p style="margin-bottom:12px; animation:fadeInUp 1s ease;">У сучасних доповнених (AR) та віртуальних (VR) середовищах знання 3D-моделювання є базовим. За допомогою точних моделей формуємо віртуальні об’єкти, що корелюють з реальністю чи створюють повноцінні цифрові світи.</p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.2s ease;">На прикладі Blender — безкоштовної програми з великою спільнотою та глибоким функціоналом — ми розглянемо повний цикл: від первісної ідеї до імпорту в рушій для фінального застосунку.</p>
+      <p style="margin-bottom:20px; animation:fadeInUp 1.4s ease;">Крім того, порівняємо Blender з іншими популярними інструментами (наприклад, Autodesk Maya або Cinema 4D) за зручністю інтерфейсу, швидкістю рендерингу та можливостями автоматизації.</p>
+    
+      <!-- Section 2: Огляд програмних засобів -->
+      <h3 style="font-size:1.6em; margin-bottom:12px; animation:fadeInUp 0.7s ease;">2. Популярні програми для 3D-моделювання</h3>
+      <p style="margin-bottom:12px; animation:fadeInUp 1s ease;">
+        <strong>Blender:</strong> відкритий код, підтримка Python-скриптів, великий набір модифікаторів, інтегрований рендер-движок Eevee та Cycles.
+      </p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.2s ease;">
+        <strong>Autodesk Maya:</strong> промислова стандарта, гнучкі інструменти для анімації персонажів та динаміки; використовується в кіно та великому геймдеві.
+      </p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.4s ease;">
+        <strong>Cinema 4D:</strong> інтуїтивний інтерфейс, швидке процедурне моделювання через MoGraph, чудово підходить для моушн-дизайну та ефектів.
+      </p>
+      <p style="margin-bottom:20px; animation:fadeInUp 1.6s ease;">
+        Для AR/VR зазвичай обирають Blender завдяки його безкоштовності, інтеграції з рушіями через аддони та підтримці сучасних форматів експорту.
+      </p>
+    
+      <!-- Section 3: Інтерфейс Blender та налаштування -->
+      <h3 style="font-size:1.6em; margin-bottom:12px; animation:fadeInUp 0.7s ease;">3. Глибокий огляд інтерфейсу Blender</h3>
+      <p style="margin-bottom:12px; animation:fadeInUp 1s ease;">Blender складається з головних областей: <em>Viewport</em> для візуалізації сцени, <em>Outliner</em> для структури об’єктів, <em>Properties</em> для налаштувань та <em>Timeline</em> для анімації.</p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.2s ease;">Кожен користувач може адаптувати макет через <strong>Workspace Tabs</strong>, наприклад модуль <em>Modeling</em> для редагування сіток або <em>Shading</em> для роботи з матеріалами.</p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.4s ease;">Порівняння: в Maya основні інструменти приховані в численних меню, тоді як у Blender використовуються гарячі клавіші і «Pie Menus» для швидкого доступу.</p>
+      <p style="margin-bottom:20px; animation:fadeInUp 1.6s ease;">Рекомендація: налаштуйте <strong>Quick Favorites</strong> (Q) для ASAP доступу до часто вживаних інструментів.</p>
+    
+      <!-- Section 4: Побудова базового об’єкта у Blender -->
+      <h3 style="font-size:1.6em; margin-bottom:12px; animation:fadeInUp 0.7s ease;">4. Покроковий процес моделювання: створення об’єкта</h3>
+      <p style="margin-bottom:12px; animation:fadeInUp 1s ease;">1) <strong>Додати примітив</strong>: натисніть <code>Shift+A → Mesh → Cube</code> або оберіть інше тіло (Sphere, Cylinder).</p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.2s ease;">2) <strong>Перехід в Edit Mode</strong>: клавіша <code>Tab</code>, після чого редагуйте вершини (Vertex), ребра (Edge), грані (Face).</p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.4s ease;">3) <strong>Інструменти модифікації</strong>: <code>E</code> для Extrude, <code>Ctrl+B</code> для Bevel, <code>Ctrl+R</code> для Loop Cut.</p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.6s ease;">4) <strong>UV-розгортка</strong>: перейдіть у UV Editing, виділіть геометрію та натисніть <code>U → Unwrap</code> для розгортки під текстуру.</p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.8s ease;">5) <strong>Матеріали та шейдери</strong>: у вкладці <em>Shading</em> створіть PBR-матеріал, задайте Base Color, Roughness, Normal Map.</p>
+      <p style="margin-bottom:20px; animation:fadeInUp 2s ease;">6) <strong>Примітка</strong>: для організації складних сцен застосовуйте колекції (Collections) та імена об’єктів із префіксами (текстури, колайдери).</p>
+    
+      <!-- Section 5: Альтернативний приклад: Cinema 4D -->
+      <h3 style="font-size:1.6em; margin-bottom:12px; animation:fadeInUp 0.7s ease;">5. Альтернативне ПЗ: Cinema 4D для процедурного моделювання</h3>
+      <p style="margin-bottom:12px; animation:fadeInUp 1s ease;">Cinema 4D вирізняється модулем MoGraph, який дозволяє створювати складні анімації без програмування через клонери, ефектори та Fields.</p>
+      <p style="margin-bottom:12px; animation:fadeInUp 1.2s ease;">Порівняння: Blender використовує Geometry Nodes, але Cinema 4D має більш зрілий інтерфейс для дизайнерів, які не програмують.</p>
+      <p style="margin-bottom:20px; animation:fadeInUp 1.4s ease;">У Cinema 4D експорт моделей у форматі FBX/OBJ здійснюється через <code>File → Export</code> з власними налаштуваннями під движок.</p>
+    
+      <!-- Section 6: Формати та рекомендації з експорту -->
+      <h3 style="font-size:1.6em; margin-bottom:12px; animation:fadeInUp 0.7s ease;">6. Експорт 3D-моделей: формати та параметри</h3>
+      <p style="margin-bottom:12px; animation:fadeInUp 1s ease;">Найбільш розповсюджені формати для AR/VR:</p>
+      <ul style="margin-bottom:20px; animation:fadeInUp 1.2s ease;">
+        <li><strong>.glTF/.glb</strong>: компактний двійковий формат з підтримкою PBR-текстур.</li>
+        <li><strong>.FBX</strong>: стандартний в індустрії, зберігає анімації та скелетні структури.</li>
+        <li><strong>.OBJ</strong>: простий текстовий формат для статичних мешів.</li>
+      </ul>
+      <p style="margin-bottom:20px; animation:fadeInUp 1.4s ease;">При експорті в Blender використовуйте опції <code>Apply Modifiers</code>, <code>+Y Up</code>, <code>Selected Objects</code>, щоби уникнути проблем із масштабом та орієнтацією в рушії.</p>
+    
+      <!-- Section 7: Підготовка рушія Unity -->
+      <h3 style="font-size:1.6em; margin-bottom:12px; animation:fadeInUp 0.7s ease;">7. Вступ до рушія Unity: основи та UI</h3>
+      <p style="margin-bottom:12px; animation:fadeInUp 1s ease;">Unity — десктопна програма з графічним інтерфейсом. Основні області:</p>
+      <ul style="margin-bottom:20px; animation:fadeInUp 1.2s ease;">
+        <li><strong>Scene View:</strong> редагування простору в 3D.</li>
+        <li><strong>Game View:</strong> превʼю у режимі гри.</li>
+        <li><strong>Hierarchy:</strong> список всіх об’єктів сцени.</li>
+        <li><strong>Inspector:</strong> властивості обраного елементу.</li>
+        <li><strong>Project:</strong> структура Assets вашого проекту.</li>
+      </ul>
+       
+    
+  </div>
+
+  <!-- Блок детальної інформації -->
+  <div id="detail-3" style="display:none; position: relative; padding:2rem; line-height:1.6; background:#ffffff; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800; overflow-y: auto;">
+      <!-- Секція 4: Взаємодія та маніпуляції -->
+<div style="padding: 1.5rem; background-color: #f0f8ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <h2 style="font-size:2rem; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+    Інтерактивність: як користувач маніпулює моделлю
+  </h2>
+
+  <p style="animation: fadeIn 1s 1.2s ease-out; margin-bottom: 15px;">
+    <strong>Інтерактивність</strong> — це здатність системи реагувати на дії користувача та змінювати вміст або поведінку 3D‑об’єктів у реальному часі. Такі технології дають змогу не просто переглядати віртуальні сцени, а активно взаємодіяти з ними. 
+  </p>
+
+  <p style="animation: fadeIn 1s 1.4s ease-out; margin-bottom: 15px;">
+    Наприклад, у застосунку IKEA Place можна торкнутись екрана, щоб розмістити меблі у просторі кімнати, а в Pokémon GO — натиснути на персонажа, щоб зловити його.
+  </p>
+
+  <ul style="list-style: none; padding-left: 0; animation: fadeIn 1s 1.6s ease-out;">
+    <li><strong>• Дотики (touch):</strong> перетворюються на команди завдяки подіям <code>onTouch</code> — наприклад, пальцем можна обертати або збільшувати модель.</li>
+    <li><strong>• Жести (gestures):</strong> мультитач (pinch, swipe) дозволяє масштабувати чи обертати об’єкти.</li>
+    <li><strong>• Голосові команди:</strong> за допомогою SiriKit або Google Assistant користувач може активувати функції без дотику.</li>
+    <li><strong>• Відстеження погляду:</strong> флагманські VR/AR-гарнітури розпізнають, куди дивиться користувач, і виділяють відповідні елементи інтерфейсу.</li>
+  </ul>
+</div>
+
+<!-- Програмна архітектура інтерактивності -->
+<div style="margin-top: 2rem; padding: 1.5rem; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <h2 style="font-size:2rem; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
+      onmouseover="this.style.color='#1e90ff';"
+      onmouseout="this.style.color='#004080';">
+    Як програмно реалізується інтерактивність
+  </h2>
+
+  <ul style="list-style: none; padding-left: 0; animation: fadeIn 1s 2s ease-out;">
+    <li><strong>• Сцена та об’єкти:</strong> у Unity використовується <em>Scene Graph</em> — ієрархія об’єктів із компонентами Transform (позиція, обертання, масштаб).</li>
+    <li><strong>• Hit-testing (тестування на попадання):</strong> за допомогою Raycast можна визначити, у яку частину сцени натиснув користувач.</li>
+    <li><strong>• Слухачі подій:</strong> <code>EventListeners</code> відстежують події (дотики, кліки) і викликають callback-функції для взаємодії з моделлю.</li>
+    <li><strong>• Анімаційні контролери:</strong> у Unity це <code>Animator</code>, а в Unreal — <code>Blueprint</code>, які керують переходами між станами (наприклад, відкриття дверей).</li>
+  </ul>
+
+  <p style="animation: fadeIn 1s 2.2s ease-out; margin-top: 1rem;">
+    Завдяки цим механізмам ваш додаток стає не просто візуальним — він живе, реагує, та втягує користувача у взаємодію з віртуальним світом.
+  </p>
+</div>
+
+
+</div>
+
+<!-- CSS-анімація (додай у <style> або <head>) -->
+<style>
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+</style>
+ 
+  </div>
+
+  <!-- Блок детальної інформації  -->
+  <div id="detail-1" style="display:none; position: relative; padding:2rem; line-height:1.6; background:#ffffff; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800; overflow-y: auto;">
+    
+
+      <!-- Заголовок розділу -->
+      <h2 style="font-size: 2rem; color: #004080; margin-bottom: 1rem; transition: color 0.3s;"
+          onmouseover="this.style.color='#1e90ff';"
+          onmouseout="this.style.color='#004080';">
+        1. Підготовка середовища розробки для AR/VR (Unity, Unreal, SDK-пакети, емулятори)
+      </h2>
+    
+      <!-- Вступ -->
+      <p style="animation: fadeIn 1s ease-out; margin-bottom: 1rem;">
+        <strong>Розробка додатків для AR/VR</strong> потребує спеціалізованого середовища, в якому розробник може створювати, тестувати та запускати інтерактивні сцени, моделі та сценарії взаємодії. Головна мета — створити стабільну екосистему, де можна швидко писати код, працювати з 3D-графікою, тестувати на реальних пристроях або емуляторах.
+      </p>
+    
+      <p style="animation: fadeIn 1s 0.2s ease-out; margin-bottom: 1rem;">
+        <em>Правильне налаштування середовища</em> дозволяє уникнути помилок компіляції, затримок у рендерингу, а також зекономити час при роботі з платформами як Android, iOS, Meta Quest, HoloLens чи SteamVR.
+      </p>
+    
+      <!-- Крок 1 -->
+      <h3 style="font-size: 1.5rem; color: #004080; margin-top: 2rem;">Крок 1. Вибір рушія розробки (Unity або Unreal Engine)</h3>
+      <p style="animation: fadeIn 1s 0.4s ease-out;">
+        <strong>Unity</strong> — найпопулярніший рушій для AR/VR. Він підтримує AR Foundation (кросплатформену систему), має легкий інтерфейс та велику спільноту. Підходить для мобільного AR (ARKit/ARCore), Meta Quest, WebXR.
+      </p>
+      <p style="animation: fadeIn 1s 0.6s ease-out;">
+        <strong>Unreal Engine</strong> — підходить для високоякісної VR з фотореалізмом. Має систему Blueprint для візуального програмування, потужну підтримку SteamVR та ПК-гарнітур.
+      </p>
+    
+      <!-- Крок 2 -->
+      <h3 style="font-size: 1.5rem; color: #004080; margin-top: 2rem;">Крок 2. Завантаження та встановлення рушія</h3>
+      <ul style="animation: fadeIn 1s 0.8s ease-out; padding-left: 1.2rem; list-style-type: disc;">
+        <li><strong>Unity:</strong> <a href="https://unity.com/download" target="_blank">unity.com/download</a> — встановіть Unity Hub та оберіть останню LTS-версію Unity з опцією “Android Build Support” та “iOS Build Support”.</li>
+        <li><strong>Unreal Engine:</strong> <a href="https://www.unrealengine.com/en-US/download" target="_blank">unrealengine.com</a> — через Epic Games Launcher інсталюйте останню версію UE5 з додатковими компонентами VR (OpenXR, SteamVR).</li>
+      </ul>
+    
+      <!-- Крок 3 -->
+      <h3 style="font-size: 1.5rem; color: #004080; margin-top: 2rem;">Крок 3. Встановлення Android SDK / iOS SDK</h3>
+      <p style="animation: fadeIn 1s 1s ease-out;">
+        Для запуску AR-додатків на телефонах потрібні відповідні SDK:
+      </p>
+      <ul style="animation: fadeIn 1s 1.1s ease-out; list-style-type: square; padding-left: 1.5rem;">
+        <li><strong>Android:</strong> Android Studio або SDK Tools (входять в Unity при виборі Android Build Support).</li>
+        <li><strong>iOS:</strong> Xcode (встановлюється з Mac App Store) + доступ до Apple Developer Program.</li>
+      </ul>
+    
+      <!-- Крок 4 -->
+      <h3 style="font-size: 1.5rem; color: #004080; margin-top: 2rem;">Крок 4. Інсталяція SDK для AR/VR</h3>
+      <ul style="animation: fadeIn 1s 1.3s ease-out; list-style-type: disc; padding-left: 1.2rem;">
+        <li><strong>AR Foundation:</strong> Unity пакет для розробки одразу під ARKit (iOS) і ARCore (Android).</li>
+        <li><strong>Vuforia SDK:</strong> Marker-based AR. Підключається через Unity Asset Store.</li>
+        <li><strong>SteamVR SDK:</strong> Для VR-проєктів у Steam або ПК-гарнітурах (HTC Vive, Index).</li>
+        <li><strong>Mixed Reality Toolkit (MRTK):</strong> SDK від Microsoft для HoloLens і Windows Mixed Reality.</li>
+      </ul>
+    
+      <!-- Крок 5 -->
+      <h3 style="font-size: 1.5rem; color: #004080; margin-top: 2rem;">Крок 5. Підключення емуляторів і реальних пристроїв</h3>
+      <p style="animation: fadeIn 1s 1.5s ease-out;">
+        Для тестування вам потрібен емулятор або справжній пристрій:
+      </p>
+      <ul style="animation: fadeIn 1s 1.6s ease-out; list-style-type: square; padding-left: 1.5rem;">
+        <li><strong>Android:</strong> Підключіть телефон у режимі розробника (USB Debugging).</li>
+        <li><strong>Meta Quest:</strong> Увімкніть розробницький режим через <a href="https://developer.oculus.com" target="_blank">Oculus Dashboard</a>, під’єднайте через USB або Wi-Fi.</li>
+        <li><strong>HoloLens:</strong> Налаштуйте через Windows Device Portal або емулятор HoloLens 2.</li>
+        <li><strong>WebXR:</strong> Тестуйте через Chrome або Firefox з включеним WebXR.</li>
+      </ul>
+    
+      <!-- Крок 6 -->
+      <h3 style="font-size: 1.5rem; color: #004080; margin-top: 2rem;">Крок 6. Перевірка проєкту та перше тестування</h3>
+      <p style="animation: fadeIn 1s 1.8s ease-out;">
+        Створіть базову AR/VR-сцену: розмістіть об’єкт у просторі, додайте освітлення та імпортуйте SDK. Перевірте компіляцію, під’єднайте пристрій, натисніть <em>Build & Run</em> — і протестуйте, чи реагує сцена на камеру або дотик.
+      </p>
+    
+      <!-- Завершення -->
+      <h3 style="font-size: 1.5rem; color: #004080; margin-top: 2rem;">На завершення</h3>
+      <p style="animation: fadeIn 1s 2s ease-out;">
+        Підготовка середовища — це фундамент успішної AR/VR-розробки. Від правильного вибору рушія та SDK залежить функціональність, стабільність і продуктивність вашого застосунку. Дотримання послідовних кроків дає змогу уникнути багатьох помилок та швидко перейти до творчого етапу розробки.
+      </p>
+    </div>
+    
+    <!-- CSS-анімація -->
+    <style>
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    </style>
+   
+   
+  </div>
+
+  <!-- Блок детальної інформації для Universe -->
+  <div id="detail-4" style="display:none; position: relative; padding:2rem; line-height:1.6; background:#ffffff; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800; overflow-y: auto;">
+    
+      <h2 style="font-size:2rem; color:#003366; margin-bottom:1rem; transition:color 0.3s;"
+          onmouseover="this.style.color='#0055aa';"
+          onmouseout="this.style.color='#003366';">
+          Набори інструментів розробника (SDK, API): Vuforia, AR Foundation, MRTK, Google ARCore
+      </h2>
+    
+      <p style="animation: fadeIn 1s ease-out; margin-bottom:1rem;">
+        SDK (Software Development Kit) та API (Application Programming Interface) — це фундаментальні компоненти будь-якої AR/VR-платформи. Вони забезпечують готові механізми відстеження, рендерингу та взаємодії, що значно пришвидшує розробку і дозволяє сконцентруватися на унікальних рішеннях вашого проєкту.
+      </p>
+    
+      <p style="animation: fadeIn 1s 0.2s ease-out; margin-bottom:1.5rem;">
+        Нижче — детальний огляд чотирьох найпопулярніших інструментів, їх ключових можливостей та практичні приклади використання в галузях від навчання до промислової автоматизації.
+      </p>
+    
+      <!-- Vuforia -->
+      <h3 style="font-size:1.5rem; color:#003366; margin-top:2rem; transition:color 0.3s;"
+          onmouseover="this.style.color='#0055aa';"
+          onmouseout="this.style.color='#003366';">
+        1. Vuforia SDK
+      </h3>
+    
+      <p style="animation: fadeIn 1s 0.4s ease-out;">
+        <strong>Vuforia</strong> — один із перших та найнадійніших AR-SDK для маркер-базованих та маркер-менше рішень. Підтримує iOS, Android, Unity та власний Native API.
+      </p>
+    
+      <ul style="animation: fadeIn 1s 0.6s ease-out; padding-left:1.2rem; list-style-type:disc;">
+        <li><strong>Основні функції:</strong> Image Targets, Model Targets, Ground Plane, VuMark, Multi-Target.</li>
+        <li><strong>Підтримка 3D-моделей:</strong> завантаження та розпізнавання CAD-файлів (OBJ/FBX).</li>
+        <li><strong>Розширена аналітика:</strong> логування точок спрацьовування трекінгу для оптимізації UX.</li>
+      </ul>
+    
+      <p style="animation: fadeIn 1s 0.8s ease-out; margin-bottom:1rem;">
+        <em>Приклад:</em> у виробничому підрозділі компанії Boeing Vuforia використали для накладання інструкцій з монтажу на реальні деталі літака. Інженери бачили покрокові схеми прямо на поверхні об’єкта в реальному часі, що скоротило час навчання на 40%.
+      </p>
+    
+      <p style="animation: fadeIn 1s 1s ease-out; margin-bottom:1.5rem;">
+        <strong>Кроки інтеграції в Unity:</strong><br>
+        1) Через Unity Package Manager додати “Vuforia Engine”;<br>
+        2) У Configuration Panel обрати Image Target та завантажити зображення;<br>
+        3) Додати скрипт <code>ObserverBehaviour.OnTargetStatusChanged</code> для контролю стану трекінгу.
+      </p>
+    
+      <!-- AR Foundation -->
+      <h3 style="font-size:1.5rem; color:#003366; margin-top:2rem; transition:color 0.3s;"
+          onmouseover="this.style.color='#0055aa';"
+          onmouseout="this.style.color='#003366';">
+        2. AR Foundation (Unity)
+      </h3>
+    
+      <p style="animation: fadeIn 1s 1.2s ease-out;">
+        <strong>AR Foundation</strong> — офіційний Unity-пакет для кросплатформеної AR-розробки. Є обгорткою над ARKit (iOS) та ARCore (Android), що дозволяє написати один код і запускати його на різних пристроях.
+      </p>
+    
+      <ul style="animation: fadeIn 1s 1.4s ease-out; padding-left:1.2rem; list-style-type:disc;">
+        <li><strong>AR Session & AR Session Origin:</strong> контролюють життєвий цикл AR-сцени та розміщення віртуального контенту.</li>
+        <li><strong>Plane Detection:</strong> автоматичне виявлення горизонтальних і вертикальних поверхонь.</li>
+        <li><strong>Raycast API:</strong> дозволяє «вистрілювати» промінь у сцену й дізнатися координати для розміщення об’єктів.</li>
+        <li><strong>Face Tracking & Image Tracking:</strong> розпізнавання облич і маркерів без зовнішніх бібліотек.</li>
+      </ul>
+    
+      <p style="animation: fadeIn 1s 1.6s ease-out; margin-bottom:1rem;">
+        <em>Приклад:</em> освітня платформа Coursera створила AR-платформу для візуалізації молекул у хімічних курсах. Використовуючи AR Foundation, студенти можуть обертати молекулярні структури та бачити динаміку реакцій у реальному просторі.
+      </p>
+    
+      <p style="animation: fadeIn 1s 1.8s ease-out; margin-bottom:1.5rem;">
+        <strong>Кроки для початку роботи:</strong><br>
+        1) Через Package Manager встановити “AR Foundation” та “ARKit XR Plugin” / “ARCore XR Plugin”;<br>
+        2) Створити AR Session і AR Session Origin у сцені;<br>
+        3) Налаштувати Plane Manager і Raycast Manager у відповідних GameObject.
+      </p>
+    
+      <!-- MRTK -->
+      <h3 style="font-size:1.5rem; color:#003366; margin-top:2rem; transition:color 0.3s;"
+          onmouseover="this.style.color='#0055aa';"
+          onmouseout="this.style.color='#003366';">
+        3. Mixed Reality Toolkit (MRTK)
+      </h3>
+    
+      <p style="animation: fadeIn 1s 2s ease-out;">
+        <strong>MRTK</strong> від Microsoft — набір компонентів і шаблонів для створення досвіду для HoloLens та Windows Mixed Reality. Забезпечує стандартизовані UX-компоненти, системи вводу та майданчик для швидкого прототипування.
+      </p>
+    
+      <ul style="animation: fadeIn 1s 2.2s ease-out; padding-left:1.2rem; list-style-type:disc;">
+        <li><strong>Input System:</strong> єдина абстракція для голосу, жестів та контролерів.</li>
+        <li><strong>Spatial Awareness:</strong> карти простору для відстеження поверхонь і перешкод.</li>
+        <li><strong>UX Building Blocks:</strong> готові елементи інтерфейсу (панелі, кнопки, меню).</li>
+        <li><strong>Solver System:</strong> компоненти, що допомагають розміщувати об’єкти відносно користувача або інших об’єктів.</li>
+      </ul>
+    
+      <p style="animation: fadeIn 1s 2.4s ease-out; margin-bottom:1rem;">
+        <em>Приклад:</em> архітектурна компанія ARchDesign використала MRTK для демонстрації макетів будівель у HoloLens 2. Клієнти могли «прогулятися» коридорами майбутнього офісу та відразу давати зворотний зв’язок.
+      </p>
+    
+      <p style="animation: fadeIn 1s 2.6s ease-out; margin-bottom:1.5rem;">
+        <strong>Налаштування MRTK у Unity:</strong><br>
+        1) Через Mixed Reality Feature Tool додати MRTK Foundation та MRTK Standard Assets;<br>
+        2) У сцені створити MixedRealityToolkit та MixedRealityPlayspace;<br>
+        3) Додати Prefab’и Input System та Spatial Awareness.
+      </p>
+    
+      <!-- Google ARCore -->
+      <h3 style="font-size:1.5rem; color:#003366; margin-top:2rem; transition:color 0.3s;"
+          onmouseover="this.style.color='#0055aa';"
+          onmouseout="this.style.color='#003366';">
+        4. Google ARCore
+      </h3>
+    
+      <p style="animation: fadeIn 1s 2.8s ease-out;">
+        <strong>ARCore</strong> — офіційний SDK Google для AR на пристроях Android. Забезпечує високоточний трекінг руху, розпізнавання поверхонь і оцінку освітленості сцени.
+      </p>
+    
+      <ul style="animation: fadeIn 1s 3s ease-out; padding-left:1.2rem; list-style-type:disc;">
+        <li><strong>Core Features:</strong> Motion Tracking, Environmental Understanding, Light Estimation.</li>
+        <li><strong>Cloud Anchors:</strong> спільне AR-середовище між різними пристроями.</li>
+        <li><strong>Augmented Images:</strong> розпізнавання та відстеження зображень на високій швидкості.</li>
+        <li><strong>Depth API:</strong> відновлення глибини сцени для коректних тіней і зіткнень.</li>
+      </ul>
+    
+      <p style="animation: fadeIn 1s 3.2s ease-out; margin-bottom:1rem;">
+        <em>Приклад:</em> IKEA Germany створила AR-додаток з використанням ARCore Depth API, щоб точно відображати меблі з урахуванням реальних перешкод у кімнаті та автоматично підлаштовувати тіні під освітлення.
+      </p>
+    
+      <p style="animation: fadeIn 1s 3.4s ease-out; margin-bottom:1.5rem;">
+        <strong>Інтеграція ARCore (Android Studio):</strong><br>
+        1) Додати залежності <code>com.google.ar:core</code> у Gradle;<br>
+        2) Налаштувати <code>AndroidManifest.xml</code> з правами камери та OpenGL;<br>
+        3) Використати <code>ArFragment</code> для швидкого старту та відстеження площин.
+      </p>
+    
+      <!-- Підсумок -->
+      <h3 style="font-size:1.5rem; color:#003366; margin-top:2rem;">Підсумок</h3>
+      <p style="animation: fadeIn 1s 3.6s ease-out;">
+        Вибір правильного SDK залежить від цілей проєкту: маркерне чи маркер-менше AR, платформи (мобільні чи стаціонарні гарнітури) та необхідного рівня інтерактивності. Комбінуючи SDK та API, можна створити багатофункціональні AR/VR-застосунки із швидким часом розробки й високою якістю користувацького досвіду.
+      </p>
+    </div>
+    
+    
+
+  <!-- Трикутні віджети -->
+  
+   <div
+   onclick="toggleDetail(1)"
+   style="
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 0;
+     height: 0;
+     border-top: 100px solid #ffe66d;
+     border-right: 100px solid transparent;
+     cursor: pointer;
+   "
+   title="wget"
+ ></div>
+
+ <div
+   onclick="toggleDetail(2)"
+   style="
+     position: absolute;
+     top: 0;
+     right: 0;
+     width: 0;
+     height: 0;
+     border-top: 100px solid #4ecdc4;
+     border-left: 100px solid transparent;
+     cursor: pointer;
+   "
+   title="DevTools"
+ ></div>
+
+ <div
+   onclick="toggleDetail(3)"
+   style="
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     width: 0;
+     height: 0;
+     border-bottom: 100px solid #4ecdc4;
+     border-right: 100px solid transparent;
+     cursor: pointer;
+   "
+   title="AI Tools"
+ ></div>
+
+ <div
+   onclick="toggleDetail(4)"
+   style="
+     position: absolute;
+     bottom: 0;
+     right: 0;
+     width: 0;
+     height: 0;
+     border-bottom: 100px solid #ffe66d;
+     border-left: 100px solid transparent;
+     cursor: pointer;
+   "
+   title="Python"
+ ></div>
+
+  <!-- Скрипт для перемикання контенту -->
+  <script>
+    function toggleDetail(n) {
+      const main = document.getElementById('main-content');
+      const detail = document.getElementById('detail-' + n);
+      // Приховати або показати контент
+      if (detail.style.display === 'none') {
+        main.style.opacity = 0;
+        setTimeout(() => { main.style.display = 'none'; }, 300);
+        detail.style.display = 'block';
+        detail.style.opacity = 0;
+        setTimeout(() => { detail.style.opacity = 1; }, 10);
+      } else {
+        detail.style.opacity = 0;
+        setTimeout(() => { detail.style.display = 'none'; }, 300);
+        main.style.display = 'block';
+        setTimeout(() => { main.style.opacity = 1; }, 10);
+      }
+    }
+    // Ініціалізація стану після завантаження
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[id^="detail-"]').forEach(el => el.style.display = 'none');
+      document.getElementById('main-content').style.display = 'block';
+      document.getElementById('main-content').style.opacity = 1;
+    });
+  </script>
+
+</body>
+{% endblock %}
