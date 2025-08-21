@@ -6,6 +6,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/arlogicmap')
+def ar_logic_map():
+    return render_template('ARlogicMap.html')
+
 @app.route('/immersive_world')
 def cloning_methods():
     return render_template('immersive_world.html')

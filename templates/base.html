@@ -1,144 +1,176 @@
 <!DOCTYPE html>
 <html lang="uk" x-data="app()" x-init="init()">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Clone & AI Hub{% endblock %}</title>
 
-  <title>{% block title %}Clone & AI Hub{% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@3/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
 
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3/dist/tailwind.min.css" rel="stylesheet">
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap");
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap');
+      .draggable {
+        position: absolute;
+        width: 40vw;
+        height: 54vh;
+        border: 5px solid rgba(255, 255, 204, 0.3);
+        border-radius: 0.5rem;
+        background: #b8bfc2;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        cursor: move;
+        transition: transform 0.2s;
+      }
 
-    .draggable {
-      position: absolute;
-      width: 40vw;
-      height: 54vh;
-      border: 5px solid rgba(255, 255, 204, 0.3 );
-      border-radius: .5rem;
-      background: #b8bfc2;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      cursor: move;
-      transition: transform .2s;
-    }
+      .draggable.active {
+        z-index: 70;
+        transform: scale(1.15);
+      }
 
-    .draggable.active { z-index: 70; transform: scale(1.15); }
+      .window-header {
+        background: #333;
+        color: white;
+        padding: 0.5rem;
+        font-weight: bold;
+        user-select: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    .window-header {
-      background: #333;
-      color: white;
-      padding: .5rem;
-      font-weight: bold;
-      user-select: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      .window-content {
+        height: calc(100% - 2.5rem); /* враховуємо висоту header */
+        width: 100%;
+        overflow: hidden; /* видаляємо scrollbar */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-y: scroll;
+        scrollbar-width: thin;
+        scrollbar-color: #facc15 #000;
+      }
 
-    .window-content {
-      height: calc(100% - 2.5rem);
-      overflow-y: scroll;
-      scrollbar-width: thin;
-      scrollbar-color: #facc15 #000;
-    }
+      .window-content iframe,
+      .window-content video {
+        width: 100%;
+        height: 100%;
+        border: none;
+        object-fit: cover; /* щоб контент заповнив весь блок */
+      }
 
-    .window-content::-webkit-scrollbar {
-      width: 16px;
-    }
+      .window-content::-webkit-scrollbar {
+        width: 16px;
+      }
 
-    .window-content::-webkit-scrollbar-track {
-      background: #000;
-    }
+      .window-content::-webkit-scrollbar-track {
+        background: #000;
+      }
 
-    .window-content::-webkit-scrollbar-thumb {
-      background-color: #facc15;
-    }
+      .window-content::-webkit-scrollbar-thumb {
+        background-color: #facc15;
+      }
 
-    .menu-toggle {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      background-color: #2d2d2d;
-      color: #facc15;
-      padding: 0.75rem 1.25rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-      animation: float 6s infinite ease-in-out;
-      z-index: 1000;
-    }
+      .menu-toggle {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        background-color: #2d2d2d;
+        color: #facc15;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        animation: float 6s infinite ease-in-out;
+        z-index: 1000;
+      }
 
-    @keyframes float {
-      0% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(10deg) scale(1.05); }
-      50% { transform: rotate(-10deg) scale(1.1); }
-      75% { transform: rotate(10deg) scale(1.05); }
-      100% { transform: rotate(0deg) scale(1); }
-    }
+      @keyframes float {
+        0% {
+          transform: rotate(0deg) scale(1);
+        }
+        25% {
+          transform: rotate(10deg) scale(1.05);
+        }
+        50% {
+          transform: rotate(-10deg) scale(1.1);
+        }
+        75% {
+          transform: rotate(10deg) scale(1.05);
+        }
+        100% {
+          transform: rotate(0deg) scale(1);
+        }
+      }
 
-    .sidebar-container {
-      background: #1a1a1a;
-      border: 2px solid #facc15;
-      border-radius: 0.5rem;
-      padding: 1rem;
-      width: 16rem;
-      height: auto;
-      max-height: 90vh; /* або 90% від висоти вікна */
-      overflow-y: auto; /* прокрутка, якщо забагато елементів */
-      gap: 3rem; /* проміжок між пунктами */
-      position: fixed;
-      top: 5rem;
-      left: 1rem;
-      z-index: 999;
-    }
+      .sidebar-container {
+        background: #1a1a1a;
+        border: 2px solid #facc15;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        width: 16rem;
+        height: auto;
+        max-height: 90vh; /* або 90% від висоти вікна */
+        overflow-y: auto; /* прокрутка, якщо забагато елементів */
+        gap: 3rem; /* проміжок між пунктами */
+        position: fixed;
+        top: 5rem;
+        left: 1rem;
+        z-index: 999;
+      }
 
-    .sidebar-item {
-      color: #facc15;
-      background: #333;
-      border: 1px solid #555;
-      border-radius: .375rem;
-      padding: .75rem 1rem;
-      margin-bottom: .5rem;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
+      .sidebar-item {
+        color: #facc15;
+        background: #333;
+        border: 1px solid #555;
+        border-radius: 0.375rem;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
 
-    .sidebar-item:hover {
-      background: #555;
-    }
+      .sidebar-item:hover {
+        background: #555;
+      }
 
-    [x-cloak] { display: none !important; }
+      [x-cloak] {
+        display: none !important;
+      }
 
-    
-    /* Основне меню */
-    .navbar {
+      /* Основне меню */
+      .navbar {
         background-color: #2c2c2c; /* Темно-сірий фон */
         padding: 10px 0;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
+      }
 
-    .navbar ul {
+      .navbar ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
         display: flex;
         justify-content: space-around;
         align-items: center;
-    }
+      }
 
-    .navbar li {
+      .navbar li {
         display: inline;
-    }
+      }
 
-    /* Стиль для пунктів меню */
-    .navbar a.menu-item {
+      /* Стиль для пунктів меню */
+      .navbar a.menu-item {
         color: #fff;
-        font-family: 'Arial', sans-serif;
+        font-family: "Arial", sans-serif;
         text-align: center;
         padding: 12px 25px;
         text-decoration: none;
@@ -147,26 +179,26 @@
         border-radius: 5px;
         position: relative;
         transition: background-color 0.3s, transform 0.2s ease-out;
-    }
+      }
 
-    /* Ефекти на наведення */
-    .navbar a.menu-item:hover {
+      /* Ефекти на наведення */
+      .navbar a.menu-item:hover {
         background-color: #ffbf00; /* Жовтий колір */
         color: #333;
         transform: scale(1.1); /* Плавне збільшення кнопки */
         box-shadow: 0 0 15px rgba(255, 191, 0, 0.8);
-    }
+      }
 
-    /* Активний елемент */
-    .navbar a.menu-item:focus,
-    .navbar a.menu-item:active {
+      /* Активний елемент */
+      .navbar a.menu-item:focus,
+      .navbar a.menu-item:active {
         outline: none;
         border: 2px dashed #ffbf00; /* Жовта пунктирна рамка при натисканні */
-    }
+      }
 
-    /* Анімація підсвічування при наведенні */
-    .navbar a.menu-item::before {
-        content: '';
+      /* Анімація підсвічування при наведенні */
+      .navbar a.menu-item::before {
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
@@ -177,181 +209,254 @@
         transition: transform 0.3s ease;
         z-index: -1;
         border-radius: 5px;
-    }
+      }
 
-    .navbar a.menu-item:hover::before {
+      .navbar a.menu-item:hover::before {
         transform: scale(1); /* Плавне розширення анімації */
-    }
+      }
 
-  </style>
-</head>
+      .modal-content {
+        width: 100%; /* займає всю ширину модального вікна */
+        height: 100%; /* займає всю висоту модального вікна */
+        padding: 0; /* прибрано відступи */
+        margin: 0; /* прибрано зовнішні відступи */
+        display: flex; /* для вирівнювання вмісту по центру */
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; /* обрізає все зайве */
+        background: #000; /* чорний фон для відео */
+      }
 
-<body class="bg-gray-100 font-serif text-[18px] text-[#5b3a29]" style="font-family: 'UnifrakturCook', cursive;">
+      .modal-content iframe,
+      .modal-content video {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+        object-fit: cover;
+      }
+    </style>
+  </head>
 
-  <!-- Кнопка меню -->
-  <div class="menu-toggle" @click="toggleMenu" style="margin-top: 90px;">
-    ☰ Перегляд сторінок
-  </div>
+  <body
+    class="bg-gray-100 font-serif text-[18px] text-[#5b3a29]"
+    style="font-family: 'UnifrakturCook', cursive"
+  >
+    <!-- Кнопка меню -->
+    <div class="menu-toggle" @click="toggleMenu" style="margin-top: 90px">
+      ☰ Перегляд сторінок
+    </div>
 
-  <!-- Блок навігаційного меню в base.html -->
-<div class="navbar">
-  <ul>
-      <li><a href="/" class="menu-item">Головна</a></li>
-      <li><a href="/immersive_world" class="menu-item">Імерсивний світ</a></li>
-      <li><a href="/skill_set" class="menu-item">Знання технологій моделювання і розробки</a></li>
-      <li><a href="/development_workflow" class="menu-item">Workflow AR/VR застосунків</a></li>
-      <li><a href="/inside_AR_VR_technology" class="menu-item">Тех стек розробки</a></li>
-      <li><a href="/creative_projects" class="menu-item">Креативні проекти</a></li>
-      
-  </ul>
-</div>
+    <!-- Блок навігаційного меню в base.html -->
+    <div class="navbar">
+      <ul>
+        <li><a href="/" class="menu-item">Головна</a></li>
+        <li>
+          <a href="/immersive_world" class="menu-item">Імерсивний світ</a>
+        </li>
+        <li>
+          <a href="/skill_set" class="menu-item"
+            >Знання технологій моделювання і розробки</a
+          >
+        </li>
+        <li>
+          <a href="/development_workflow" class="menu-item"
+            >Workflow AR/VR застосунків</a
+          >
+        </li>
+        <li>
+          <a href="/inside_AR_VR_technology" class="menu-item"
+            >Тех стек розробки</a
+          >
+        </li>
+        <li>
+          <a href="/creative_projects" class="menu-item">Креативні проекти</a>
+        </li>
+      </ul>
+    </div>
 
     <!-- Бічне меню -->
-<div class="sidebar-container" x-show="showMenu" x-cloak style="margin-top: 99px;" >
-  <template x-for="(page,index) in pages" :key="index">
     <div
-      class="sidebar-item"
-      @click="openWindow(index, $event)"
-      @mousedown="startDragToOpen(index, $event)"
-      x-text="page.name">
-    </div>
-  </template>
-</div>
-
-  <!-- Вікна -->
-  <div id="windows" class="relative w-full h-full">
-    <template x-for="win in openWindows" :key="win.id">
-      <div
-        class="draggable"
-        :class="{'active': activeWindow === win.id}"
-        x-ref="'win' + win.id"
-        x-bind:style="{ top: win.top + 'px', left: win.left + 'px' }"
-        @mousedown="bringToFront(win.id)"
-        x-init="makeDraggable($el, win.id)">
-        
+      class="sidebar-container"
+      x-show="showMenu"
+      x-cloak
+      style="margin-top: 99px"
+    >
+      <template x-for="(page,index) in pages" :key="index">
         <div
-          class="window-header"
-         @dblclick="closeWindow(win.id)"
-         @click="maximizeWindow(win.id)"
+          class="sidebar-item"
+          @click="openWindow(index, $event)"
+          @mousedown="startDragToOpen(index, $event)"
+          x-text="page.name"
+        ></div>
+      </template>
+    </div>
+
+    <!-- Вікна -->
+    <div id="windows" class="relative w-full h-full">
+      <template x-for="win in openWindows" :key="win.id">
+        <div
+          class="draggable"
+          :class="{'active': activeWindow === win.id}"
+          x-ref="'win' + win.id"
+          x-bind:style="{ top: win.top + 'px', left: win.left + 'px' }"
+          @mousedown="bringToFront(win.id)"
+          x-init="makeDraggable($el, win.id)"
+        >
+          <div
+            class="window-header"
+            @dblclick="closeWindow(win.id)"
+            @click="maximizeWindow(win.id)"
           >
-         <span x-text="pages[win.index].name"></span>
-          <span class="cursor-pointer" @click.stop="closeWindow(win.id)">&times;</span>
-       </div>
+            <span x-text="pages[win.index].name"></span>
+            <span class="cursor-pointer" @click.stop="closeWindow(win.id)"
+              >&times;</span
+            >
+          </div>
 
-        <div class="window-content">
-          <iframe :src="pages[win.index].url" class="w-full h-full" frameborder="0"></iframe>
+          <div class="window-content">
+            <iframe
+              :src="pages[win.index].url"
+              class="w-full h-full"
+              frameborder="0"
+            ></iframe>
+          </div>
         </div>
-      </div>
-    </template>
-  </div>
+      </template>
+    </div>
 
-  <!-- Контент -->
-  <div style="margin-left: 20rem; padding: 2rem;">
-    {% block content %}{% endblock %}
-  </div>
+    <!-- Контент -->
+    <div style="margin-left: 20rem; padding: 2rem">
+      {% block content %}{% endblock %}
+    </div>
 
-  <script>
-    function app() {
-      return {
-        showMenu: false,
-        pages: Array.from({ length: 12 }, (_, i) => ({
-          name: `Сторінка ${i + 1}`,
-          url: `/templates/page${i + 1}.html`
-        })),
-        openWindows: [],
-        activeWindow: null,
-        zIndex: 10,
+    <script>
+      function app() {
+        return {
+          showMenu: false,
+          // pages: Array.from({ length: 12 }, (_, i) => ({
+          //   name: `Сторінка ${i + 1}`,
+          //   url: `/templates/page${i + 1}.html`
+          //  })),
+          // ⚡ ОНОВЛЕНИЙ масив: Сторінка 1 тепер містить YouTube-відео
+          pages: [
+            {
+              name: "Сторінка 1",
+              url: "https://www.shutterstock.com/shutterstock/videos/3711059561/preview/stock-footage-young-architect-using-virtual-reality-technology-dynamically-constructs-a-digital-cityscape-on-a.webm",
+            },
+            { name: "Сторінка 2", url: "/arlogicmap" },
+            { name: "Сторінка 3", url: "/templates/page3.html" },
+            { name: "Сторінка 4", url: "/templates/page4.html" },
+            { name: "Сторінка 5", url: "/templates/page5.html" },
+            { name: "Сторінка 6", url: "/templates/page6.html" },
+            { name: "Сторінка 7", url: "/templates/page7.html" },
+            { name: "Сторінка 8", url: "/templates/page8.html" },
+            { name: "Сторінка 9", url: "/templates/page9.html" },
+            { name: "Сторінка 10", url: "/templates/page10.html" },
+            { name: "Сторінка 11", url: "/templates/page11.html" },
+            { name: "Сторінка 12", url: "/templates/page12.html" },
+          ],
+          openWindows: [],
+          activeWindow: null,
+          zIndex: 10,
 
-        init() {
-          const saved = JSON.parse(localStorage.getItem('openWindows') || '[]');
-          this.openWindows = saved;
-        },
+          init() {
+            const saved = JSON.parse(
+              localStorage.getItem("openWindows") || "[]"
+            );
+            this.openWindows = saved;
+          },
 
-        toggleMenu() {
-          this.showMenu = !this.showMenu;
-        },
+          toggleMenu() {
+            this.showMenu = !this.showMenu;
+          },
 
-        openWindow(index, event) {
-          const exists = this.openWindows.find(w => w.index === index);
-          if (!exists) {
-            const id = Date.now();
-            this.openWindows.push({
-              id,
-              index,
-              top: event.clientY,
-              left: 150
-            });
+          openWindow(index, event) {
+            const exists = this.openWindows.find((w) => w.index === index);
+            if (!exists) {
+              const id = Date.now();
+              this.openWindows.push({
+                id,
+                index,
+                top: event.clientY,
+                left: 150,
+              });
+              this.save();
+            }
+          },
+
+          closeWindow(id) {
+            this.openWindows = this.openWindows.filter((w) => w.id !== id);
             this.save();
-          }
-        },
+          },
 
-        closeWindow(id) {
-          this.openWindows = this.openWindows.filter(w => w.id !== id);
-          this.save();
-        },
+          startDragToOpen(index, event) {
+            let startX = event.clientX;
+            const handleMove = (e) => {
+              if (e.clientX - startX > 100) {
+                // якщо мишу потягнули вправо на >100px
+                this.openWindow(index, event); // відкриває вікно
+                cleanup(); // прибирає слухачі
+              }
+            };
+            const cleanup = () => {
+              document.removeEventListener("mousemove", handleMove);
+              document.removeEventListener("mouseup", cleanup);
+            };
+            document.addEventListener("mousemove", handleMove);
+            document.addEventListener("mouseup", cleanup);
+          },
 
-        startDragToOpen(index, event) {
-          let startX = event.clientX;
-          const handleMove = (e) => {
-        if (e.clientX - startX > 100) {  // якщо мишу потягнули вправо на >100px
-          this.openWindow(index, event); // відкриває вікно
-          cleanup();                     // прибирає слухачі
-         }
-       };
-        const cleanup = () => {
-        document.removeEventListener('mousemove', handleMove);
-        document.removeEventListener('mouseup', cleanup);
-       };
-        document.addEventListener('mousemove', handleMove);
-        document.addEventListener('mouseup', cleanup);
-       },
+          bringToFront(id) {
+            this.activeWindow = id;
+            this.zIndex++;
+            this.$refs["win" + id].style.zIndex = this.zIndex;
+          },
 
-        bringToFront(id) {
-          this.activeWindow = id;
-          this.zIndex++;
-          this.$refs['win' + id].style.zIndex = this.zIndex;
-        },
+          save() {
+            localStorage.setItem(
+              "openWindows",
+              JSON.stringify(this.openWindows)
+            );
+          },
 
-        save() {
-          localStorage.setItem('openWindows', JSON.stringify(this.openWindows));
-        },
-
-        makeDraggable(el, id) {
-          let pos = { x: 0, y: 0 };
-          const start = e => {
-            pos.x = e.clientX - el.offsetLeft;
-            pos.y = e.clientY - el.offsetTop;
-            document.addEventListener('mousemove', move);
-            document.addEventListener('mouseup', end);
-          };
-          const move = e => {
-            const w = this.openWindows.find(w => w.id === id);
-            w.left = e.clientX - pos.x;
-            w.top = e.clientY - pos.y;
-            this.save();
-          };
-          const end = () => {
-            document.removeEventListener('mousemove', move);
-            document.removeEventListener('mouseup', end);
-          };
-          el.querySelector('.window-header').addEventListener('mousedown', start);
-        }
+          makeDraggable(el, id) {
+            let pos = { x: 0, y: 0 };
+            const start = (e) => {
+              pos.x = e.clientX - el.offsetLeft;
+              pos.y = e.clientY - el.offsetTop;
+              document.addEventListener("mousemove", move);
+              document.addEventListener("mouseup", end);
+            };
+            const move = (e) => {
+              const w = this.openWindows.find((w) => w.id === id);
+              w.left = e.clientX - pos.x;
+              w.top = e.clientY - pos.y;
+              this.save();
+            };
+            const end = () => {
+              document.removeEventListener("mousemove", move);
+              document.removeEventListener("mouseup", end);
+            };
+            el.querySelector(".window-header").addEventListener(
+              "mousedown",
+              start
+            );
+          },
+        };
       }
-    }
-  </script>
+    </script>
 
-  <!-- JS для додаткових ефектів (необов'язково) -->
-<script>
-  // Наприклад, можна додати ефект для активної кнопки
-  const menuItems = document.querySelectorAll('.menu-item');
-  menuItems.forEach(item => {
-      item.addEventListener('click', function() {
-          menuItems.forEach(i => i.classList.remove('active'));  // Вилучаємо попередню активність
-          this.classList.add('active');  // Додаємо активний клас
+    <!-- JS для додаткових ефектів (необов'язково) -->
+    <script>
+      // Наприклад, можна додати ефект для активної кнопки
+      const menuItems = document.querySelectorAll(".menu-item");
+      menuItems.forEach((item) => {
+        item.addEventListener("click", function () {
+          menuItems.forEach((i) => i.classList.remove("active")); // Вилучаємо попередню активність
+          this.classList.add("active"); // Додаємо активний клас
+        });
       });
-  });
-</script>
-
-</body>
+    </script>
+  </body>
 </html>
-
