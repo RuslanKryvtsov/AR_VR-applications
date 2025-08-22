@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Архітектура VR-додатків</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #f8f9fa;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        margin-bottom: 30px;
+      }
+      .icon {
+        display: inline-block;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        max-width: 280px;
+        background: #d6eaf8; /* фон для основних */
+      }
+      .child {
+        background: #f9e79f; /* фон для дочірніх */
+        font-size: 0.9em;
+      }
+      .row {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+        flex-wrap: wrap;
+      }
+      /* Вікно пояснення */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+      .popup {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 500px;
+        position: relative;
+        text-align: left;
+      }
+      .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Приклад архітектури VR-додатку</h1>
+
+    <!-- 1. Клієнтський рушій -->
+    <div
+      class="icon"
+      data-text="Клієнтський рушій відповідає за роботу додатку на стороні користувача. Він об’єднує взаємодію з пристроями введення, обробку графіки та інтеграцію з VR-середовищем."
+    >
+      Клієнтський рушій<br /><small>(Client Engine)</small>
+    </div>
+
+    <div class="row">
+      <div
+        class="icon child"
+        data-text="Unity та Unreal Engine забезпечують потужні інструменти для створення VR-сцен, тоді як WebXR дозволяє запускати VR у браузері."
+      >
+        Unity 3D / Unreal Engine / WebXR
+      </div>
+      <div
+        class="icon child"
+        data-text="Модуль введення обробляє дані з контролерів, рукавичок і датчиків руху, перетворюючи фізичні дії у віртуальні."
+      >
+        Input Module<br /><small>контролери, гловери, датчики</small>
+      </div>
+      <div
+        class="icon child"
+        data-text="Модуль рендерингу відповідає за графіку, використовуючи OpenGL, Vulkan або DirectX для відтворення 3D-сцен."
+      >
+        Render Module<br /><small>OpenGL / Vulkan / DirectX</small>
+      </div>
+    </div>
+
+    <!-- 2. Серверний бекенд -->
+    <div
+      class="icon"
+      data-text="Серверний бекенд обробляє логіку додатку: надає сценарії, зберігає аналітику та забезпечує масштабованість VR-системи."
+    >
+      Серверний бекенд<br /><small>(Cloud / On-Premise)</small>
+    </div>
+
+    <div class="row">
+      <div
+        class="icon child"
+        data-text="REST та GraphQL API дозволяють клієнтським застосункам отримувати сценарії VR та відправляти статистику для подальшої аналітики."
+      >
+        REST / GraphQL API
+      </div>
+      <div
+        class="icon child"
+        data-text="База даних (SQL або NoSQL) зберігає інформацію про користувачів, їхні дії та метрики продуктивності VR-системи."
+      >
+        База даних<br /><small>(SQL / NoSQL)</small>
+      </div>
+    </div>
+
+    <!-- 3. Front-end застосунку -->
+    <div
+      class="icon"
+      data-text="Front-end застосунку відповідає за весь візуальний та інтерактивний досвід користувача. Він об'єднує відображення інтерфейсу, обробку дій користувача та комунікацію з бекендом. Забезпечує плавну роботу UI, відображає дані з сервера та керує інтерактивністю в реальному часі. Сюди входять як стандартні елементи UI, так і спеціальні VR-компоненти для взаємодії рухами, жестами та навіть поглядом. Front-end забезпечує зручний доступ до всіх функцій додатку та створює приємний користувацький досвід."
+    >
+      Front-end застосунку<br /><small>(UI / VR Interaction)</small>
+    </div>
+
+    <div class="row">
+      <div
+        class="icon child"
+        data-text="Користувацький інтерфейс UI формує візуальні компоненти додатку: кнопки, меню, панелі та інші елементи взаємодії. Він відповідає за відображення інформації та керування поведінкою елементів при взаємодії користувача. UI забезпечує узгодженість дизайну та зручність для користувача у VR-середовищі."
+      >
+        UI
+      </div>
+      <div
+        class="icon child"
+        data-text="Адмін-панель дозволяє розробникам та адміністраторам створювати та налаштовувати VR-сценарії, керувати користувачами та переглядати аналітику. Вона інтегрується з бекендом для отримання даних і надає інструменти для модифікації контенту та параметрів системи. Адмін-панель є ключовим компонентом управління Front-end."
+      >
+        Admin
+      </div>
+      <div
+        class="icon child"
+        data-text="Модуль позиціювання відповідає за правильне відображення об’єктів у VR-просторі. Він контролює координати, орієнтацію та взаємодію 3D-елементів, забезпечуючи реалістичне розташування елементів інтерфейсу та сцени."
+      >
+        Positioning
+      </div>
+      <div
+        class="icon child"
+        data-text="Модуль інтерактивності відповідає за взаємодію користувачів з додатком за допомогою жестів, рухів, контролерів та навіть погляду. Він обробляє введення, перетворює його у команди додатку та забезпечує реалістичну реакцію в VR-сцені. Модуль інтерактивності робить досвід користувача живим і динамічним."
+      >
+        Interaction
+      </div>
+    </div>
+
+    <!-- 4. Модуль Export/Import -->
+    <div
+      class="icon"
+      data-text="Модуль Export/Import відповідає за передачу та обробку всіх зовнішніх ресурсів VR-додатку. Він забезпечує доставку 3D-моделей, текстур, аудіо та інших файлів через CDN або Asset Server, скорочуючи час завантаження. Модуль контролює сумісність форматів, забезпечує кешування і підтримку потокової передачі контенту. Він інтегрується з клієнтським рушієм та бекендом, дозволяючи швидко отримувати оновлення сцен та персонажів. Основна мета модуля — забезпечити стабільність та ефективність обробки ресурсів, оптимізуючи роботу додатку для кінцевого користувача."
+    >
+      Export / Import<br /><small>Сцени і персонажі</small>
+    </div>
+
+    <div class="row">
+      <div
+        class="icon child"
+        data-text="Модуль 3D-моделей обробляє формати glTF, FBX та інші, забезпечує завантаження моделей та їхню інтеграцію у VR-сцену. Він також контролює оптимізацію розмірів файлів для швидкого відображення."
+      >
+        3D Models
+      </div>
+      <div
+        class="icon child"
+        data-text="Модуль текстур відповідає за передачу зображень, нормал-мапів, шейдерів та інших графічних елементів, забезпечуючи реалістичний вигляд об’єктів у VR. Він підтримує різні формати та методи стиснення, щоб прискорити завантаження."
+      >
+        Textures
+      </div>
+      <div
+        class="icon child"
+        data-text="Модуль аудіо обробляє передачу звукових файлів та інтегрує їх у VR-сцену. Він забезпечує просторове звучання, синхронізацію звуків із діями користувача та оптимізує об’єм аудіо для швидкого завантаження."
+      >
+        Audio
+      </div>
+      <div
+        class="icon child"
+        data-text="Streaming модуль відповідає за потокову передачу ресурсів, дозволяючи підвантажувати контент по мірі необхідності. Це зменшує час старту сцени та підтримує плавний користувацький досвід."
+      >
+        Streaming
+      </div>
+    </div>
+
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay">
+      <div class="popup" id="popup">
+        <span class="close" id="close">&times;</span>
+        <p id="popup-text"></p>
+      </div>
+    </div>
+
+    <script>
+      const icons = document.querySelectorAll(".icon");
+      const overlay = document.getElementById("overlay");
+      const popupText = document.getElementById("popup-text");
+      const closeBtn = document.getElementById("close");
+
+      icons.forEach((icon) => {
+        icon.addEventListener("click", () => {
+          popupText.textContent = icon.getAttribute("data-text");
+          overlay.style.display = "flex";
+        });
+      });
+
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay || e.target === closeBtn) {
+          overlay.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>

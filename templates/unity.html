@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Unity – основи та робота</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      width: 90%;
+      margin: auto;
+      padding: 20px;
+    }
+    .icons-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .icon {
+      width: 120px;
+      height: 120px;
+      background: #dbe9f4;
+      margin: 10px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .icon:hover { background: #c4dff0; }
+    .arrow {
+      font-size: 30px;
+      margin: 0 10px;
+      color: #444;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .menu-icon {
+      background: #e9f6e3;
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .menu-icon:hover { background: #d4efce; }
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .overlay-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 60%;
+      position: relative;
+      text-align: justify;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Unity – основи та практична робота</h1>
+  </header>
+
+  <div class="container">
+    <h2>Що таке Unity?</h2>
+    <p style="text-align: justify;">
+      Unity — це сучасний рушій для створення 2D та 3D ігор, VR/AR-додатків та інтерактивних симуляцій. 
+      Він дозволяє програмістам і дизайнерам працювати в одному середовищі, поєднуючи графіку, фізику та логіку. 
+      Unity підтримує понад 20 платформ, включно з Windows, macOS, Android, iOS, Linux і консолями. 
+      <br>Однією з ключових переваг є вбудований магазин Asset Store, де можна придбати чи завантажити готові моделі, скрипти та текстури. 
+      
+      <br>Для програмування використовується мова C#, яка зручна й потужна для розробки ігор. 
+      <br><span style="text-align: justify; font-weight: 700;">Unity має візуальний редактор сцен, що дозволяє легко компонувати об’єкти та налаштовувати їхні властивості. 
+      Середовище також включає систему анімацій, редактор UI, інструменти роботи зі звуком та системою частинок.</span>  
+      Завдяки цьому створення навіть складних проектів стає доступним невеликим командам або навіть одній людині. 
+      Unity активно використовується не лише для ігор, але й у навчанні, архітектурі, промисловості та медицині. 
+      <br> <span style="text-align: justify; font-weight: 700; text-decoration: underline;">Завантажити Unity можна з офіційного сайту <a href="https://unity.com/" target="_blank">unity.com</a>. </span>
+      <br>Для встановлення потрібно завантажити Unity Hub — менеджер версій та проектів. 
+      <br>У Unity Hub можна обрати потрібні модулі для Android, iOS, VR-пристроїв тощо. 
+      Інсталяція займає 10–20 хвилин залежно від швидкості інтернету. 
+      Після встановлення користувач отримує середовище для швидкого старту з прикладами проектів. 
+      Unity — це не лише інструмент, а ціла екосистема для творчості.
+    </p>
+
+    <h2>Алгоритм роботи з Unity</h2>
+    <div class="icons-row">
+      <div class="icon" data-text="Починаємо з установки Unity Hub та вибору потрібної версії рушія.">Інсталяція</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Створюємо новий проект: 2D або 3D.">Новий проект</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Відкриваємо сцену та додаємо базові об’єкти: куб, камера, світло.">Редактор сцен</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Налаштовуємо камеру та освітлення для реалістичності.">Освітлення</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Імпортуємо моделі, текстури та звуки.">Імпорт ресурсів</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Створюємо скрипти на C# для управління об’єктами.">Скрипти</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Налаштовуємо анімацію та рух персонажів.">Анімація</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Тестуємо проект у Play Mode.">Тестування</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Експортуємо гру для вибраної платформи.">Білд проекту</div>
+    </div>
+
+    <h2>Основні групи меню Unity</h2>
+    <div class="menu-grid">
+      <div class="menu-icon" data-text="Меню File містить команди створення нового проекту, відкриття сцен, збереження та експорт.">File</div>
+      <div class="menu-icon" data-text="Меню Edit включає налаштування сцени, об’єктів, а також команди Undo/Redo.">Edit</div>
+      <div class="menu-icon" data-text="Меню Assets використовується для імпорту моделей, текстур, скриптів та управління бібліотекою.">Assets</div>
+      <div class="menu-icon" data-text="GameObject дозволяє додавати нові об’єкти у сцену – 3D моделі, камери, світло, UI елементи.">GameObject</div>
+      <div class="menu-icon" data-text="Компоненти (Components) – це властивості та поведінка об’єктів: фізика, колайдери, скрипти.">Component</div>
+      <div class="menu-icon" data-text="Вікно Window надає доступ до інструментів: Console, Animator, Package Manager.">Window</div>
+      <div class="menu-icon" data-text="Меню Help містить документацію та ресурси для навчання.">Help</div>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay">
+    <div class="overlay-content">
+      <span class="close-btn" onclick="closeOverlay()">✖</span>
+      <p id="overlay-text"></p>
+    </div>
+  </div>
+
+  <script>
+    const icons = document.querySelectorAll('.icon, .menu-icon');
+    const overlay = document.getElementById('overlay');
+    const overlayText = document.getElementById('overlay-text');
+
+    icons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        overlayText.textContent = icon.getAttribute('data-text');
+        overlay.style.display = 'flex';
+      });
+    });
+
+    function closeOverlay() {
+      overlay.style.display = 'none';
+    }
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeOverlay();
+    });
+  </script>
+</body>
+</html>

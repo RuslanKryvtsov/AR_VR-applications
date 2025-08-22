@@ -10,6 +10,18 @@ def index():
 def ar_logic_map():
     return render_template('ARlogicMap.html')
 
+@app.route('/architecture')
+def architecture_map():
+    return render_template('architectureAR.html')   
+
+@app.route('/unity')
+def unity_map():
+    return render_template('unity.html')   
+
+@app.route('/blender')
+def blender_map():
+    return render_template('blender.html')   
+
 @app.route('/immersive_world')
 def cloning_methods():
     return render_template('immersive_world.html')

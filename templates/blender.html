@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Blender – створення 3D моделей</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    header {
+      background: #222;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      width: 90%;
+      margin: auto;
+      padding: 20px;
+    }
+    .icons-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .icon {
+      width: 130px;
+      height: 130px;
+      background: #ffe5cc;
+      margin: 10px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+      padding: 5px;
+    }
+    .icon:hover { background: #ffd1a1; }
+    .arrow {
+      font-size: 30px;
+      margin: 0 10px;
+      color: #444;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .menu-icon {
+      background: #e0ecff;
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .menu-icon:hover { background: #cbdfff; }
+    /* Overlay */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .overlay-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 70%;
+      position: relative;
+      text-align: justify;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Blender – основи та практична робота</h1>
+  </header>
+
+  <div class="container">
+    <h2>Що таке Blender?</h2>
+    <p style="text-align: justify;">
+      <b>Blender</b> — це безкоштовне та відкрите програмне забезпечення для <b>створення 3D моделей, анімації, візуалізації, відеомонтажу та навіть розробки ігор</b>.  
+      Воно є одним із найпопулярніших інструментів у світі завдяки своїй <u>функціональності, гнучкості та відсутності ліцензійних обмежень</u>.
+    </p>
+    <p style="text-align: justify;">
+      Основні можливості Blender включають: <b>моделювання</b> (полігональне, скульптинг), <b>анімацію</b> (ключові кадри, ріггінг, симуляції тканини, рідин та частинок), 
+      <b>рендеринг</b> (з використанням рушіїв Cycles і Eevee), <b>створення матеріалів та текстур</b>, а також інтегровані інструменти для 
+      <b>композитингу та монтажу відео</b>.  
+    </p>
+    <p style="text-align: justify;">
+      Програма підтримує десятки форматів файлів і дозволяє експортувати роботи для <b>ігор, VR/AR-проєктів, кінематографу та 3D-друку</b>.  
+      Blender працює на <b>Windows, macOS та Linux</b>, що робить його універсальним для користувачів будь-якої платформи.
+    </p>
+    <p style="text-align: justify;">
+      <b>Завантажити Blender</b> можна з офіційного сайту: <a href="https://www.blender.org/download/" target="_blank">blender.org</a>.  
+      Установка проста: достатньо завантажити інсталяційний файл та обрати основні параметри. Після встановлення користувач отримує повний пакет інструментів без будь-яких обмежень.
+    </p>
+
+    <h2>Алгоритм роботи в Blender</h2>
+    <div class="icons-row">
+      <div class="icon" data-text="Після встановлення запускаємо Blender і створюємо новий проєкт.">Новий проєкт</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Обираємо базові об’єкти: куб, сферу, циліндр або імпортуємо моделі.">Додавання об’єктів</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Редагуємо форму об’єкта у режимі редагування: екструзія, масштабування, поворот.">Моделювання</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Створюємо складні поверхні через скульптинг та інструменти високої деталізації.">Скульптинг</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Додаємо матеріали та налаштовуємо текстури для реалістичності.">Матеріали</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Накладаємо текстури зображень або процедурні патерни.">Текстурування</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Використовуємо кістки для створення скелетної анімації персонажів.">Ріггінг</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Налаштовуємо ключові кадри руху об’єктів.">Анімація</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Вибираємо рушій Eevee чи Cycles для візуалізації.">Рендеринг</div>
+      <div class="arrow">➔</div>
+      <div class="icon" data-text="Експортуємо модель чи анімацію у потрібному форматі.">Експорт</div>
+    </div>
+
+    <h2>Основні групи меню Blender</h2>
+    <div class="menu-grid">
+      <div class="menu-icon" data-text="Файл: створення нового проєкту, збереження, експорт у різні формати.">File</div>
+      <div class="menu-icon" data-text="Редагування: команди відміни/повтору, налаштування параметрів об’єктів.">Edit</div>
+      <div class="menu-icon" data-text="Рендер: налаштування якості зображення, запуск візуалізації.">Render</div>
+      <div class="menu-icon" data-text="Вид (View): управління камерами, перспективою, орієнтацією сцени.">View</div>
+      <div class="menu-icon" data-text="Додавання: об’єкти, світло, камери, сітки, примітиви.">Add</div>
+      <div class="menu-icon" data-text="Об’єкт: трансформації, групування, фізичні властивості.">Object</div>
+      <div class="menu-icon" data-text="Вікно (Window): робота з робочими просторами, додатковими панелями.">Window</div>
+      <div class="menu-icon" data-text="Довідка: документація, туторіали та ресурси спільноти.">Help</div>
+    </div>
+
+    <h2>Збереження та експорт моделей у Blender</h2>
+    <p style="text-align: justify;">
+      У Blender збереження здійснюється у власному форматі <b>.blend</b>. Це один файл, що містить <b>усю сцену: моделі, матеріали, анімацію, камери, світло та налаштування</b>.  
+      Однак для передачі моделей в інші програми або ігрові рушії використовується експорт у формати: <b>.fbx, .obj, .dae, .stl, .gltf/.glb</b>.  
+      При експорті іноді утворюється кілька додаткових файлів — наприклад, окремі зображення для текстур.  
+      Тому <u>основна 3D-модель зберігається одним файлом, але поруч може бути папка з ресурсами (текстури, карти нормалей, матеріали)</u>.  
+      Це забезпечує сумісність з ігровими рушіями (Unity, Unreal Engine) та програмами для рендерингу.
+    </p>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay">
+    <div class="overlay-content">
+      <span class="close-btn" onclick="closeOverlay()">✖</span>
+      <p id="overlay-text"></p>
+    </div>
+  </div>
+
+  <script>
+    const icons = document.querySelectorAll('.icon, .menu-icon');
+    const overlay = document.getElementById('overlay');
+    const overlayText = document.getElementById('overlay-text');
+
+    icons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        overlayText.textContent = icon.getAttribute('data-text');
+        overlay.style.display = 'flex';
+      });
+    });
+
+    function closeOverlay() {
+      overlay.style.display = 'none';
+    }
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeOverlay();
+    });
+  </script>
+</body>
+</html>
