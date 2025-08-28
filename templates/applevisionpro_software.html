@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Apple Vision Pro — глибокий розбір програмної архітектури та AI/Cloud інтеграції</title>
+  <style>
+    :root{
+      --bg:#f7f9fb; --card:#ffffff; --accent:#0a66c2; --muted:#556070;
+      --tile:#fff9f1; --tile2:#eef7ff; --mono: "SFMono-Regular", ui-monospace, monospace;
+      --maxw:1180px; font-family: Inter, Arial, sans-serif;
+    }
+    body{ margin:0; background:var(--bg); color:#071425; line-height:1.55; }
+    header{ background:linear-gradient(90deg,#04294a,#073b5a); color:#fff; padding:30px 16px; text-align:center; }
+    header h1{ margin:0; font-size:20px; letter-spacing:0.2px; }
+    .container{ max-width:var(--maxw); margin:26px auto; padding:18px; }
+    .lead{ color:var(--muted); margin-bottom:14px; text-align:justify; }
+    .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+    .card{ background:var(--card); border-radius:12px; padding:18px; box-shadow:0 8px 26px rgba(2,6,23,0.06); }
+    .section-title{ margin:0 0 8px 0; font-size:18px; color:#06233a; }
+    .subtitle{ color:var(--muted); font-size:13px; margin-bottom:12px; }
+    .tiles{ display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+    .tile{ background:var(--tile); border-radius:10px; padding:12px; min-height:120px; cursor:pointer; transition:transform .12s, box-shadow .12s; border:1px solid rgba(2,6,23,0.04); }
+    .tile2{ background:var(--tile2); }
+    .tile h3{ margin:0; font-size:14px; color:#063046; }
+    .tile p{ margin:8px 0 0 0; font-size:13px; color:var(--muted); }
+    .flow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .node{ background:#fff; border-radius:8px; padding:10px; border:1px dashed rgba(2,6,23,0.06); cursor:pointer; min-width:160px; }
+    .legend{ font-size:13px; color:var(--muted); margin-top:8px; }
+    pre.code{ background:#001927; color:#bfe9ff; padding:12px; border-radius:8px; font-family:var(--mono); font-size:12px; overflow:auto; }
+    footer{ text-align:center; color:var(--muted); margin:26px 0 50px; }
+    /* Overlay */
+    .overlay{ position:fixed; inset:0; background:rgba(3,8,20,0.62); display:none; align-items:center; justify-content:center; z-index:9999; padding:20px; }
+    .overlay-box{ width:min(980px,98%); max-height:86vh; overflow:auto; background:#fff; border-radius:12px; padding:20px; box-shadow:0 24px 64px rgba(2,6,23,0.6); }
+    .overlay-title{ font-size:20px; color:#042f4a; margin:0 0 12px 0; }
+    .overlay-body{ text-align:justify; color:#0b1720; }
+    .close-btn{ position:fixed; right:18px; top:14px; width:40px; height:40px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; border:1px solid rgba(0,0,0,0.06); box-shadow:0 8px 22px rgba(2,6,23,0.12); }
+    @media (max-width:980px){ .two-col{ grid-template-columns:1fr; } .tile{ min-height:110px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Apple Vision Pro — програмна архітектура, runtime, ML/AI та cloud-інтеграція</h1>
+  </header>
+
+  <main class="container">
+    <p class="lead">
+      Ця сторінка організована так: спочатку — загальна картина програмної платформи Vision Pro (dual-chip roles, visionOS), далі — логічні блоки (R1 runtime, M2 runtime, Compositor, visionOS frameworks, input stack, security), і вкінці — практичні приклади коду для розробника та деталі про інтеграцію з хмарою й AI-асистентами (Siri, Apple Intelligence). Клікніть на будь-який блок — отримаєте 8–10 речень технічного пояснення і практичних зауваг.
+    </p>
+
+    <div class="two-col">
+      <!-- Left: Overview -->
+      <section class="card">
+        <h2 class="section-title">I. Загальна структура програмної платформи</h2>
+        <p class="subtitle">Короткий огляд ролей апаратних блоків і основних runtime-компонентів.</p>
+
+        <div class="tiles">
+          <div class="tile" data-id="ov_dual">
+            <h3>1. Dual-chip model: R1 vs M2 (що кожен робить)</h3>
+            <p>Коротко: R1 — реальний час обробка сенсорів; M2 — ОС, UI, графіка та великий ML.</p>
+          </div>
+
+          <div class="tile tile2" data-id="ov_visionos">
+            <h3>2. visionOS — ОС для просторового комп'ютера</h3>
+            <p>visionOS надає фреймворки (RealityKit, ARKit, Compositor Services) та runtime для просторових застосунків.</p>
+          </div>
+
+          <div class="tile" data-id="ov_render">
+            <h3>3. Compositor & Metal pipeline</h3>
+            <p>Компонент, що зливає passthrough шар, UI та 3D сцену, використовуючи Metal та фовеальне рендеринг.</p>
+          </div>
+
+          <div class="tile tile2" data-id="ov_input">
+            <h3>4. Input stack: gaze, hand, voice, controllers</h3>
+            <p>eye-tracking, hand tracking, Siri/voice pipeline і додаткові spatial accessories — як дані потрапляють у runtime.</p>
+          </div>
+
+          <div class="tile" data-id="ov_security">
+            <h3>5. Безпека: Optic ID, Secure Enclave і permission model</h3>
+            <p>Біометрія зберігається в Secure Enclave; доступ до raw frames контролюється OS-політиками.</p>
+          </div>
+
+          <div class="tile tile2" data-id="ov_telemetry">
+            <h3>6. Telemetry, logging, update model</h3>
+            <p>Як системні логи, оновлення visionOS та telemetry інтегруються в екосистему Apple (OTA, App Store).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Deep blocks -->
+      <section class="card">
+        <h2 class="section-title">II. Логічні блоки (клікніть для розгорнутого опису)</h2>
+        <p class="subtitle">Кожен блок — автономна одиниця з API, життєвим циклом і best-practices.</p>
+
+        <div class="tiles">
+          <div class="tile" data-id="blk_r1">
+            <h3>R1 runtime — pre-processing сенсорних потоків</h3>
+            <p>R1 синхронізує кадри камер, IMU та мікрофони; готує world-state для M2.</p>
+          </div>
+
+          <div class="tile tile2" data-id="blk_m2">
+            <h3>M2 runtime — visionOS kernel/user services</h3>
+            <p>M2 запускає visionOS, приложения, ML-інференс і фінальний рендер.</p>
+          </div>
+
+          <div class="tile" data-id="blk_compositor">
+            <h3>Compositor Services — збирання шарів та foveated rendering</h3>
+            <p>Compositor поєднує passthrough, UI та 3D-шари, використовуючи gaze-дані для LOD.</p>
+          </div>
+
+          <div class="tile tile2" data-id="blk_realitykit">
+            <h3>RealityKit / ARKit — spatial APIs для devs</h3>
+            <p>RealityKit дає easy-to-use scene API; ARKit надає просторові прив’язки та трекінг.</p>
+          </div>
+
+          <div class="tile" data-id="blk_siri">
+            <h3>Siri & Apple Intelligence — голосовий UI і AI-асистент</h3>
+            <p>Голосові запити можуть бути оброблені локально або через Apple Intelligence / cloud.</p>
+          </div>
+
+          <div class="tile tile2" data-id="blk_cloud">
+            <h3>Cloud integration — Apple Intelligence, App Store, iCloud</h3>
+            <p>Хмарні сервіси забезпечують heavy ML, sync, backup і контент-сервіси.</p>
+          </div>
+
+          <div class="tile" data-id="blk_secure">
+            <h3>Secure Enclave & privacy model</h3>
+            <p>Biometric keys, Optic ID, permission prompts — як OS захищає дані.</p>
+          </div>
+
+          <div class="tile tile2" data-id="blk_updates">
+            <h3>OTA & package rollout (App + visionOS updates)</h3>
+            <p>App Store та OTA images, signed updates, A/B rollback і enterprise deployment.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <hr style="margin:20px 0; border:none; border-top:1px solid rgba(2,6,23,0.06);" />
+
+    <section class="card">
+      <h2 class="section-title">III. Dataflow: від сенсора до AI-асистента</h2>
+      <p class="subtitle">Спрощена схема потоків — кожен вузол клікабельний для пояснення.</p>
+
+      <div class="flow">
+        <div class="node" data-id="flow_cam">1. Камери / сенсори</div>
+        <div class="node" data-id="flow_r1">2. R1 preproc</div>
+        <div class="node" data-id="flow_m2">3. M2 app / renderer</div>
+        <div class="node" data-id="flow_comp">4. Compositor → display</div>
+        <div class="node" data-id="flow_voice">5. Voice capture → Siri / Apple Intelligence</div>
+        <div class="node" data-id="flow_cloud">6. Cloud (heavy ML / LLM)</div>
+      </div>
+      <p class="legend">Клік по вузлу покаже 8–10 речень про роль і практичні поради.</p>
+    </section>
+
+    <section class="card section">
+      <h2 class="section-title">IV. Приклади коду — visionOS / Swift / RealityKit / Metal</h2>
+      <p class="subtitle">Короткі, але практичні снипети з коментарями (розробникам).</p>
+
+      <h3 style="margin:10px 0 6px 0;">1) visionOS app — базова структура SwiftUI + RealityKit</h3>
+      <pre class="code">
+// SimpleVisionApp.swift — glue: SwiftUI + RealityKit (very simplified)
+import SwiftUI
+import RealityKit
+import Combine
+
+@main
+struct SimpleVisionApp: App {
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+    }
+  }
+}
+
+struct ContentView: View {
+  var body: some View {
+    VStack {
+      Text("Spatial App on visionOS")
+      Button("Place Box") { placeBox() }
+    }.padding()
+  }
+
+  func placeBox() {
+    // Example: create an anchor and add a box entity
+    let anchor = AnchorEntity(plane: .any)
+    let box = ModelEntity(mesh: .generateBox(size: 0.2))
+    anchor.addChild(box)
+    // Acquire current ARView and scene to add anchor (in real app use environment injected ARView)
+  }
+}
+      </pre>
+      <p style="color:var(--muted)">Коментар: RealityKit спрощує роботу зі spatial anchors; у продакшні використовують ARKit callbacks для world mapping і стабілізації.</p>
+
+      <h3 style="margin:10px 0 6px 0;">2) Metal fragment shader — простий тональний коректор (для Compositor)</h3>
+      <pre class="code">
+// Simple metal fragment
+#include <metal_stdlib>
+using namespace metal;
+fragment float4 toneFragment(float2 uv [[position]]) {
+  float3 color = float3(uv.x, uv.y, 1.0 - uv.x);
+  // simple gamma correction
+  color = pow(color, float3(1.0/2.2));
+  return float4(color, 1.0);
+}
+      </pre>
+      <p style="color:var(--muted)">Коментар: у реальному compositor-і shaders значно складніші і враховують lens distortion та color grading між камерою і дисплеєм.</p>
+
+      <h3 style="margin:10px 0 6px 0;">3) Виклик Siri у visionOS — приклад активації голосової дії</h3>
+      <pre class="code">
+// Pseudocode — activate Siri or send user intent
+// User says "Siri, open Notes", OS routes utterance to Siri pipeline;
+// developer receives intent via Intents framework and handles it in app.
+      </pre>
+      <p style="color:var(--muted)">Коментар: Siri інтегровано в visionOS; можна обробляти інтенти через Intents та App Intents APIs для виконання дій в додатку.</p>
+    </section>
+
+    <section class="card section">
+      <h2 class="section-title">V. Інтеграція з хмарою й AI-асистентами</h2>
+      <p class="subtitle">Як локальні можливості пристрою комбінуються з хмарними LLM/AI-сервісами і Apple Intelligence.</p>
+
+      <div class="tiles">
+        <div class="tile" data-id="cloud_ai_arch">
+          <h3>Cloud architecture — edge vs cloud split</h3>
+          <p>Що виконується на пристрої (low latency) та що — у хмарі (heavy ML).</p>
+        </div>
+
+        <div class="tile tile2" data-id="cloud_appleintel">
+          <h3>Apple Intelligence — role on Vision Pro</h3>
+          <p>Як Apple Intelligence працює у visionOS для summarization, image wand та multimodal features.</p>
+        </div>
+
+        <div class="tile" data-id="cloud_siri_flow">
+          <h3>Siri processing pipeline (local + cloud)</h3>
+          <p>Wake, speech→ASR, NLU, intent resolution, action execution; privacy considerations.</p>
+        </div>
+
+        <div class="tile tile2" data-id="cloud_thirdparty">
+          <h3>Third-party LLMs / partnerships — pragmatics</h3>
+          <p>Інтеграція зовнішніх моделей (приклад: потенційні партнерства) — коли виробник використовує зовнішні моделі.</p>
+        </div>
+
+        <div class="tile" data-id="cloud_dataflow">
+          <h3>Data governance & privacy for cloud AI</h3>
+          <p>Consent, differential privacy, local preprocessing, minimal raw transfer.</p>
+        </div>
+      </div>
+    </section>
+
+    <div style="height:18px;"></div>
+
+    <section class="card">
+      <h2 class="section-title">VI. Best practices для розробника / DevOps</h2>
+      <ul style="color:var(--muted)">
+        <li>Оптимізуйте рендер за допомогою foveated rendering та batching, щоб знизити навантаження GPU і battery.</li>
+        <li>Плануйте fallback-сценарії, коли cloud недоступний: локальне кешування відповіді та retry політики.</li>
+        <li>Тестуйте latency end-to-end (sensor → R1 → M2 → compositor → display) у реальних умовах.</li>
+        <li>Дотримуйтеся privacy by design: мінімізуйте перехід сирих кадрів у хмару без явної згоди.</li>
+        <li>Для великих інтеграцій з AI-сервісами використовуйте версіонування моделей та canary releases у cloud.</li>
+      </ul>
+    </section>
+
+    <footer class="card" style="text-align:left;">
+      <strong>Джерела (ключові факти):</strong>
+      <ol style="color:var(--muted)">
+        <li>Apple — Apple Vision Pro (офіційна презентація, dual-chip M2+R1, R1 latency, сенсори та дисплеї). :contentReference[oaicite:0]{index=0}</li>
+        <li>Apple Developer — visionOS документація і WWDC ресурси (API, RealityKit, Compositor Services). :contentReference[oaicite:1]{index=1}</li>
+        <li>Apple — технічні характеристики (micro-OLED, 23 million pixels, камери/сенсори, Optic ID опис). :contentReference[oaicite:2]{index=2}</li>
+        <li>Apple Newsroom — Apple Intelligence rollout і інтеграція AI-функцій у visionOS (visionOS 2.4 / Apple Intelligence). :contentReference[oaicite:3]{index=3}</li>
+        <li>Apple Support — Siri usage on Vision Pro (voice activation, on-device vs cloud handling). :contentReference[oaicite:4]{index=4}</li>
+      </ol>
+      <p style="color:var(--muted); margin-top:8px;">
+        Примітка: частина внутрішніх оптимізацій (деталі R1 firmware або приватні API) — приватна інформація Apple і не повністю публічна. Тут наведено архітектурні патерни, публічні описи і інженерні висновки, що базуються на офіційних ресурсах та загальноприйнятих практиках XR-індустрії.
+      </p>
+    </footer>
+  </main>
+
+  <!-- Overlay / modal -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="overlay-box" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+      <h2 id="overlayTitle" class="overlay-title"></h2>
+      <div id="overlayBody" class="overlay-body"></div>
+    </div>
+  </div>
+  <button id="closeBtn" class="close-btn" title="Закрити" style="display:none;">✖</button>
+
+  <script>
+    // Detailed explanations (8-10 sentences each)
+    const DATA = {
+      ov_dual: {
+        title: "Dual-chip model — R1 vs M2 (детально)",
+        text: [
+          "Apple Vision Pro застосовує двочипову архітектуру: M2 виконує visionOS, UI, графіку і великі ML-задачі, тоді як R1 — це спеціалізований coprocessor для обробки сенсорів у реальному часі.",
+          "R1 оптимізований для синхронізації і попередньої обробки потоків з камер, IMU та мікрофонів, скорочуючи photon-to-photon latency і зменшуючи шум до того, як кадри потраплять у M2 для фінального рендерингу.",
+          "M2 відповідає за загальний runtime: планування задач, графічний pipeline (GPU + Neural Engine), security services і керування persistent storage.",
+          "Обмін між R1 і M2 організований через high-bandwidth interconnect і shared memory-буфери з гарантованою затримкою та таймстемпами для точної синхронізації.",
+          "Архітектура дозволяє R1 виконувати time-critical duties (корекція дисторсії, timestamping, регистрации events) паралельно із задачами високого рівня на M2.",
+          "З практичної точки зору таке розділення дає кращий контроль latency, дозволяє M2 концентруватись на UI та складних inference, а R1 — на real-time sensor fusion.",
+          "Для розробників це означає: деякі дані (наприклад, preprocessed world-state) поставляються системі; доступ до сирих кадрів і контролю R1 обмежений системними API.",
+          "Ця топологія — ключова для гарантії «present» ефекту просторового комп’ютера, оскільки забезпечує синхронність між фізичними рухами і відображенням."
+        ].join(" ")
+      },
+
+      ov_visionos: {
+        title: "visionOS — що це і як воно організоване",
+        text: [
+          "visionOS — операційна система Apple для просторових застосунків, вона базується на знайомих Apple технологіях (SwiftUI, RealityKit, ARKit) з додатковими Compositor Services.",
+          "ОС надає модель spatial windows, anchors, scene management і системні сервіси для input (gaze/hand/voice) та spatial audio.",
+          "Додатки запускаються у захищеному середовищі з політиками доступу до сенсорів; system prompts управляють дозволами на access до камери, мікрофонів та Optic ID.",
+          "visionOS інтегрується з App Store для розповсюдження, а сам OS-runtime працює з M2 для виконання додатків і з R1 для швидкої подачі сенсорних даних.",
+          "Розробникам доступні high-level API (RealityKit) для швидкого створення spatial experiences і низькорівневі Metal APIs для high-performance рендерингу.",
+          "WWDC-документація містить приклади патернів (gaze+gesture), рекомендації по latency та енергоспоживанню, а також enterprise API для інтеграції в компанії.",
+          "ОС також включає механізми для compositing passthrough відео та 3D-сцен, підтримку spatial audio і synchronized multi-view rendering.",
+          "Для розробника важливим є дотримання design guidelines (зони комфорту, мінімізація motion sickness) і використання visionOS інструментів для профілювання."
+        ].join(" ")
+      },
+
+      ov_render: {
+        title: "Compositor & Metal pipeline (детально)",
+        text: [
+          "Compositor Services відповідає за злиття різних шарів: passthrough відео з камер, аплікаційні UI-шари та 3D-контент, створюючи фінальний кадр.",
+          "Metal виступає як низькорівневий API для шейдерів, буферів та pipeline-state, що надає контроль над memory residency і render passes.",
+          "Комбінація eye-tracking і foveated rendering дозволяє зосередити обчислювальні ресурси у зоні погляду та зменшити витрати GPU у периферії.",
+          "Compositor має враховувати lens distortion, color matching між камерами і дисплеєм, frame pacing і double/triple buffering для уникнення tearing.",
+          "Для passthrough critical latency — Compositor мусить інтегруватися з R1-потоком, використовувати hardware timestamps і скорочувати sync points.",
+          "Розробники, що пишуть native renderers, повинні дотримуватись pattern'ів compositing, уникати blocking calls і використовувати resource streaming.",
+          "Оптимізації включають pipeline caching, minimal resource transitions і adaptive quality залежно від thermal/battery states.",
+          "Нарешті, Compositor бере участь у spatial occlusion і correct depth compositing між реальними об’єктами та віртуальним контентом."
+        ].join(" ")
+      },
+
+      ov_input: {
+        title: "Input stack — gaze, hands, voice, spatial accessories",
+        text: [
+          "Input stack агрегує eye-tracking, hand tracking, voice commands (Siri) та додаткові пристрої (spatial controllers) у єдині події інтерфейсу.",
+          "Eye-tracking дає координати погляду з високою частотою; ці дані використовуються для наведення, foveation і Optic ID.",
+          "Hand tracking реалізується через CV-моделі, що видають 3D ключові точки; visionOS постачає абстракції для gesture-to-event mapping.",
+          "Voice capture проходить через локальні LL-блоки для wake-word, після чого запит може бути оброблений локально або відправлений у Siri / Apple Intelligence.",
+          "Event system надає декілька рівнів: low-latency events (handled by system) і high-level intents (handled by apps via Intents framework).",
+          "Для розробників важливо обробляти грубі дані асинхронно, шумозаглушувати події та комбінувати gaze+gesture для природного UX.",
+          "Access to raw sensor streams обмежений політиками privacy; розробники працюють через visionOS providers і callbacks.",
+          "Тестування input under varied light and ergonomic setups — обов’язкова частина QA для комфортного spatial interaction."
+        ].join(" ")
+      },
+
+      ov_security: {
+        title: "Безпека: Optic ID, Secure Enclave, permission model",
+        text: [
+          "Optic ID — біометрична система на основі параметрів ока; шаблони зберігаються в Secure Enclave і ніколи не покидають захищену область.",
+          "Secure Enclave забезпечує hardware root of trust: шифрування ключів, підписів і обробку чутливої біометрії без доступу зі звичайного user-space.",
+          "visionOS має строгий permission model: доступ до камер, мікрофонів, Optic ID та location вимагає явного дозволу користувача і видимих індикаторів.",
+          "App sandboxing і code signing гарантують, що тільки підписані додатки та оновлення можуть запускатися у production середовищі.",
+          "System prompts і hardware indications (наприклад, LED чи інші UI елементи) інформують оточення про запис або сенсорну активність.",
+          "Для enterprise deploys доступні додаткові політики MDM, що дозволяють блокувати передачу даних чи обмежувати хмарні фічі.",
+          "Розробники повинні проектувати minimal data retention strategies і дотримуватись user consent flows при всіх формах data sharing.",
+          "Security audit та penetration testing — обов’язкові етапи при підготовці до релізу spatial додатків."
+        ].join(" ")
+      },
+
+      ov_telemetry: {
+        title: "Telemetry, logging та update model",
+        text: [
+          "Telemetry охоплює health metrics (battery, temp), frame timing, dropped frames і обрані anonymized usage stats (за згодою).",
+          "Логи можуть зберігатися локально та передаватися через iCloud або Apple Diagnostic Services після підтвердження користувачем.",
+          "Оновлення visionOS та firmware розповсюджуються як підписані образи; App Store управляє поширенням додатків і їх оновленням.",
+          "Для безпечних оновлень застосовуються механізми A/B partitions і rollback, щоб пристрій міг повернутися до робочого стану у разі помилки.",
+          "Telemetry допомагає Apple і девком командам відслідковувати regressions після релізів і приймати рішення про canary рол-аут.",
+          "DevOps інструменти включають CI/CD для visionOS додатків, фізичні тест-лаби з пристроями і automated tests для latency/UX.",
+          "Розробникам радять мінімізувати log level у production і чітко інформувати користувача про збір даних.",
+          "Наявність telemetry робить можливим швидке виправлення проблем і покращення spatial UX шляхом аналізу реальних сценаріїв."
+        ].join(" ")
+      },
+
+      blk_r1: {
+        title: "R1 runtime — pre-processing сенсорних потоків (детально)",
+        text: [
+          "R1 — реальний часу coprocessor, розроблений для отримання, калібрування та попереднього опрацювання потоків з камер, IMU і мікрофонів.",
+          "Основні задачі R1: time-stamping, distortion correction, frame alignment, depth precomputation та мінімальні ML-етапи (наприклад, ROI detection).",
+          "R1 направляє підготовлені world-state снапшоти в спільну пам’ять для M2, що зменшує навантаження і latency на головному процесорі.",
+          "Важлива частина — апаратна синхронізація між сенсорами (hw timestamping), щоб уникати desync-негативів у compositing-pipeline.",
+          "R1 firmware виконується у привілейованому середовищі; прямий доступ до нього обмежений, і розробники працюють через visionOS-абстракції.",
+          "Оптимізації на R1 включають апаратну децимaцію кадрів, ROI-кропінг та передачу тільки релевантних метаданих у M2.",
+          "R1 також може обробляти деякі аудиофільтри та trigger events (наприклад, gesture detection) для зниження загального latency.",
+          "Інженерам важливо розуміти, що покращення на R1 дає великий ефект на відчуття реальності пристрою — саме тут вирішується частина 'present' проблем."
+        ].join(" ")
+      },
+
+      blk_m2: {
+        title: "M2 runtime — visionOS kernel, apps, Neural Engine (детально)",
+        text: [
+          "M2 — потужний центральний блок: CPU, GPU, Neural Engine та unified memory для високопродуктивного рендерингу та ML-задач.",
+          "На M2 працює visionOS: system services, app runtime, scheduler, I/O management та user-space фреймворки (RealityKit, SwiftUI).",
+          "M2 читає world-state з R1, виконує application logic, великий ML-інференс та фінальний shading і compositing через Metal.",
+          "Neural Engine M2 використовується для складних паттернів inference (наприклад, real-time object understanding, semantic segmentation) коли це не відправлено у хмару.",
+          "M2 відповідає також за persistent storage, encryption (співпраця з Secure Enclave), app sandboxing і розподіл ресурсів між додатками.",
+          "Для розробника — M2 дає можливість писати високопродуктивні шейдери, використовувати Metal Performance Shaders і leverage Neural Engine через Core ML.",
+          "Продуктивність M2 треба балансувати із thermal і battery constraints — visionOS надає інструменти профілювання для tuning.",
+          "Багато runtime-рішень (scheduling, memory residency) критично впливають на UX, тому тестування під навантаженням обов’язкове."
+        ].join(" ")
+      },
+
+      blk_compositor: {
+        title: "Compositor Services — збирання шарів та foveated rendering (детально)",
+        text: [
+          "Compositor виконує task злиття passthrough-буферів, UI-шарів та 3D-frame, застосовуючи tone mapping, occlusion та depth compositing.",
+          "Використовуючи gaze data, compositor може викликати foveated rendering: висока деталізація в зоні погляду і зниження якості в периферії для економії ресурсів.",
+          "Compositor працює у тісному контакті з R1 (для мінімізації latency) і M2 (для фінального шейдингу); synchronization points мінімізуються для плавності.",
+          "Оптимізації включають resource aliasing, transient buffers та pipeline cache, щоб знизити overhead на transition calls.",
+          "Compositor також повинен враховувати optical compensation (lens distortion) і geometry transforms для кожного ока.",
+          "З точки зору engineer-workflow, потрібно масштабу­вати render passes і уникати великих synchronous readbacks між GPU і CPU.",
+          "Правильна інтеграція spatial occlusion дає реалістичне відчуття взаємодії між реальними і віртуальними об’єктами.",
+          "Compositor — критичний вузол для комфорту користувача; будь-який jitter або frame drop помітно погіршує UX."
+        ].join(" ")
+      },
+
+      blk_realitykit: {
+        title: "RealityKit / ARKit — spatial APIs для розробника",
+        text: [
+          "RealityKit надає high-level сценний API: anchors, entities, physics, animations і built-in materials для швидкого створення spatial experience.",
+          "ARKit забезпечує world mapping, plane detection, relocalization і coordinate transforms, що необхідні для надійного anchoring контенту у просторі.",
+          "Разом ці фреймворки дають devs інструменти для gaze/gesture integration, spatial audio та multi-user experiences через SharePlay-подібні механіки.",
+          "Reality Composer та Xcode-інструменти полегшують прототипування, натомість production apps потребують оптимізації LOD та light-probes.",
+          "Для інтеграції з low-level pipelines розробники можуть використовувати Metal через RealityKit hooks для специфічних shading tasks.",
+          "APIs надають event callbacks для input і lifecycle; слід дбайливо обробляти resource creation і destruction для уникнення leaking GPU memory.",
+          "Apple постачає приклади та WWDC sessions із патернами для налаштування gaze+gesture interactions і spatial collaboration.",
+          "RealityKit також підтримує volumetric/3D media і нові API у visionOS 26 розширюють можливості для immersive content."
+        ].join(" ")
+      },
+
+      blk_siri: {
+        title: "Siri & Apple Intelligence — голос і AI на Vision Pro",
+        text: [
+          "Siri в visionOS підтримує голосове керування: wake-word або натиск gesture запускає pipeline розпізнавання й інтенції; частина обробки може бути локальною або хмарною.",
+          "Apple Intelligence (набір AI-фіч) інтегрований у visionOS для summarization, image wand, notification insights і multimodal tasks — ці фічі можуть працювати на device або у cloud залежно від складності.",
+          "Локальні модулі (on-device) виконують wake-word, базовий ASR і прості NLU для швидкої реакції та приватності, тоді як складні запити відправляються на сервери Apple Intelligence або інші cloud-ML шари.",
+          "Intents framework дозволяє розробникам інтегрувати свої app-дії у Siri, обробляючи запити через системні API та повертаючи результат у spatial UI.",
+          "Privacy model Apple передбачає, що персональні дані та біометрія не залишають Secure Enclave; користувач контролює, що відправляється у хмару.",
+          "Для розробників важливо створювати зрозумілі голосові сценарії та очікувати async behavior при cloud calls — реалізовувати graceful fallbacks.",
+          "Apple також анонсує, що Apple Intelligence постійно розвивається у visionOS; частина фіч вже з'явилася у оновленнях (visionOS 2.x).",
+          "У практиці це дає balance: швидкий локальний UX для простих команд і потужну хмарну аналітику для generative/complex tasks."
+        ].join(" ")
+      },
+
+      blk_cloud: {
+        title: "Cloud integration — heavy ML, sync, backup, Apple Intelligence",
+        text: [
+          "Хмара використовується для виконання resource-intensive inference (великих моделей), зберігання media, резервного копіювання та синхронізації між пристроями через iCloud/Apple services.",
+          "Архітектура часто слідує pattern 'edge preproc + cloud heavy compute': пристрій надсилає preprocessed features або anonymized metadata, а не сирі кадри, якщо це можливо.",
+          "Apple Intelligence — приклад сервісу, що комбінується з visionOS для tasks як summary, multimodal query, image understanding; деякі функції виконуються у cloud залежно від політик і дозволів.",
+          "Cloud side реалізує versioned models, autoscaling, and secure token-based auth для кожного device session; дані шифруються в transit і at rest.",
+          "Для enterprise або devs доступні APIs та entitlements для інтеграції своїх backends, edge endpoints або private cloud solutions.",
+          "Важливою практикою є явна згода користувача на cloud processing і clear UI indicators коли дані передаються за межі пристрою.",
+          "Ground rules: minimize PII transfer, use anonymization, and apply retention policies; implement audit logs for data used in model training.",
+          "Правильна cloud-інтеграція дає масштабованість AI-фіч без перевантаження пристрою, зберігаючи при цьому privacy controls."
+        ].join(" ")
+      },
+
+      blk_secure: {
+        title: "Secure Enclave & privacy model — як це працює технічно",
+        text: [
+          "Secure Enclave — апаратний модуль, що зберігає ключі, біометричні шаблони (Optic ID) і виконує криптографічні операції у відособленому середовищі.",
+          "Ключі шифрування використовуються для захисту persistent storage, підпису образів і аутентифікації device→cloud communication.",
+          "Optic ID процес зберігає лише захищені хешовані представлення; raw iris data не виходить за межі Enclave і не доступна для додатків.",
+          "visionOS реалізує permission gates: навіть підписаний додаток потребує явного дозволу на доступ до camera/microphone або надіслання content у cloud.",
+          "App sandboxing, code signing та secure boot складають ланцюг довіри, від hardware root-of-trust до user-space додатків.",
+          "DevOps teams повинні застосовувати threat modelling, encryption-at-rest, key rotation і secure rollback для OTA images.",
+          "Для enterprise deployment можна застосовувати MDM-policies, remote wipe і enterprise key provisioning.",
+          "Цей підхід дозволяє поєднувати потужні AR-фічі з сучасним privacy by default підходом."
+        ].join(" ")
+      },
+
+      blk_updates: {
+        title: "OTA & package rollout — практичні поради",
+        text: [
+          "Оновлення visionOS і firmware відбуваються через підписані пакети, які перевіряються на bootloader-рівні; A/B partitioning дозволяє safe rollback.",
+          "OTA delivery використовує дефолтні Apple channels (App Store для додатків, підписані system images для OS/firmware).",
+          "Для enterprise можливі кастомні rollout policies і staged deployments; canary devices отримують оновлення першими для early detection regressions.",
+          "Telemetry під час rollout дозволяє відслідковувати success/failure rates і приймати рішення про pause/rollback.",
+          "Dev teams повинні тестувати OTA у real-world scenarios (power loss, network interruptions) та мати recovery procedures.",
+          "Signing & manifest validation — must have; ensure server side checks and timestamping to prevent replay attacks.",
+          "Документуйте migration steps між major releases (breaking changes in APIs) і надавайте deprecation schedules.",
+          "Хороші процеси OTA знижують ризик user disruption і допомагають швидко доставляти security patches."
+        ].join(" ")
+      },
+
+      // Flow nodes (cam, r1, m2, comp, voice, cloud)
+      flow_cam: {
+        title: "Камери / сенсори — що вони роблять у pipeline",
+        text: [
+          "Vision Pro має кілька камер (world-facing stereo, eye cameras, TrueDepth / LiDAR і інші сенсори), які забезпечують багатопотоковий захват даних.",
+          "Кожна камера підключена через MIPI/CSI і має hardware ISP або SoC-ISP для demosaic, color correction і noise reduction.",
+          "Сирі кадри маркуються апаратними timestamp і подаються у R1 для подальшої обробки; деякі кадри можуть бути використані локально для passthrough без подачі в cloud.",
+          "Eye cameras служать для трекінгу погляду і Optic ID; world-facing камери — для побудови карти простору і passthrough.",
+          "LiDAR/ToF дає depth-map, корисну для occlusion і accurate anchoring в просторі.",
+          "Інженерам важливо оптимізувати exposure/fps та синхронізацію між камерами для уникнення артефактів у compositing.",
+          "Камери також беруть участь у privacy decisions: raw frames часто не доступні для third-party без згоди.",
+          "Коректна калібровка камери та ISP pipeline — фундаментально для якісного spatial UX."
+        ].join(" ")
+      },
+
+      flow_r1: {
+        title: "R1 preproc — роль у скороченні latency",
+        text: [
+          "R1 виконує real-time tasks: дисторційна корекція, alignment, preliminary depth fusion і frame reduction (ROI/decimation).",
+          "Його firmware оптимізовано для довготривалої determinism і низької латентності, з апаратною синхронізацією сенсорів.",
+          "Р1 формує world-state snapshots з набором метаданих (pose, depth, exposure) і публікує їх у загальну пам’ять для зчитування M2.",
+          "Виконання на R1 знімає частину load з головного процесора і дає гарантії часу обробки для passthrough.",
+          "Р1 також може виконувати lightweight CV-tasks (motion blur detection, quick object classification) для швидких системних рішень.",
+          "Для інженера важливо мати розуміння пропускної здатності R1→M2 і обмежень shared memory.",
+          "Покращення на R1 має ефект 'первинної фільтрації', що робить подальший M2 pipeline більш ефективним.",
+          "R1 — це той вузол, який визначає, наскільки 'живим' почуватиметься passthrough."
+        ].join(" ")
+      },
+
+      flow_m2: {
+        title: "M2 app / renderer — застосунки та їх взаємодія",
+        text: [
+          "M2 запускає visionOS та користувацькі застосунки; він виконує shading, complex neural inference і coordinates with Compositor for frame output.",
+          "Apps працюють у sandbox і використовують RealityKit/ARKit/Metal; heavy ML tasks можуть бути делеговані Neural Engine або cloud.",
+          "M2 відповідає за lifecycle додатків: suspend/resume, memory management, UI transitions і security checks.",
+          "Developers повинні враховувати resource limits: use of background threads, low-priority tasks and deferred work to keep UI responsive.",
+          "Мережеві виклики та cloud interactions мають бути асинхронними з чіткими timeouts та fallbacks.",
+          "Для realtime UX apps слід оптимізувати frame pacing та уникати main thread блокувань.",
+          "M2 також координує with Secure Enclave для криптографічних операцій та Optic ID checks.",
+          "Належна інструментація і профайлинг на M2 — must have для release-готових spatial app."
+        ].join(" ")
+      },
+
+      flow_comp: {
+        title: "Compositor → display — фінальний етап до ока користувача",
+        text: [
+          "Compositor отримує підготовлені шари, застосовує lens correction, depth compositing і renders final frame to micro-OLED displays.",
+          "Він враховує eye offset, interpupillary distance та pixel packing особливості micro-OLED для кожного ока.",
+          "Frame timing та sync з дисплеями критичні: jitter або dropped frames миттєво впливають на комфорт користувача.",
+          "Compositor може застосовувати post-processing (tone mapping, color correction) щоб узгодити passthrough і rendered content.",
+          "Для high fidelity треба мінімізувати host→display latency і використовувати hardware features дисплея (fast refresh modes).",
+          "Розробники рендерів мають контролювати resource residency, щоб уникнути stalls при подачі кадрів.",
+          "Компонент також взаємодіє з audio subsystem для синхронізації звуку і візуалу.",
+          "Профілювання pipeline end-to-end допомагає виявляти bottle­necks і підвищувати якість UX."
+        ].join(" ")
+      },
+
+      flow_voice: {
+        title: "Voice capture → Siri / Apple Intelligence — шлях голосу",
+        text: [
+          "Voice capture починається з мікрофонного масиву; beamforming і AEC/AGC виконуються локально для виділення голосу та зменшення шумів.",
+          "Wake-word або explicit invoke запускає ASR (може бути on-device для швидкої відповіді) і далі intent resolution через Intents framework.",
+          "Прості інструкції обробляються локально; складні generative запити можуть бути відправлені у Apple Intelligence або cloud LLM для відповіді.",
+          "Результати intent resolution можуть запускати app actions, створювати UI відповіді або викликати further cloud pipelines.",
+          "Privacy model: користувач контролює, чи передавати аудіо у cloud; many Siri flows виконуються on-device для приватності.",
+          "Для інтеграції додатки використовують App Intents і don’t directly handle raw audio stream without permission.",
+          "Latency is managed by splitting work: quick local response + async cloud enrichment when needed.",
+          "Proper UX includes indicators and clear messages when data is sent to cloud for processing."
+        ].join(" ")
+      },
+
+      flow_cloud: {
+        title: "Cloud (heavy ML / LLM) — роль і best practices",
+        text: [
+          "Cloud-side виконує великі ML-задачі: LLM inference, multimodal fusion, long-context summarization та heavy image analysis.",
+          "Device зазвичай надсилає preprocessed features або hashed representations, а не сирі кадри, щоб мінімізувати bandwidth і ризики privacy.",
+          "Cloud systems застосовують model versioning, autoscaling та caching, щоб забезпечити стабільну latency при великих навантаженнях.",
+          "Secure token-based authentication та encrypted channels забезпечують захищену комунікацію device↔cloud.",
+          "Для training data і telemetry варто застосовувати opt-in, anonymization та детальні retention policies.",
+          "Integration points можуть включати Apple Intelligence, iCloud storage, або приватні backends для enterprise use.",
+          "Dev teams повинні планувати graceful degradation: якщо cloud недоступний, локальний fallback має забезпечити базовий UX.",
+          "Monitoring and A/B testing models in cloud help improve quality while keeping user control over data usage."
+        ].join(" ")
+      },
+
+      cloud_ai_arch: {
+        title: "Cloud architecture — edge vs cloud split (практично)",
+        text: [
+          "Правило: виконувати time-sensitive та privacy-sensitive tasks локально (wake-word, basic NLU), відправляти heavy compute (large language models, generative tasks) у хмару.",
+          "Edge preproc зменшує обсяг переданих даних: виділення текстових транскриптів, embeddings або low-dim features замість full frames.",
+          "Cloud має надавати low-latency endpoints (edge locations), model caching та async enrichment для покращення UX без блокування UI.",
+          "Auth та consent flows повинні бути явними: користувач виделить коли data виконує cloud processing, і має можливість скасувати/видалити.",
+          "Для devs — використовувати batched requests, backpressure, і monitor call latencies; implement retries and timeouts.",
+          "Data privacy: encrypt both in transit and at rest; utilize token scopes and short lived credentials for requests.",
+          "Design for graceful fallback: return local heuristics if cloud not reachable, display progressive results when enrichment available.",
+          "This split model balances privacy, battery life, and compute scalability for Vision Pro experiences."
+        ].join(" ")
+      },
+
+      cloud_appleintel: {
+        title: "Apple Intelligence — роль у visionOS (що робить і як інтегрується)",
+        text: [
+          "Apple Intelligence — набір функцій для summarization, visual processing, Notifications insights та multimodal tools, що інтегруються у visionOS (включно з версіями 2.x+).",
+          "Деякі функції працюють повністю локально на device (або частково), тоді як складні generative/long-context задачі делегуються cloud середовищу Apple Intelligence.",
+          "Integration надає APIs для developers для запитів на резюме, image-wand та інші multimodal інструменти; responses можуть приходити асинхронно і оновлюватись у UI.",
+          "Apple emphasizes privacy: model calls можуть надсилатися на сервер лише за згодою, з encryption та minimization of raw data transfer.",
+          "Для devs корисно скористатися готовими patterns: defer heavy requests, show progressive UI, cache results and provide user controls for data usage.",
+          "Apple Intelligence також еволюціонує: Apple анонсує нові можливості через WWDC і visionOS updates, тож слід стежити за документами.",
+          "Практичне правило: балансувати instant local feedback + async cloud enrichments, при цьому чітко інформувати користувача про обмін даними.",
+          "Цей підхід дає змогу Vision Pro мати повноцінні AI-можливості без постійного блоку користувацького досвіду."
+        ].join(" ")
+      },
+
+      cloud_siri_flow: {
+        title: "Siri processing pipeline (local + cloud) — як це відбувається",
+        text: [
+          "Siri pipeline починається з локального детектора wake-word; після активації запис і передача обробляються згідно з privacy налаштуваннями користувача.",
+          "Speech is converted to text either on-device (for quick commands) or sent to Apple's servers for more accurate ASR and complex NLU.",
+          "Intent resolution обробляється системою; якщо intent вимагає додаткового контексту — запит може бути відправлений у Apple Intelligence для enrichment.",
+          "Developer integratation: Intents framework і App Intents надають спосіб приймати і обробляти Siri-ініційовані дії прямо в додатках.",
+          "Siri може виконувати context-aware actions (наприклад, 'open what I'm looking at') використовуючи gaze data та app context від visionOS.",
+          "Latency management: дуже важливий — quick local responses + optional async cloud add-ons are a good UX pattern.",
+          "Security: audio streams and transcripts are handled per user consent and are protected in transit; optionally Apple offers on-device only operations.",
+          "Для розробників рекомендація — підтримувати idempotent intents і асинхронні callback-flows для cloud powered responses."
+        ].join(" ")
+      },
+
+      cloud_thirdparty: {
+        title: "Third-party LLMs / partnerships — практичні аспекти",
+        text: [
+          "Apple historically тримала більшість AI функцій у своєму стеку, але для розширення можливостей можливі партнерства або використання сторонніх моделей за контрактом.",
+          "Практично це означає, що heavy generative tasks можуть виконуватись на серверах партнерів — за умови шифрування і юридичних угод щодо privacy/processing.",
+          "Для devs варто проектувати свій backend так, щоб можна було підключати різні provider endpoints (modular AI backend), з fallback на local heuristics.",
+          "При використанні third-party models слід документувати data flow, consent і retention policies, а також проводити security reviews.",
+          "Performance wise, edge endpoints і model caching критичні для UX; без них latencies швидко зростають і user experience страждає.",
+          "Apple також може надавати bridging services, які обгортають third-party models в стандартизовані API з додатковими privacy controls.",
+          "Для enterprise клієнтів часто використовують private cloud instances для hosting models and dataset control.",
+          "Загальна порада — будувати модульні, replaceable AI backends з чітким контролем даних і telemetry."
+        ].join(" ")
+      },
+
+      cloud_dataflow: {
+        title: "Data governance & privacy for cloud AI — best practices",
+        text: [
+          "Найважливіше — користувацька згода: clear opt-in flows мають передувати будь-якому передаванню персональних даних у cloud.",
+          "Minimize raw data transfer: передавайте embeddings, features або anonymized metadata замість сирих кадрів, коли це можливо.",
+          "Implement encryption in transit (TLS) and at rest; use short-lived tokens and per-device credentials for cloud calls.",
+          "Document retention policies and provide users easy controls to view and delete their stored data (right to be forgotten).",
+          "Use differential privacy / aggregated telemetry for product analytics instead of per-user raw logs where possible.",
+          "Audit logs and access control are necessary for enterprise customers and for compliance with regional regulations.",
+          "Design for transparency: show clear UI when data is being sent to cloud and allow immediate cancelation of pending transfers.",
+          "This governance model builds trust and enables scaling of cloud AI features while respecting privacy laws."
+        ].join(" ")
+      }
+    };
+
+    function openOverlay(id){
+      const o = DATA[id];
+      if(!o) return;
+      document.getElementById('overlayTitle').textContent = o.title || '';
+      // split into paragraphs
+      const html = o.text.split('\\n\\n').map(p=>'<p>'+p+'</p>').join('');
+      // o.text already joined; just wrap
+      document.getElementById('overlayBody').innerHTML = '<p>' + o.text.replace(/\\n/g,'</p><p>') + '</p>';
+      document.getElementById('overlay').style.display = 'flex';
+      document.getElementById('closeBtn').style.display = 'flex';
+      document.getElementById('overlay').setAttribute('aria-hidden','false');
+    }
+
+    function closeOverlay(){
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('closeBtn').style.display = 'none';
+      document.getElementById('overlay').setAttribute('aria-hidden','true');
+      document.getElementById('overlayTitle').textContent = '';
+      document.getElementById('overlayBody').innerHTML = '';
+    }
+
+    document.querySelectorAll('.tile, .node').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const id = el.getAttribute('data-id');
+        if(id) openOverlay(id);
+      });
+    });
+
+    document.getElementById('closeBtn').addEventListener('click', closeOverlay);
+    document.getElementById('overlay').addEventListener('click', function(e){ if(e.target === this) closeOverlay(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeOverlay(); });
+  </script>
+
+  <!--
+    Публічні джерела для перевірки (ключові факти в текcті):
+      - Apple — Apple Vision Pro (офіційна сторінка): dual-chip (M2 + R1), R1 latency, сенсори, micro-OLED дисплеї. :contentReference[oaicite:5]{index=5}
+      - Apple Developer — visionOS documentation, WWDC sessions (APIs, RealityKit, Compositor Services, visionOS updates). :contentReference[oaicite:6]{index=6}
+      - Apple Specs / Support — technical specs: number of cameras/sensors, Optic ID, Siri behavior in visionOS. :contentReference[oaicite:7]{index=7}
+      - Apple Newsroom — Apple Intelligence rollout into visionOS (visionOS 2.x features). :contentReference[oaicite:8]{index=8}
+    Примітка: у випадках внутрішніх firmware-оптимізацій або приватних API (R1 firmware, low-level driver code) деталі не завжди публічні; у тексті наведено архітектурні патерни і публічно відомі факти.
+  -->
+
+</body>
+</html>

@@ -22,6 +22,18 @@ def unity_map():
 def blender_map():
     return render_template('blender.html')   
 
+@app.route('/ar_vr_devices')
+def ar_vr_devices_map():
+    return render_template('ar_vr_devices.html') 
+
+@app.route('/rayban_firmware')
+def rayban_firmware_map():
+    return render_template('rayban_firmware.html') 
+
+@app.route('/applevisionpro_software')
+def applevisionpro_software_map():
+    return render_template('applevisionpro_software.html')     
+
 @app.route('/immersive_world')
 def cloning_methods():
     return render_template('immersive_world.html')

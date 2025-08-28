@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Ray-Ban Meta — Глибокий розбір Firmware, Mobile Stack та Архітектури</title>
+  <style>
+    :root{
+      --bg:#f6f8fb; --card:#fff; --accent:#0077cc; --muted:#58708a;
+      --tile:#fff8eb; --tile2:#eef7ff; --mono: "SFMono-Regular", ui-monospace, monospace;
+      --maxw:1150px;
+      font-family: Inter, Arial, sans-serif;
+    }
+    body{ margin:0; background:var(--bg); color:#0b1720; line-height:1.55; }
+    header{ background:#052a44; color:#fff; padding:30px 14px; text-align:center; }
+    header h1{ margin:0; font-size:20px; }
+    .container{ max-width:var(--maxw); margin:26px auto; padding:18px; }
+    .lead{ color:var(--muted); margin-bottom:16px; text-align:justify; }
+    .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; align-items:start; }
+    .card{ background:var(--card); border-radius:12px; padding:18px; box-shadow:0 8px 26px rgba(2,10,23,0.06); }
+    .title{ font-size:17px; margin:0 0 8px 0; color:#04293a; }
+    .sub{ color:var(--muted); font-size:13px; margin-bottom:12px; }
+    .tiles{ display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+    .tile{ background:var(--tile); border-radius:10px; padding:12px; cursor:pointer; min-height:120px; transition:transform .14s, box-shadow .14s; border:1px solid rgba(2,10,23,0.04); }
+    .tile2{ background:var(--tile2); }
+    .tile h3{ margin:0; font-size:14px; color:#05314a; }
+    .tile p{ margin:8px 0 0 0; font-size:13px; color:var(--muted); }
+    .section{ margin-top:18px; }
+    pre.code{ background:#001827; color:#bfe6ff; padding:12px; border-radius:8px; font-family:var(--mono); font-size:12px; overflow:auto; }
+    .flow{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .node{ background:#fff; border-radius:8px; padding:10px; border:1px dashed rgba(2,10,23,0.06); cursor:pointer; min-width:160px; }
+    .legend{ font-size:13px; color:var(--muted); margin-top:8px; }
+    footer{ text-align:center; color:var(--muted); margin:26px 0 50px; }
+    /* Overlay */
+    .overlay{ position:fixed; inset:0; background:rgba(2,6,23,0.6); display:none; align-items:center; justify-content:center; z-index:9999; padding:20px; }
+    .overlay-box{ width:min(980px,98%); max-height:86vh; overflow:auto; background:#fff; border-radius:12px; padding:20px; box-shadow:0 24px 64px rgba(2,6,23,0.6); }
+    .overlay-title{ font-size:18px; color:#052a44; margin:0 0 12px 0; }
+    .overlay-body{ text-align:justify; color:#0b1720; }
+    .close-btn{ position:fixed; right:22px; top:16px; width:40px; height:40px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; border:1px solid rgba(0,0,0,0.06); box-shadow:0 8px 22px rgba(2,6,23,0.12); }
+    @media (max-width:980px){ .grid{ grid-template-columns:1fr; } .tile{ min-height:110px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ray-Ban Meta — Firmware & Mobile Stack: технічний розбір для інженерів</h1>
+  </header>
+
+  <main class="container">
+    <p class="lead">
+      Ця сторінка концентрується на програмному шарі Ray-Ban | Meta smart glass: як влаштований firmware (C/C++/RTOS або Android-based образ), як взаємодіє мобільний застосунок (Swift/Kotlin/Java), які драйвери та кодеки використовуються, як працює OTA та захист приватності. Клік по елементам відкриває ґрунтовні пояснення (8–10 речень). В кінці — приклади коду з коментарями.
+    </p>
+
+    <div class="grid">
+      <!-- LEFT: Архітектура Firmware -->
+      <section class="card">
+        <h2 class="title">A. Архітектура firmware (на пристрої)</h2>
+        <p class="sub">Міні-SoC (Snapdragon AR1 або подібний) + ISP + DSP + BT/Wi-Fi. Нижче — ключові логічні блоки програмного шару.</p>
+
+        <div class="tiles">
+          <div class="tile" data-id="fw_overview">
+            <h3>1. Чи є повноцінна ОС чи лише firmware?</h3>
+            <p>Роз'яснення: типова архітектура smart-glasses — lightweight firmware або Android-derived образ; що саме застосовано у Ray-Ban?</p>
+          </div>
+
+          <div class="tile tile2" data-id="fw_boot">
+            <h3>2. Boot chain і secure boot</h3>
+            <p>Secure boot, підпис образів, розділи flash, bootloader, fallback та recovery.</p>
+          </div>
+
+          <div class="tile" data-id="fw_rtoss">
+            <h3>3. RTOS vs Android-based — коли використовується що</h3>
+            <p>RTOS для low-latency tasks; Android layer для UX/streaming — коли змішують обидва підходи.</p>
+          </div>
+
+          <div class="tile tile2" data-id="fw_drivers">
+            <h3>4. Драйвери сенсорів, камер та аудіо</h3>
+            <p>ISP, I2C/CSI/MIPI, ALS/IMU драйвери, акустичні DSP, BLE/Wi-Fi стеки.</p>
+          </div>
+
+          <div class="tile" data-id="fw_ai">
+            <h3>5. Локальний inference: DSP, NPU, wake-word</h3>
+            <p>Як вбудовані моделі працюють на DSP/NPU та взаємодіють з хмарою.</p>
+          </div>
+
+          <div class="tile tile2" data-id="fw_ota">
+            <h3>6. OTA, backup, версії firmware</h3>
+            <p>Процес доставки, валідації, rollback, та синхронізація з мобільним додатком.</p>
+          </div>
+
+          <div class="tile" data-id="fw_security">
+            <h3>7. Безпека: шифрування, ключі, захист даних</h3>
+            <p>Secure storage, hardware root of trust, доступ до мікрофонів/камер.</p>
+          </div>
+
+          <div class="tile tile2" data-id="fw_telemetry">
+            <h3>8. Telemetry, діагностика, логування</h3>
+            <p>Що записується локально, що відправляється у cloud (за згодою), logging levels.</p>
+          </div>
+
+          <div class="tile" data-id="fw_examples">
+            <h3>9. Приклади firmware-модулів (коментарі до коду)</h3>
+            <p>Малі функції на C/C++: init камер, захоплення кадру, wake-word hook, кодек encode.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Мобільний стек -->
+      <section class="card">
+        <h2 class="title">B. Мобільний стек: додаток (iOS / Android) та взаємодія</h2>
+        <p class="sub">Мобільний додаток виконує UI, управління, збереження контенту, gateway до хмари та OTA-фасиліти.</p>
+
+        <div class="tiles">
+          <div class="tile" data-id="app_arch">
+            <h3>1. Ролі мобільного додатку (Meta View / Meta AI)</h3>
+            <p>Авторизація, gallery, sharing, OTA, gateway для хмарних AI сервісів.</p>
+          </div>
+
+          <div class="tile tile2" data-id="app_stack">
+            <h3>2. Які мови і фреймворки: Swift, Kotlin/Java</h3>
+            <p>Архітектурні патерни: MVVM, background services, media APIs, permissions.</p>
+          </div>
+
+          <div class="tile" data-id="app_comm">
+            <h3>3. Протоколи зв'язку: Bluetooth LE, BLE GATT, Wi-Fi, WebRTC</h3>
+            <p>Control channel, media channel, pairing, security and bonding.</p>
+          </div>
+
+          <div class="tile tile2" data-id="app_codec">
+            <h3>4. Кодеки та стрімінг: H.264/H.265, adaptive bitrate</h3>
+            <p>Hardware encoder на SoC, transport через phone, buffering and reconnection.</p>
+          </div>
+
+          <div class="tile" data-id="app_sync">
+            <h3>5. Sync, buffering, eventual consistency</h3>
+            <p>Як синхронізуються фото/видео та telemetria між окулярами і телефоном.</p>
+          </div>
+
+          <div class="tile tile2" data-id="app_priv">
+            <h3>6. Permissions, privacy UX, indicators</h3>
+            <p>Як мобільний додаток контролює доступ до камер, мікрофонів, загальної інформації.</p>
+          </div>
+
+          <div class="tile" data-id="app_examples">
+            <h3>7. Приклади коду (Swift + Kotlin) з коментарями</h3>
+            <p>Підключення Bluetooth, отримання thumbnail, request OTA, auth flow.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Logical flows -->
+    <section class="card section">
+      <h2 class="title">C. Логічні потоки даних (коротко)</h2>
+      <div class="sub">Швидка схема: Capture → Preprocess → Encode → Transport → Mobile → Cloud / Storage.</div>
+
+      <div class="flow">
+        <div class="node" data-id="flow_capture">Capture (Camera/ISP)</div>
+        <div class="node" data-id="flow_preproc">Preprocess (DSP/NN)</div>
+        <div class="node" data-id="flow_encode">Encode (HW codec)</div>
+        <div class="node" data-id="flow_transport">Transport (Wi-Fi/BLE)</div>
+        <div class="node" data-id="flow_mobile">Mobile App (UI / OTA)</div>
+        <div class="node" data-id="flow_cloud">Cloud (Meta AI / Storage)</div>
+      </div>
+      <p class="legend">Клік по вузлу — отримаєте детальний опис кожного кроку (8–10 речень).</p>
+    </section>
+
+    <!-- Examples and code -->
+    <section class="card section">
+      <h2 class="title">D. Розгорнуті приклади коду з коментарями</h2>
+      <p class="sub">Нижче — короткі, але практичні приклади: частини firmware на C/C++ (ініціалізація камери, callback захоплення кадру), простий RTOS-task, Swift Bluetooth connect і Kotlin code для отримання thumbnail.</p>
+
+      <h3 style="margin:10px 0 6px 0;">1) Firmware: C - ініціалізація камери та callback</h3>
+      <pre class="code">
+// camera_fw.c — дуже спрощена ілюстрація
+#include "camera_driver.h"   // low-level driver for ISP/CSI
+#include "free_rtos.h"       // або інший RTOS header
+
+// callback буде викликати вирішальні операції
+void camera_frame_callback(uint8_t *frame_buf, size_t len, void *ctx){
+  // 1) коротка валідація
+  if(!frame_buf || len==0) return;
+  // 2) просте попереднє оброблення (наприклад, зменшення розміру для preview)
+  downscale_for_preview(frame_buf, len);
+  // 3) помістити в queue для encoder task
+  encoder_queue_push(frame_buf, len);
+  // 4) сигнали до головного loop або low-latency DSP
+  signal_encoder_task();
+}
+
+// init функція, яка конфігурує ISP та реєструє callback
+void camera_init(void){
+  camera_config_t cfg = {
+    .resolution = RES_12MP,
+    .fps = 30,
+    .format = PIXEL_FMT_NV12
+  };
+  // driver api: register callback (ISR safe)
+  camera_driver_init(&cfg, camera_frame_callback, NULL);
+}
+      </pre>
+
+      <h3 style="margin:10px 0 6px 0;">Коментарі (firmware):</h3>
+      <ul style="color:var(--muted)">
+        <li>Код працює у привілейованому просторі firmware та використовує driver API (який реалізований виробником SoC).</li>
+        <li>ISR/callbacks повинні бути короткими — важливі операції переміщаються в задачі RTOS або DMA на HW.</li>
+        <li>Пам'ять кадрів часто буферизується через DMA, щоб зменшити копіювання і latency.</li>
+        <li>Код стандартизований у C для портативності та низького споживання пам’яті/етапів.</li>
+      </ul>
+
+      <h3 style="margin:10px 0 6px 0;">2) Firmware task (RTOS) — encoder task</h3>
+      <pre class="code">
+// encoder_task.c
+void encoder_task(void *pvParameters){
+  while(1){
+    frame_t frame = encoder_queue_pop(); // блокуюча операція
+    // апаратний енкодер (H.264/H.265) виконується через HAL
+    hw_encoder_encode(frame.buf, frame.len);
+    // після encode — зберегти або передати в transport stack (Wi-Fi/BLE)
+    transport_send_encoded(frame.encoded_buf, frame.encoded_len);
+    vTaskDelay(pdMS_TO_TICKS(1)); // yield
+  }
+}
+      </pre>
+
+      <h3 style="margin:10px 0 6px 0;">3) Swift (iOS) — BLE connect + receive thumbnail (приблизно)</h3>
+      <pre class="code">
+// Swift (simplified)
+// Central manager connects to glasses, subscribes to GATT characteristic for thumbnails
+import CoreBluetooth
+
+class GlassesManager: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate {
+  var central: CBCentralManager!
+  var peripheral: CBPeripheral?
+
+  override init(){
+    super.init()
+    central = CBCentralManager(delegate: self, queue: nil)
+  }
+
+  func centralManagerDidUpdateState(_ central: CBCentralManager) {
+    if central.state == .poweredOn {
+      central.scanForPeripherals(withServices: [CBUUID(string: "XXXX")], options: nil)
+    }
+  }
+
+  func centralManager(_ central: CBCentralManager, didDiscover p: CBPeripheral, advertisementData: [String:Any], rssi: NSNumber) {
+    self.peripheral = p
+    central.stopScan()
+    central.connect(p, options: nil)
+  }
+
+  func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+    if let data = characteristic.value {
+      // data -> jpeg thumbnail -> show in UI
+      let image = UIImage(data: data)
+      DispatchQueue.main.async { imageView.image = image }
+    }
+  }
+}
+      </pre>
+
+      <h3 style="margin:10px 0 6px 0;">4) Kotlin (Android) — приклад отримання thumbnail через BLE (псевдокод)</h3>
+      <pre class="code">
+/* Kotlin (simplified)
+val bluetoothManager = getSystemService(BLUETOOTH_SERVICE) as BluetoothManager
+val adapter = bluetoothManager.adapter
+val scanner = adapter.bluetoothLeScanner
+scanner.startScan(scanCallback)
+
+val scanCallback = object: ScanCallback() {
+  override fun onScanResult(callbackType:Int, result:ScanResult) {
+    val device = result.device
+    device.connectGatt(context, false, gattCallback)
+  }
+}
+
+val gattCallback = object: BluetoothGattCallback() {
+  override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
+    val data = characteristic.value
+    val bitmap = BitmapFactory.decodeByteArray(data, 0, data.size)
+    runOnUiThread { imageView.setImageBitmap(bitmap) }
+  }
+}
+*/
+      </pre>
+
+      <h3 style="margin:10px 0 6px 0;">Коментарі (mobile):</h3>
+      <ul style="color:var(--muted)">
+        <li>Мобільний додаток виконує heavy-lifting: gallery, sharing, UI, часто також виконує cloud-gateway для AI-функцій.</li>
+        <li>BLE використовується для control channel (низький bandwidth), Wi-Fi — для великих потоків (відео/OTA).</li>
+        <li>Приклад коду — спрощений; у продакшні додаються: reconnect policy, encryption, MTU negotiation, error handling.</li>
+      </ul>
+    </section>
+
+    <!-- Overlay placeholder -->
+    <div class="overlay" id="overlay" aria-hidden="true">
+      <div class="overlay-box">
+        <h3 id="overlayTitle" class="overlay-title"></h3>
+        <div id="overlayBody" class="overlay-body"></div>
+      </div>
+    </div>
+    <button id="closeBtn" class="close-btn" title="Закрити" style="display:none;">✖</button>
+
+    <footer>
+      © 2025 — Технічний аналіз firmware та мобільного стека Ray-Ban Meta. Натисніть на блоки для детальних пояснень.
+    </footer>
+  </main>
+
+  <script>
+    // Тексти (8-10 речень кожен) — конструктивні, інженерні пояснення
+    const TEXT = {
+      // Firmware section
+      fw_overview: {
+        title: "Чи є повноцінна ОС чи лише firmware?",
+        body: [
+          "У сучасних smart-glasses, зокрема у Ray-Ban Meta, архітектура часто базується на компактній платформі Qualcomm Snapdragon AR1 Gen1 (або подібній) — це спеціалізований SoC для окулярів.",
+          "На практиці пристрій може працювати без повноцінної мобільної ОС на борту: часто використовується lightweight firmware (C/C++), який запускається на bare-metal або під RTOS для критичних задач, одночасно маючи окремий high-level образ, якщо потрібна розширена функціональність.",
+          "Інша схема — гібрид: низькорівневі функції (capture, encode, wake-word) виконуються у firmware/RTOS, а високорівневі сервіси (медіа-стек, інтерфейси) запускаються у Android-derived образі або у «companion» шарі на само­му SoC, якщо SoC підтримує Android.",
+          "Ray-Ban впроваджує модель, коли більшості UX-функцій і cloud gateway керує мобільний телефон, а окуляри надають capture/encode і мінімальний local processing — це дозволяє зменшити енергоспоживання і складність onboard OS.",
+          "Отже, твердження 'пристрій не містить ОС' частково вірне для low-level реалізацій; але можливі модифікації, де присутній Android-based runtime або Linux шари залежно від виробничого рішення.",
+          "Ключова відмінність — наявність user-space з повноцінними сервісами (в такому випадку це ОС-подібна платформа) або лише firmware+RTOS (в такому випадку більшість логіки делегується телефону/хмарі).",
+          "Для інженера важливо знати модель вашого пристрою: якщо потрібен доступ до high-level APIs — шукайте SDK виробника; для низькорівневих правок потрібен доступ до bootloader/firmware tools.",
+          "У практиці Ray-Ban/Meta позиціонують окуляри як пристрій у парі зі смартфоном — отже, мобільний додаток бере значну відповідальність за UX та оновлення."
+        ].join(" ")
+      },
+
+      fw_boot: {
+        title: "Boot chain і secure boot (як це зазвичай влаштовано)",
+        body: [
+          "Boot chain на smart-glasses зазвичай має кілька етапів: первинний ROM bootloader (immutable), другий stage bootloader (може бути оновлений) і сам образ firmware/OS.",
+          "Для захисту від несанкціонованих змін застосовується secure boot: підписи образів перевіряються апаратним root-of-trust, що унеможливлює завантаження непідписаного коду.",
+          "Образи зберігаються в розділах flash/NVMe; зазвичай є A/B розділення для safe OTA — якщо оновлення не пройшло перевірку, пристрій повертається до робочої версії.",
+          "Bootloader управляє ініціалізацією пам’яті, встановлює захисні дозволи та передає керування kernel/firmware layer; доступ до bootloader-а зазвичай захищений виробником.",
+          "У firmware часто є механізми recovery mode, який дозволяє сервісним інженерам або мобільному додатку прошити образ у разі критичної помилки.",
+          "З практичної точки зору, будь-які спроби модифікувати boot секцію вимагають підписів чи обходу апаратних захистів, що може бути складно і небезпечно.",
+          "Для розробників важливо мати інструменти для валідації образів, криптографічних підписів і тестів rollback-safe при впровадженні нового firmware.",
+          "Система secure boot є частиною загальної стратегії захисту даних і гарантує цілісність програмної платформи пристрою."
+        ].join(" ")
+      },
+
+      fw_rtoss: {
+        title: "RTOS vs Android-based — фактори вибору",
+        body: [
+          "RTOS (наприклад FreeRTOS, Zephyr або інша комерційна RTOS) обирається коли пріоритет — детермінізм, мінімальна латентність та низьке енергоспоживання для real-time задач (audio wake-word, sensor capture).",
+          "RTOS дозволяє тонко контролювати планування задач, priority inversion і гарантувати короткі реакції на апаратні події; код на C/C++ легко оптимізувати під такі системи.",
+          "Водночас Android-based образ або Linux дає багатші user-space сервіси, ready-to-use multimedia stacks, полегшує розробку складних UX та застосунків без сильних обмежень.",
+          "Часто застосовується гібридна архітектура: RTOS на MCU для low-level, а середній рівень (Android, контейнер, або lightweight Linux) для services, де є необхідність у багатопроцесності і файловій системі.",
+          "Практична перевага гібриду — баланс між ефективним управлінням енергією/латентністю і можливістю швидко розгортати нові функції через більш високий stack.",
+          "Недолік Android-образу — збільшення складності, вищі вимоги до пам’яті та теплового менеджменту.",
+          "При проектуванні треба враховувати вимоги застосунків: realtime audio/capture vs cloud-driven AI та UX; вибір RTOS або Android-stack диктується цими вимогами.",
+          "Для Ray-Ban Meta типовий підхід — виконувати критичні pipeline-задачі локально у firmware/DSP, а UX та sharing делегувати телефону (Android/iOS)."
+        ].join(" ")
+      },
+
+      fw_drivers: {
+        title: "Драйвери сенсорів, камер та аудіо — що інженеру важливо знати",
+        body: [
+          "Драйвери для камер (ISP) зазвичай реалізовані як частина vendor HAL або SoC SDK і комунікують через інтерфейси типу MIPI CSI, I2C для сенсорних конфігурацій та DMA для переміщення кадрів.",
+          "Аудіо-підсистема включає драйвери для мікрофонних масивів, DSP-алгоритми (AEC/AGC/beamforming) і output drivers для open-ear динаміків; багато обробки виконується на DSP або спеціалізованих блоках.",
+          "Інші сенсори (IMU, ambient light, proximity) підключені через I2C/SPI і дають високочастотні дані для fusion алгоритмів; драйвери повинні реалізувати низьке jitter і апаратне timestamping.",
+          "Драйвери взаємодіють з middleware через standardized APIs або через vendor-specific bindings; у firmware це може бути plain C API, в Android — HAL/JNI шар.",
+          "Для інтеграції важливо тестувати драйвери під edge cases: птицю на камері, різкі змінні освітлення, перехід між мережами під час стрімінгу.",
+          "Оптимізація driver code і правильна конфігурація DMA/interrupts знижують латентність та зменшують load на CPU.",
+          "Виробник SoC надає reference драйвери, проте інтеграція у конкретний механічний дизайн окулярів потребує адаптацій (calibration, lens distortion correction).",
+          "Розуміння внутрішньої топології драйверів допомагає розробникам firmware писати надійні і енергоефективні pipeline."
+        ].join(" ")
+      },
+
+      fw_ai: {
+        title: "Локальний inference: DSP, NPU та wake-word",
+        body: [
+          "Wake-word (наприклад «Hey Meta») має виконуватись локально, аби зменшити latency і зберегти приватність; для цього використовуються lightweight NN на DSP або NPU.",
+          "DSP/NPU виконують також низькорівневі CV-задачі (наприклад, face detection, frame selection) до того, як дані відправляться у мобільний додаток або хмару для складних multimodal-запитів.",
+          "На SoC є hardware blocks для прискорення inference (NN accelerators), що дозволяють запускати моделі з обмеженим набором параметрів прямо на пристрої.",
+          "Стратегія 'on-device first, cloud when needed' часто використовується: базові запити обробляються локально, тоді як large LLM/complex multimodal tasks йдуть у cloud.",
+          "Розробники firmware інтегрують runtime для NN (наприклад, Qualcomm-specific SDK) і оптимізують моделі (quantization, pruning) для економії енергії.",
+          "Перевага локального inference — швидка реакція та мінімізація передачі сирих аудіо/відео у хмару без згоди користувача.",
+          "Недолік — обмежені ресурси: моделі треба адаптувати, щоб поміщатися у memory budget та задовольняти thermal constraints.",
+          "Для production потрібно ретельно валідувати якість локальних моделей та їхню поведінку в різних акустичних/оптичних умовах."
+        ].join(" ")
+      },
+
+      fw_ota: {
+        title: "OTA, backup та механізми rollback",
+        body: [
+          "OTA процес включає завантаження підписаного пакету (через мобільний застосунок або напряму Wi-Fi), його валідацію і прошивку в одному з A/B розділів flash.",
+          "Після успішної інсталяції система перезавантажується у новий образ; якщо оновлення виявляє корупцію або boot failure — механіка rollback повертає попередній образ.",
+          "Для безпеки пакети OTA підписані виробником і перевіряються на етапі bootloader-а; це запобігає встановленню несанкціонованих образів.",
+          "Мобільний додаток часто виступає фасадом для користувача: завантажує пакет, показує прогрес і запускає оновлення пристрою при синхронізації.",
+          "Telemetry під час OTA (логи успіху/помилок) допомагає інженерам аналізувати надійність деплою та успішно діагностувати проблеми.",
+          "Планування OTA враховує battery state та network conditions, часто блокуючи оновлення при низькому заряді або нестабільній мережі.",
+          "У enterprise сценаріях можуть застосовуватися MDM інструменти для керування політиками оновлень і відстроченнями.",
+          "Інженерам важливо тестувати failure modes (power loss, corrupted package) і забезпечувати fail-safe recovery."
+        ].join(" ")
+      },
+
+      fw_security: {
+        title: "Безпека: шифрування, ключі і hardware root of trust",
+        body: [
+          "Критично захищати приватні дані (записи мікрофонів, фото) — для цього застосовують hardware root of trust та secure storage для ключів.",
+          "Дані користувача на пристрої шифруються з використанням ключів, які можуть зберігатися в hardware security module або secure element SoC.",
+          "Access control до камер/мікрофонів реалізується на firmware або mobile-app шарі через політики дозволів; raw frames як правило не відправляють у хмару без згоди.",
+          "Secure boot гарантує, що тільки підписаний код може виконуватися на пристрої, а OTA-пакети перевіряються на цілісність.",
+          "Комунікація з телефоном/хмарою має бути зашифрована (TLS), з аутентифікацією пристроїв і перевіркою certificate pinning при потребі.",
+          "Логування та telemetry мають бути фільтровані, щоб уникнути витоку PII; сервіси повинні забезпечувати opt-in/opt-out для користувачів.",
+          "Додаткові механізми: апаратний перемикач камери, LED-індикатор запису та програмні обмеження API для додатків сторонніх розробників.",
+          "Для security audit необхідно мати процеси vulnerability management і поетапного тестування release-ів."
+        ].join(" ")
+      },
+
+      fw_telemetry: {
+        title: "Telemetry, діагностика та дистанційні логи",
+        body: [
+          "Telemetry включає метрики системи (battery, temp), логи помилок firmware, статистику використання і анонімізовані діагностичні дані (згоди користувача).",
+          "Логи зберігаються локально та можуть періодично відправлятися у хмару через мобільний додаток для діагностики, якщо користувач дав згоду.",
+          "Telemetry допомагає відстежувати regressions після OTA, виявляти проблемні умови (наприклад, overheating або drop frames).",
+          "Для debug-режиму на firmware можуть бути вбудовані hooks, які дозволяють розробникам отримувати verbose логи під час тестування на сервісних пристроях.",
+          "Потрібно ретельно керувати рівнями логування у production, щоб не передавати PII та не погіршувати продуктивність пристрою.",
+          "Надійна інфраструктура telemetry допомагає розгортати фічі поступово (canary releases) і спостерігати за impact-ом.",
+          "Для enterprise/QA корисні remote debug інструменти та secure channels для тимчасового підключення до пристрою.",
+          "Telemetry також використовується для аналітики UX та покращення моделей ML (за згодою користувачів)."
+        ].join(" ")
+      },
+
+      fw_examples: {
+        title: "Приклади firmware-модулів і дещо про порти та пін-аут",
+        body: [
+          "Типовий firmware містить модулі: board_init, sensor_manager, camera_driver, encoder, transport, power_manager та ota_service — кожен з чіткими інтерфейсами.",
+          "board_init конфігурує апаратні інтерфейси (GPIO, I2C, SPI), налаштовує clock gating і запускає RTOS scheduler.",
+          "sensor_manager координує доступ до IMU, proximity і ALS сенсорів; він виконує low-pass filtering та timestamping для синхронізації.",
+          "encoder модуль викликає апаратний енкодер через driver API і формує network frames або локальні файли.",
+          "transport модуль реалізує стек для Wi-Fi/BLE: підключення, reconnection policy, congestion control та adaptive bitrate hooks.",
+          "power_manager слідкує за battery state та thermal zones, перемикає SoC у low power режим при бездіяльності.",
+          "OTA service відповідає за завантаження, валідацію підписів, flashing та rollback, використовуючи захищені розділи flash.",
+          "Розуміння цих модулів допомагає планувати інтеграційні тести і проектувати надійні оновлення."
+        ].join(" ")
+      },
+
+      // Mobile section
+      app_arch: {
+        title: "Ролі мобільного додатку: що він робить та чому важливий",
+        body: [
+          "Мобільний додаток (Meta View / Meta AI) — центральний UX-шар для користувача: налаштування пристрою, перегляд фото/відео, керування дозволами і share/stream функції.",
+          "App виступає gateway-ом до хмарних AI сервісів: воно приймає невеликі попередньо оброблені дані з окулярів і відправляє їх у cloud для більшого аналізу або LLM-запитів.",
+          "App також керує OTA: завантажує підписані пакети, відправляє їх на пристрій та моніторить процес оновлення та rollback.",
+          "UI додатка створює зрозумілі повідомлення про стан: записую, streaming, low battery тощо; це важлива частина UX і privacy transparency.",
+          "App обробляє gallery та storage: синхронізує локальні файли з cloud (за згодою) та дає можливість обробляти контент перед публікацією.",
+          "Він також виконує pairing і аутентифікацію пристрою, зберігає ключі та tokens у secure storage телефону.",
+          "Практична архітектура — thin client на окулярах, heavy client (app) на телефоні; такий підхід знижує навантаження на батарею окулярів.",
+          "Для devs: app API забезпечує інтерфейс для third-party integrations, sharing hooks та адміністрування device policies."
+        ].join(" ")
+      },
+
+      app_stack: {
+        title: "Мови і фреймворки: Swift (iOS), Kotlin/Java (Android)",
+        body: [
+          "iOS: Swift/SwiftUI + AVFoundation/CoreBluetooth/CoreNFC якщо потрібні додаткові апаратні інтеграції; архітектура часто MVVM/Combine для асинхронності.",
+          "Android: Kotlin (рекомендується) або Java; використовуються WorkManager/Services для фонових задач, MediaCodec для декодування/енкодингу і BluetoothLeGatt для зв’язку.",
+          "UI/UX модулі включають авторизацію, gallery, share flows і telemetry dashboard; offline first підхід допомагає у нестабільних мережах.",
+          "Для адаптації до різних версій ОС застосовують compatibility слої і feature flags для поступового розгортання можливостей.",
+          "App store distribution (App Store / Google Play) — канал для доставки оновлень та release notes; enterprise builds використовують MDM.",
+          "Security: у мобільному додатку застосовують secure storage (Keychain/EncryptedSharedPreferences) для збереження токенів і сертифікатів.",
+          "DevOps: CI/CD для мобільних додатків, інтегровані E2E тести з реальними пристроями, automated OTA regression tests.",
+          "Розробникам важливо слідкувати за енергетикою мобільного додатка (background tasks, network usage) оскільки він тісно пов'язаний з автономністю окулярів."
+        ].join(" ")
+      },
+
+      app_comm: {
+        title: "Протоколи зв'язку: BLE (control) vs Wi-Fi (media) та WebRTC",
+        body: [
+          "BLE (Bluetooth Low Energy) використовується для control channel: pairing, status updates, battery, commands — він енергоефективний, але має малу пропускну здатність.",
+          "Wi-Fi (AP/peer or tethered via phone) забезпечує високошвидкісний канал для відео/OTA/telemetry; тут важлива адаптація bitrate та congestion control.",
+          "WebRTC або RTMP можуть використовуватися для low-latency streaming; WebRTC добре підходить для двосторонніх дзвінків і AR-collab scenarios.",
+          "На телефоні transport stack виконує mux/demux потоків, адаптує encoding params в залежності від умов мережі і battery state.",
+          "Безпека: pairing + bonding, authenticated connections та end-to-end encryption для media streams — must have.",
+          "Fallback сценарії: якщо Wi-Fi недоступний — камера може записувати локально і відкладено синхронізувати при з’єднанні.",
+          "Для інженерів важливо налаштувати reconnection policy та testing under network churn.",
+          "Правильна архітектура transport-у знижує кількість user complaints та покращує reliability experience."
+        ].join(" ")
+      },
+
+      app_codec: {
+        title: "Кодеки та стрімінг: апаратні encoder-и на SoC",
+        body: [
+          "Відео на окулярах зазвичай кодується апаратними блоками H.264/H.265 на SoC для економії CPU і енергії; hardware encoder дозволяє отримати високий бітрейт при низькому power draw.",
+          "Кодек виконує pre-processing (stabilization, denoise) перед encode; налаштування bitrate залежать від transport conditions і battery state.",
+          "Mobile app отримує вже стиснуті фрейми та розпаковує/зберігає їх або передає у хмару для подальшого аналізу/зберігання.",
+          "Adaptive bitrate logic на телефоні змінює профіль encode запитів до окулярів (через control channel) щоб уникнути drop frames чи buffer underflow.",
+          "Audio streams часто кодуються окремо (Opus / AAC) і синхронізуються з відео шляхом timestamping.",
+          "Для розробників важлива перевірка interop кодеків між SoC та мобільним app, а також тестування під різними мережеями.",
+          "Hardware encoder APIs доступні у SoC SDK; інтеграція вимагає розуміння latencies та frame pacing.",
+          "Коректна робота кодеків напряму впливає на якість стрімів і user perception."
+        ].join(" ")
+      },
+
+      app_sync: {
+        title: "Sync, buffering, eventual consistency та UX-асинхронність",
+        body: [
+          "Синхронізація контенту між окулярами і телефоном — multi-step: thumbnail → metadata → full asset; це дозволяє миттєво показати preview в app, а великий файл передати в background.",
+          "Конфлікти (наприклад, однакова photo id) вирішуються за timestamps і heuristics; додаток зберігає стан transfer queue та обробляє retries.",
+          "Buffering на телефоні компенсує network jitter; для real-time scenarios потрібна мінімальна буферизація та low-latency codecs.",
+          "Eventual consistency підходить для gallery: якщо файл ще не доставлено — показати placeholder та progress indicator.",
+          "UX повинен показувати користувачу зрозумілий стан transfer (pending, uploading, uploaded, failed) з можливістю retry.",
+          "Розробникам варто реалізувати background upload services, що працюють навіть при закритому UI (з урахуванням battery and network policies ОС).",
+          "Telemetry transfer success/latency допомагає тюнінгувати retry logic і chunk sizes.",
+          "Добра синхронізація знижує втрати даних і покращує сприйняття reliability."
+        ].join(" ")
+      },
+
+      app_priv: {
+        title: "Permissions, privacy UX та індикатори",
+        body: [
+          "Мобільний додаток запитує на доступ до галереї, мікрофона і камери; користувач повинен дати явну згодую на передачу контенту у хмару.",
+          "App UX має підкреслювати індикатори: LED на окулярах, повідомлення про запис у додатку, історія записів та налаштування privacy.",
+          "Додаток забезпечує opt-in механізми для telemetry і sharing; історію транзакцій і дозволів можна переглянути в settings.",
+          "Для enterprise сцени mobile app може реалізувати політики, що блокують певні функції (наприклад, cloud upload) згідно з MDM.",
+          "Security mechanisms include token refresh, OAuth flows, and secure local storage of credentials.",
+          "App повинен повідомляти користувача, якщо data передається у cloud або використовується для training models.",
+          "UX має давати зрозумілу опцію видалення контенту і remote wipe для випадків втрати/крадіжки пристрою.",
+          "Такий підхід дозволяє балансувати між функціональністю і довірою користувача."
+        ].join(" ")
+      },
+
+      app_examples: {
+        title: "Приклади мобільних flows: pairing, thumbnail sync, OTA trigger",
+        body: [
+          "Pairing: телефон сканує BLE advertisement, виконує bonding, обмінюється ключами і встановлює control channel; це перший крок взаємодії.",
+          "Thumbnail sync: окуляри генерують низькорозмірні thumbnails і штовхають їх через BLE (або Wi-Fi) в app, який миттєво показує preview в gallery.",
+          "Full asset upload: після натискання user на thumbnail — app просить повний файл (через Wi-Fi) або ініціює download при сильнішому з’єднанні.",
+          "OTA trigger: app завантажує підписаний OTA package і відправляє його на device; device валідовує підпис і виконує flashing у safe partition.",
+          "Recovery: якщо flashing fails, bootloader запускає recovery mode і відновлює попередню версію з A/B partitioning.",
+          "Auth flow: app використовує phone identity і cloud token для аутентифікації device ownership і access to cloud features.",
+          "Підхід «thin device — heavy phone» знижує ризики і дає швидку доставку нових можливостей через mobile app updates.",
+          "Розробникам варто тестувати кожен flow у реальних мережевих умовах та edge cases (low battery, roaming)."
+        ].join(" ")
+      },
+
+      // flow nodes
+      flow_capture: {
+        title: "Capture (Camera/ISP) — вузол flow",
+        body: [
+          "Камера захоплює кадри і віддає їх у ISP/driver для демозаїки, баланс білого, шумозниження та color correction.",
+          "ISP виконує hardware-acceleration для цих задач і передає frame buffer у system memory або через DMA до encoder/queue.",
+          "Камера підключена через MIPI CSI і має апаратні FIFO; правильна конфігурація exposure/fps критична для якості результату.",
+          "Firmware реєструє callback-и та передає дані у encoder task або локальний NN для попередньої фільтрації.",
+          "На цьому етапі може відбуватись thumbnail generation та low-res preview для миттєвого відображення на мобільному додатку.",
+          "Інженерам важливо врахувати механічні вібрації, світлові умови та рухи користувача при налаштуванні параметрів capture.",
+          "Частина capture pipeline може бути налаштована динамічно (auto exposure, dynamic fps) у залежності від battery/thermal.",
+          "Добре продуманий capture stage мінімізує подальші вимоги до encoder і transport stack."
+        ].join(" ")
+      },
+
+      flow_preproc: {
+        title: "Preprocess (DSP/NN) — вузол flow",
+        body: [
+          "DSP або NPU виконує швидку обробку: wake-word detection, basic CV (face detection), denoise, stabilization і ROI extraction.",
+          "Це зменшує обсяг даних, які треба передавати або кодувати, та прискорює прийняття рішень у реальному часі.",
+          "Preproc може включати quantized NN inference, edge filtering та frame selection logic для recording/streaming.",
+          "Виконання на DSP дозволяє економити енергію в порівнянні з CPU і знижує загальну latency pipeline.",
+          "Результати preproc зберігаються у shared buffers і супроводжуються metadata (timestamps, exposure info).",
+          "Для розробника важливо мати доступ до SDK, який дає інтерфейс до preproc blocks для інтеграції custom models.",
+          "Preprocessing також виконує security checks (watermarking, recording indicator toggles) перед подальшим transfer.",
+          "Контроль якості preproc-параметрів є частиною CI регресійних тестів."
+        ].join(" ")
+      },
+
+      flow_encode: {
+        title: "Encode (HW codec) — вузол flow",
+        body: [
+          "Апаратний енкодер на SoC стискає відео у H.264/H.265 для передачі або локального зберігання; hardware path мінімізує CPU load.",
+          "Encoder буфери організовуються через DMA і мають tight timing constraints, щоб уникнути frame drops.",
+          "Параметри енкодера (bitrate, keyframe interval) регулюються у відповідності до мережевих умов через control channel з мобільним app.",
+          "Після encode фрейми надходять у transport stack або пишуться на локальний storage у flash.",
+          "Encoder також може генерувати thumbnails та low-res copy для швидкого preview в app.",
+          "Інженерам треба тестувати encoder під різними сценами (ярке світло, low light) та коригувати preproc для оптимальної якості.",
+          "Синхронізація з audio stream здійснюється через timestamps і buffering logic.",
+          "Надійність encoder-а та його drivers є критичними для користувацького досвіду."
+        ].join(" ")
+      },
+
+      flow_transport: {
+        title: "Transport (Wi-Fi/BLE) — вузол flow",
+        body: [
+          "Transport stack має два основні режими: low bandwidth control (BLE) та high bandwidth media (Wi-Fi / tethered through phone).",
+          "BLE GATT використовується для команд, метаданих та маленьких payloads (thumbnails, status), тоді як Wi-Fi переносить повні відео фрагменти і OTA.",
+          "Transport layer повинна реалізувати reconnection logic, encryption (TLS), and congestion control to adapt to variable networks.",
+          "Для стрімінгу realtime часто використовують WebRTC, який забезпечує adaptive bitrate і low latency transport.",
+          "При мерехах треба передбачити fallback на локальне збереження і deferred upload when connectivity available.",
+          "Monitoring transport metrics (rtt, packet loss) дає змогу мобільному додатку динамічно змінювати encode профілі.",
+          "Security: pairing, authentication and encrypted channels are mandatory to protect user data in transit.",
+          "Robust transport reduces user frustration and improves overall device reliability."
+        ].join(" ")
+      },
+
+      flow_mobile: {
+        title: "Mobile App (UI / OTA) — вузол flow",
+        body: [
+          "Мобільний додаток споживає потоки, надає UI та керує OTA, storage та cloud sync функціоналом.",
+          "App повинен коректно відображати статус transfer, дозволяти перегляд, share та видалення контенту користувачем.",
+          "App також служить gateway для cloud AI: воно отримує запити від окулярів, передає їх у хмару та повертає результати назад.",
+          "Mobile app зберігає auth tokens та device certificates у secure storage, щоб уникнути несанкціонованого доступу.",
+          "Для performance app використовує background services та оптимізовані бібліотеки для декодування/encode.",
+          "App також реалізує telemetry pipeline та error reporting для firmware teams.",
+          "UX connectors (push notifications, permissions) мають бути дружніми та транспарентними до користувача.",
+          "Тестування mobile flows у реальних умовах — обов'язкова частина QA."
+        ].join(" ")
+      },
+
+      flow_cloud: {
+        title: "Cloud (Meta AI / Storage) — вузол flow",
+        body: [
+          "Cloud приймає дані для великих ML-запитів, зберігання медіа та аналітики; це дає можливість виконувати computationally heavy tasks.",
+          "Запити шифруються; cloud services виконують inference на великих моделях, генерують answers/annotations і повертають результат в app.",
+          "Cloud також зберігає backups та історію трансферів (за згодою користувача) і дає аналітику по використанню та reliability.",
+          "Для privacy важливо мати clear consent flows і можливість видалити дані назавжди на запит користувача.",
+          "Cloud застосовує rate limiting, autoscaling і CDN для забезпечення QoS при великому навантаженні користувачів.",
+          "Security: IAM policies, per-device tokens and audits help secure cloud interaction.",
+          "Integration with AI models requires versioning datasets and models as well as A/B testing for model updates.",
+          "Cloud functions complement device capabilities і дають можливість масштабувати AI-функції без зміни пристрою."
+        ].join(" ")
+      }
+    };
+
+    // Attach click handlers
+    function showOverlay(id){
+      const obj = TEXT[id];
+      if(!obj) return;
+      document.getElementById('overlayTitle').textContent = obj.title || '';
+      document.getElementById('overlayBody').innerHTML = '<p>' + obj.body.replace(/\n/g,'</p><p>') + '</p>';
+      document.getElementById('overlay').style.display = 'flex';
+      document.getElementById('closeBtn').style.display = 'flex';
+      document.getElementById('overlay').setAttribute('aria-hidden','false');
+    }
+
+    function closeOverlay(){
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('closeBtn').style.display = 'none';
+      document.getElementById('overlay').setAttribute('aria-hidden','true');
+      document.getElementById('overlayTitle').textContent = '';
+      document.getElementById('overlayBody').innerHTML = '';
+    }
+
+    document.querySelectorAll('.tile, .node').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const id = el.getAttribute('data-id');
+        if(id) showOverlay(id);
+      });
+    });
+
+    document.getElementById('closeBtn').addEventListener('click', closeOverlay);
+    document.getElementById('overlay').addEventListener('click', function(e){ if(e.target === this) closeOverlay(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeOverlay(); });
+  </script>
+
+  <!--
+    Короткі джерела і підтвердження ключових тверджень:
+    - Ray-Ban | Meta AI Glasses — офіційні сторінки (специфікації: 12MP camera, mic array, pairing with phone). :contentReference[oaicite:0]{index=0}
+    - Qualcomm Snapdragon AR1 Gen1 — продуктова брошура, платформа для smart-glasses (апаратні блоки для ISP, hardware encoders, NPU/DSP). :contentReference[oaicite:1]{index=1}
+    - Meta help / release notes і мобільний додаток (Meta View → Meta AI app) — документи по OTA та mobile flow. :contentReference[oaicite:2]{index=2}
+    - Аналітичні матеріали та рев’ю (розбір технічних характеристик Ray-Ban Meta). :contentReference[oaicite:3]{index=3}
+
+    Примітка: точні деталі внутрішніх імплементацій (які саме драйвери будуть у конкретній апаратній ревізії, або повні сорс-бази firmware) — приватні і залежать від виробника і договорів з SoC vendor. У сторінці враховані загальноприйняті інженерні патерни і публічні специфікації.
+  -->
+
+</body>
+</html>
