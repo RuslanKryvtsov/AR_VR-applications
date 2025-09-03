@@ -283,7 +283,7 @@ onmouseout="this.style.color='#004080';"
     </style>
 
       <!-- Секція 4: Взаємодія та маніпуляції -->
-<div style="padding: 1.5rem; background-color: #f0f8ff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+<div style="padding: 1.5rem; background-color: #f2f7f6; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
   <h2 style="font-size:2rem; margin-bottom:1rem; color:#004080; transition:color 0.3s;"
       onmouseover="this.style.color='#1e90ff';"
       onmouseout="this.style.color='#004080';">
@@ -442,23 +442,84 @@ onmouseout="this.style.color='#004080';"
    
   </div>
 
-  <!-- Блок детальної інформації для Universe -->
-  <div id="detail-4" style="display:none; position: relative; margin-left: 320px; padding:2rem; line-height:1.6; background:#ffffff; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; font-weight: 800; overflow-y: auto;">
-    
-      <h2 style="margin-bottom:1rem; transition:color 0.3s; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;"
+  
+  <div id="detail-4" style="max-width: 1240px; margin: 0 auto; padding: 20px; line-height: 1.6; margin-left: 350px; padding: 30px; background-color: #f2f7f6; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); animation: fadeIn 1.5s ease-out; border-left: 6px solid #d97706; font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444;">
+               
+                
+      <h2 style="margin-bottom:1rem; transition:color 0.3s; font-family: 'Garamond', 'Georgia', serif; font-size: 44px; color:  #2F1B0C;"
           onmouseover="this.style.color='#0055aa';"
           onmouseout="this.style.color='#003366';">
           Набори інструментів розробника (SDK, API): Vuforia, AR Foundation, MRTK, Google ARCore
       </h2>
     
-      <p style="animation: fadeIn 1s ease-out; margin-bottom:1rem; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
+      <p style="animation: fadeIn 1s ease-out; margin-bottom:1rem; font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444; font-size: 33px; line-height: 1.3;">
         SDK (Software Development Kit) та API (Application Programming Interface) — це фундаментальні компоненти будь-якої AR/VR-платформи. Вони забезпечують готові механізми відстеження, рендерингу та взаємодії, що значно пришвидшує розробку і дозволяє сконцентруватися на унікальних рішеннях вашого проєкту.
       </p>
+
+      <div style="font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444; padding: 20px; background-color: #f2f7f6; border-radius: 8px; margin: 20px 0; font-size: 33px; line-height: 1.3;">
+       
+        
+        <p style="margin-bottom: 15px; text-align: justify;">У контексті <em style="color: #8B4513;">доповненої (AR)</em> та <em style="color: #8B4513;">віртуальної реальності (VR)</em>, SDK (Software Development Kit) — це набір інструментів, бібліотек та документації, які допомагають розробникам створювати додатки з елементами AR/VR. Вони надають функціональність для <em style="color: #8B4513;">трекінгу об'єктів</em>, рендерингу 3D, взаємодії з камерою тощо. Загалом, більшість таких SDK можуть бути:</p>
+        
+        <p style="margin-bottom: 15px; text-align: justify;">- <strong>Окремими SDK</strong>: Самостійними бібліотеками для нативної розробки (наприклад, в Android Studio або Xcode), де ви пишете код без ігрового рушія. Це підходить для низькорівневої роботи, коли потрібна максимальна оптимізація.</p>
+        
+        <p style="margin-bottom: 15px; text-align: justify;">- <strong>Плагінами (надбудовами)</strong>: Модулями, які інтегруються в ігрові рушії, як <em style="color: #8B4513;">Unity</em> або <em style="color: #8B4513;">Unreal Engine</em>, додаючи AR/VR-функції до існуючого проєкту. Плагіни спрощують розробку, бо використовують інструменти рушія (наприклад, візуальний редактор сцен).</p>
+        
+        <p style="margin-bottom: 15px; text-align: justify;">Щодо <em style="color: #8B4513;">Visual Studio Code (VSC)</em>: Це текстовий редактор коду, не рушій чи програма для AR/VR. Ви можете використовувати VSC для редагування коду в нативних проєктах (наприклад, з Java/Kotlin для Android), але не для повноцінної розробки в Unity — там потрібен <em style="color: #8B4513;">Unity Editor</em> (десктопна програма). Для Unreal — <em style="color: #8B4513;">Unreal Editor</em>. <br>Якщо SDK нативний, VSC підходить для написання/налаштування коду, але компіляція відбувається через IDE як Android Studio.</p> 
+        
+        <p style="margin-bottom: 15px; text-align: justify;"><em style="color: #8B4513;">Жоден з цих SDK не є "окремою десктопною програмою" — це бібліотеки/пакети, які інтегруються в ваш середовище розробки.</em></p>
+        
+        <p style="margin-bottom: 15px; text-align: justify;">Щоб зрозуміти, як працювати: Почніть з офіційної документації, завантажте SDK, створіть тестовий проєкт. Для студентів IT: Встановіть рушій (наприклад, Unity), імпортуйте плагін, налаштуйте сцену з AR/VR-елементами, тестуйте на пристрої (Android/iOS/Quest). Варіанти: Безкоштовні/платні ліцензії, крос-платформенність. Далі — конкретно для кожного.</p>
+        
+      <div style="background-color: #e0edee; line-height: 1.1; max-width: 1240px;">     
+        <h3 style="cursor: pointer; color: #D2B48C; transition: all 0.3s ease; margin-bottom: 10px;" onclick="this.style.color='#8B4513'; this.style.fontSize='35px'; this.style.transform='translateX(5px)';">* Vuforia SDK</h3>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">Vuforia — це окремий SDK від PTC для AR, фокус на маркерному/безмаркерному трекінгу об'єктів. Він може бути як самостійним (нативним) для мобільних платформ, так і плагіном для рушіїв.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460; line-height: 0.8;">- <strong>Тип</strong>: Окремий SDK з плагінами для інтеграції.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Рушії</strong>: Основний — Unity (імпорт через Package Manager); обмежена підтримка Unreal Engine через плагіни; нативний для Android/iOS/UWP без рушія.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Використання в VSC</strong>: Так, для нативної розробки (редагування Java/C++ коду), але компіляція в Android Studio/Xcode. Не є десктопною програмою — це бібліотека.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Як працювати (для студентів)</strong>: Зареєструйтесь на сайті, завантажте SDK. У Unity: Створіть проєкт, імпортуйте Vuforia Engine, додайте ліцензійний ключ, налаштуйте Image Target (маркер), додайте 3D-об'єкти. Тестуйте на смартфоні. Варіанти: Безкоштовна версія з водяними знаками; платна для комерції. Підходить для AR-додатків у промисловості (наприклад, Boeing).</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Посилання</strong>: Офіційна документація — <a href="https://developer.vuforia.com/library/" style="color: #8B4513; text-decoration: none;">Vuforia Engine Library</a>; для Unity — <a href="https://developer.vuforia.com/library/vuforia-engine/getting-started/development-environments/getting-started-vuforia-engine-unity/" style="color: #8B4513; text-decoration: none;">Getting Started in Unity</a>; завантаження — <a href="https://developer.vuforia.com/downloads/sdk" style="color: #8B4513; text-decoration: none;">Download SDK</a>.</p>
+      
+        
+        <h3 style="cursor: pointer; color: #D2B48C; transition: all 0.3s ease; margin-bottom: 10px;" onclick="this.style.color='#8B4513'; this.style.fontSize='40px'; this.style.transform='translateX(5px)';">* AR Foundation (Unity)</h3>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">AR Foundation — це фреймворк від Unity Technologies для крос-платформенного AR, який об'єднує функціональність ARCore/ARKit у єдиний API. Це не окремий SDK, а вбудований пакет Unity.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Тип</strong>: Плагін (пакет) виключно для Unity, не самостійний SDK.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Рушії</strong>: Тільки Unity (інтегрується як пакет).</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Використання в VSC</strong>: Ні, бо це Unity-специфічний — використовуйте Unity Editor. Не десктопна програма, а модуль рушія.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Як працювати (для студентів)</strong>: В Unity Editor створіть проєкт, через Package Manager додайте AR Foundation. Налаштуйте XR Plug-in Management для ARCore/ARKit, додайте AR Session/AR Camera до сцени, реалізуйте трекінг (наприклад, Plane Detection). Тестуйте на Android/iOS. Варіанти: Безкоштовний; підтримує розширення як ARCore Extensions для хмарного AR. Ідеально для мобільного AR.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Посилання</strong>: Офіційна документація — <a href="https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/" style="color: #8B4513; text-decoration: none;">AR Foundation Manual</a>; початок роботи — <a href="https://developers.google.com/ar/develop/unity-arf/getting-started-ar-foundation" style="color: #8B4513; text-decoration: none;">Getting Started with AR Foundation</a>.</p>
+        
+        <h3 style="cursor: pointer; color: #D2B48C; transition: all 0.3s ease; margin-bottom: 10px;" onclick="this.style.color='#8B4513'; this.style.fontSize='40px'; this.style.transform='translateX(5px)';">* Mixed Reality Toolkit (MRTK)</h3>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">MRTK — це відкритий SDK від Microsoft для mixed reality (MR), VR та AR, фокус на взаємодії (жести, голос, контролери). MRTK3 — остання версія.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Тип</strong>: Окремий SDK, але переважно плагін для рушія.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Рушії</strong>: Основний — Unity (інтеграція через Feature Tool); сумісний з OpenXR для інших.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Використання в VSC</strong>: Так, для редагування скриптів, але основна робота в Unity Editor. Не десктопна програма — це toolkit.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Як працювати (для студентів)</strong>: Завантажте MRTK через Mixed Reality Feature Tool, імпортуйте в Unity проєкт. Налаштуйте MRTK Profile, додайте XR Rig для трекінгу, реалізуйте UI/взаємодію (наприклад, Hand Tracking). Тестуйте на HoloLens/Quest/PC. Варіанти: Безкоштовний, відкритий код; підтримує платформи як HoloLens, Meta Quest. Підходить для enterprise MR.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Посилання</strong>: Офіційна документація — <a href="https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/mrtk3-overview/" style="color: #8B4513; text-decoration: none;">MRTK3 Overview</a>; інструмент для імпорту — <a href="https://learn.microsoft.com/en-us/windows/mixed-reality/develop/unity/welcome-to-mr-feature-tool" style="color: #8B4513; text-decoration: none;">Mixed Reality Feature Tool</a>.</p>
+        
+        <h3 style="cursor: pointer; color: #D2B48C; transition: all 0.3s ease; margin-bottom: 10px;" onclick="this.style.color='#8B4513'; this.style.fontSize='40px'; this.style.transform='translateX(5px)';"> * Google ARCore</h3>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">ARCore — це SDK від Google для AR на Android (і частково iOS), фокус на motion tracking, environmental understanding.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Тип</strong>: Окремий SDK з плагінами для рушіїв.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Рушії</strong>: Unity (через AR Foundation); Unreal Engine; нативний для Android Studio.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Використання в VSC</strong>: Так, для нативної Android-розробки (редагування Java/Kotlin), компіляція в Android Studio. Не десктопна програма — це API.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Як працювати (для студентів)</strong>: Завантажте SDK, для Unity — використовуйте з AR Foundation; для native — додайте залежності в build.gradle, ініціалізуйте ArCoreApk. Налаштуйте сесію для трекінгу, додайте anchors. Тестуйте на Android-пристроях. Варіанти: Безкоштовний; розширення для Geospatial AR, Cloud Anchors. Підходить для мобільного AR.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Посилання</strong>: Офіційна сторінка — <a href="https://developers.google.com/ar" style="color: #8B4513; text-decoration: none;">ARCore Developers</a>; завантаження — <a href="https://developers.google.com/ar/develop/downloads" style="color: #8B4513; text-decoration: none;">SDK Downloads</a>; для Android — <a href="https://github.com/google-ar/arcore-android-sdk" style="color: #8B4513; text-decoration: none;">ARCore Android SDK</a>.</p>
+        
+        <h3 style="cursor: pointer; color: #D2B48C; transition: all 0.3s ease; margin-bottom: 10px;" onclick="this.style.color='#8B4513'; this.style.fontSize='40px'; this.style.transform='translateX(5px)';">  * Meta XR SDK (раніше Oculus SDK)</h3>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">Meta XR SDK — це SDK для VR/AR на пристроях Meta Quest, фокус на hand tracking, passthrough AR, взаємодії.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Тип</strong>: Окремий SDK з плагінами; перейменовано на Meta XR для Quest.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Рушії</strong>: Unity (UPM package); Unreal Engine через OpenXR; нативний для Android.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Використання в VSC</strong>: Так, для native OpenXR-розробки, але основна в Unity Editor. Не десктопна програма — це пакет.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Як працювати (для студентів)</strong>: Завантажте з Asset Store або Metaサイト, в Unity: Додайте Meta XR Core SDK, налаштуйте OpenXR, додайте XR Rig. Реалізуйте контролери/жести. Тестуйте на Quest. Варіанти: Безкоштовний; включає Interaction/Voice SDK. Підходить для immersive VR/AR.</p>
+        <p style="margin-bottom: 15px; text-align: justify; font-size: 29px; font-style: italic; font-weight: 460;">- <strong>Посилання</strong>: Офіційна документація — <a href="https://developers.meta.com/horizon/documentation/unity/unity-core-sdk/" style="color: #8B4513; text-decoration: none;">Meta XR Core SDK</a>; пакети — <a href="https://developers.meta.com/horizon/documentation/unity/unity-package-manager/" style="color: #8B4513; text-decoration: none;">Meta XR UPM</a>; для Unity — <a href="https://assetstore.unity.com/packages/tools/integration/meta-xr-all-in-one-sdk-269657" style="color: #8B4513; text-decoration: none;">Meta XR All-in-One SDK</a>.</p>
+    </div>
+  </div>    
     
       <p style="animation: fadeIn 1s 0.2s ease-out; margin-bottom:1.5rem; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
-        Нижче — детальний огляд чотирьох найпопулярніших інструментів, їх ключових можливостей та практичні приклади використання в галузях від навчання до промислової автоматизації.
+        Нижче — детальний огляд шести найпопулярніших інструментів, їх ключових можливостей та практичні приклади використання в галузях від навчання до промислової автоматизації.
       </p>
     
+    <div style="border-radius: 8px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444; font-size: 33px; line-height: 1.3;">
       <!-- Vuforia -->
       <h3 style="font-size:42px; color:#003366; margin-top:2rem; transition:color 0.3s;"
           onmouseover="this.style.color='#0055aa';"
@@ -470,6 +531,58 @@ onmouseout="this.style.color='#004080';"
         <strong>Vuforia</strong> — один із перших та найнадійніших AR-SDK для маркер-базованих та маркер-менше рішень. Підтримує iOS, Android, Unity та власний Native API.
       </p>
     
+      <p style="text-align: justify; margin-bottom: 15px;">Vuforia — один із перших та найнадійніших AR-SDK для маркер-базованих та маркер-менше рішень. Підтримує iOS, Android, Unity та власний Native API. Основні функції: Image Targets, Model Targets, Ground Plane, VuMark, Multi-Target. Підтримка 3D-моделей: завантаження та розпізнавання CAD-файлів (OBJ/FBX). Розширена аналітика: логування точок спрацьовування трекінгу для оптимізації UX. Приклад: у виробничому підрозділі компанії Boeing Vuforia використали для накладання інструкцій з монтажу на реальні деталі літака. Інженери бачили покрокові схеми прямо на поверхні об’єкта в реальному часі, що скоротило час навчання на 40%.</p>
+      <p>Основні функції: Image Targets, Model Targets, Ground Plane, VuMark, Multi-Target. Підтримка 3D-моделей: завантаження та розпізнавання CAD-файлів (OBJ/FBX). Розширена аналітика: логування точок спрацьовування трекінгу для оптимізації UX. Приклад: у виробничому підрозділі компанії Boeing Vuforia використали для накладання інструкцій з монтажу на реальні деталі літака. Інженери бачили покрокові схеми прямо на поверхні об’єкта в реальному часі, що скоротило час навчання на 40%.</p>
+     
+      <details style="margin-bottom: 10px;">
+          <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Деталі інтеграції в Unity (розгорніть для покрокової інструкції)</summary>
+          <ol style="padding-left: 20px; margin-top: 10px; font-size: 26px;">
+              <li>Завантажте Unity з офіційного сайту <a href="https://unity.com/download" target="_blank" style="color: #007bff; text-decoration: none;">unity.com</a>.</li>
+              <li>Створіть новий проект у Unity Editor.</li>
+              <li>Через Unity Package Manager додайте “Vuforia Engine” (пошук у Asset Store або імпорт з <a href="https://developer.vuforia.com/downloads/sdk" target="_blank" style="color: #007bff; text-decoration: none;">developer.vuforia.com/downloads/sdk</a>).</li>
+              <li>Зареєструйтеся на <a href="https://developer.vuforia.com/" target="_blank" style="color: #007bff; text-decoration: none;">developer.vuforia.com</a> та створіть ліцензійний ключ (License Key).</li>
+              <li>У Configuration Panel оберіть Image Target та завантажте зображення для розпізнавання.</li>
+              <li>Додайте скрипт ObserverBehaviour.OnTargetStatusChanged для контролю стану трекінгу.</li>
+              <li>Додайте AR Camera та налаштуйте сцену з 3D-об’єктами, що з’являтимуться при детекції.</li>
+              <li>Тестуйте на пристрої: побудуйте APK для Android або IPA для iOS.</li>
+          </ol>
+          <p style="margin-top: 10px;">Повна документація: <a href="https://developer.vuforia.com/library" target="_blank" style="color: #007bff; text-decoration: none;">Vuforia Library</a>. Приклади коду та зразки: <a href="https://developer.vuforia.com/downloads/samples" target="_blank" style="color: #007bff; text-decoration: none;">Core Samples</a>.</p>
+      </details>
+      
+      <details style="margin-bottom: 10px;">
+          <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Структура проекту для новачків</summary>
+          <p style="margin-top: 10px; text-align: justify;">Проект Vuforia в Unity складається з кількох ключових елементів, що робить його зрозумілим навіть для початківців. Основна структура:</p>
+          <ul style="padding-left: 20px; margin-top: 10px; font-size: 26px;">
+              <li><strong>Assets/</strong>: Містить пакети Vuforia (VuforiaEngine.unitypackage), 3D-моделі (OBJ/FBX), текстури та скрипти (наприклад, DefaultObserverEventHandler.cs для обробки подій трекінгу).</li>
+              <li><strong>Scenes/</strong>: Головна сцена з AR Camera, Image Target prefab (зображення-маркер) та дочірніми об’єктами (3D-моделі, UI).</li>
+              <li><strong>Scripts/</strong>: Користувацькі скрипти для логіки, наприклад, активація анімації при детекції таргету.</li>
+              <li><strong>Plugins/</strong>: Native плагіни для Android/iOS (VuforiaWrapper.dll тощо).</li>
+              <li><strong>ProjectSettings/</strong>: Конфігурації, включаючи VuforiaConfiguration.asset з ліцензійним ключем.</li>
+          </ul>
+          <p style="margin-top: 10px; text-align: justify;">Послідовність роботи: Почніть з імпорту пакету, налаштуйте таргети в Vuforia Target Manager (онлайн), додайте до сцени, напишіть скрипти для взаємодії, тестуйте в Unity Play Mode, потім експортуйте. Обсяг кодової бази: Базовий проект — 50-200 файлів, включаючи ассети; розширений — до 1000+ з моделями та скриптами.</p>
+      </details>
+      
+      <details style="margin-bottom: 10px;">
+          <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Можливості експорту та інтеграція з рушіями</summary>
+          <p style="margin-top: 10px; text-align: justify;">Експорт: З Unity можна будувати для Android (APK), iOS (Xcode проект), UWP (для Windows). Використовуйте Build Settings у Unity для вибору платформи. Vuforia інтегрується переважно з Unity, але також підтримує native розробку (без рушія) для Android Studio чи Xcode. Гіпотеза про Unity правильна — це основний рушій; альтернативи: Unreal Engine через плагіни, але менш поширені. Для VR: Vuforia може комбінуватися з Unity XR для гібридних AR/VR додатків.</p>
+      </details>
+      
+      <details style="margin-bottom: 10px;">
+          <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Інтеграція з іншими платформами</summary>
+          <p style="margin-top: 10px; text-align: justify;">GitHub: Зберігайте проекти як стандартні Unity репозиторії. Офіційні зразки: <a href="https://github.com/ptc-vuforia" target="_blank" style="color: #007bff; text-decoration: none;">github.com/ptc-vuforia</a>. Jira: Інтегруйте через Unity Collaborate або плагіни для task tracking (не специфічно для Vuforia, але корисно для командної роботи). Спеціалізовані репозиторії: Unity Asset Store для ассетів, Vuforia Forum для спільних проектів.</p>
+      </details>
+      
+      <details style="cursor: pointer; display: inline-block; margin-top: 10px;">
+          <summary style="display: inline-block; background: #eee; padding: 5px; border-radius: 50%; color: #333; font-weight: bold;">🔍</summary>
+          <ul style="list-style: none; padding: 0; margin-top: 10px; font-size: 26px;">
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Скачати SDK</summary><p style="margin-top: 5px;">Офіційний завантажувач: <a href="https://developer.vuforia.com/downloads/sdk" target="_blank" style="color: #007bff; text-decoration: none;">Завантажити Vuforia SDK</a>.</p></details></li>
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Документація</summary><p style="margin-top: 5px;">Повний гайд: <a href="https://developer.vuforia.com/library" target="_blank" style="color: #007bff; text-decoration: none;">Vuforia Docs</a>.</p></details></li>
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Зразки коду</summary><p style="margin-top: 5px;">Core Samples: <a href="https://developer.vuforia.com/downloads/samples" target="_blank" style="color: #007bff; text-decoration: none;">Завантажити зразки</a>.</p></details></li>
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Форум</summary><p style="margin-top: 5px;">Обговорення: <a href="https://developer.vuforia.com/forum" target="_blank" style="color: #007bff; text-decoration: none;">Vuforia Forum</a>.</p></details></li>
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Відео-туторіал</summary><p style="margin-top: 5px;">Початок: <a href="https://www.youtube.com/watch?v=RMOMTyfECTk" target="_blank" style="color: #007bff; text-decoration: none;">YouTube гайд</a>.</p></details></li>
+          </ul>
+      </details>
+
       <ul style="animation: fadeIn 1s 0.6s ease-out; padding-left:1.2rem; list-style-type:disc; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
         <li><strong>Основні функції:</strong> Image Targets, Model Targets, Ground Plane, VuMark, Multi-Target.</li>
         <li><strong>Підтримка 3D-моделей:</strong> завантаження та розпізнавання CAD-файлів (OBJ/FBX).</li>
@@ -479,14 +592,17 @@ onmouseout="this.style.color='#004080';"
       <p style="animation: fadeIn 1s 0.8s ease-out; margin-bottom:1rem; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
         <em>Приклад:</em> у виробничому підрозділі компанії Boeing Vuforia використали для накладання інструкцій з монтажу на реальні деталі літака. Інженери бачили покрокові схеми прямо на поверхні об’єкта в реальному часі, що скоротило час навчання на 40%.
       </p>
-    
+
+             
       <p style="animation: fadeIn 1s 1s ease-out; margin-bottom:1.5rem; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
         <strong>Кроки інтеграції в Unity:</strong><br>
         1) Через Unity Package Manager додати “Vuforia Engine”;<br>
         2) У Configuration Panel обрати Image Target та завантажити зображення;<br>
         3) Додати скрипт <code>ObserverBehaviour.OnTargetStatusChanged</code> для контролю стану трекінгу.
       </p>
+    </div>
     
+    <div style="border-radius: 8px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444; font-size: 33px; line-height: 1.3;">
       <!-- AR Foundation -->
       <h3 style="font-size: 42px; color:#003366; margin-top:2rem; transition:color 0.3s;"
           onmouseover="this.style.color='#0055aa';"
@@ -515,7 +631,10 @@ onmouseout="this.style.color='#004080';"
         2) Створити AR Session і AR Session Origin у сцені;<br>
         3) Налаштувати Plane Manager і Raycast Manager у відповідних GameObject.
       </p>
+    </div>
+
     
+      <div style="border-radius: 8px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444; font-size: 33px; line-height: 1.3;">
       <!-- MRTK -->
       <h3 style="font-size: 42px; color:#003366; margin-top:2rem; transition:color 0.3s;"
           onmouseover="this.style.color='#0055aa';"
@@ -523,7 +642,7 @@ onmouseout="this.style.color='#004080';"
         3. Mixed Reality Toolkit (MRTK)
       </h3>
     
-      <p style="animation: fadeIn 1s 2s ease-out; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
+      <p style="animation: fadeIn 1s 2s ease-out; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C; ">
         <strong>MRTK</strong> від Microsoft — набір компонентів і шаблонів для створення досвіду для HoloLens та Windows Mixed Reality. Забезпечує стандартизовані UX-компоненти, системи вводу та майданчик для швидкого прототипування.
       </p>
     
@@ -544,7 +663,10 @@ onmouseout="this.style.color='#004080';"
         2) У сцені створити MixedRealityToolkit та MixedRealityPlayspace;<br>
         3) Додати Prefab’и Input System та Spatial Awareness.
       </p>
+    </div> 
     
+
+    <div style="border-radius: 8px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444; font-size: 33px; line-height: 1.3;">
       <!-- Google ARCore -->
       <h3 style="font-size: 42px; color:#003366; margin-top:2rem; transition:color 0.3s;"
           onmouseover="this.style.color='#0055aa';"
@@ -555,6 +677,44 @@ onmouseout="this.style.color='#004080';"
       <p style="animation: fadeIn 1s 2.8s ease-out; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
         <strong>ARCore</strong> — офіційний SDK Google для AR на пристроях Android. Забезпечує високоточний трекінг руху, розпізнавання поверхонь і оцінку освітленості сцени.
       </p>
+
+      <p style="text-align: justify; margin-bottom: 15px;">ARCore — SDK для Android AR, з функціями motion tracking, environmental understanding, light estimation. Функції: Cloud Anchors, Depth API, Geospatial API. Приклад: У Google Maps ARCore використовується для навігації з AR-стрілками.</p>
+        
+        <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Деталі інтеграції в Unity</summary>
+            <ol style="padding-left: 20px; margin-top: 10px; font-size: 26px;">
+                <li>Додайте ARCore XR Plugin у Package Manager.</li>
+                <li>Налаштуйте AR Session з Plane Detection.</li>
+                <li>Будуйте для Android.</li>
+            </ol>
+            <p style="margin-top: 10px;">Документація: <a href="https://developers.google.com/ar" target="_blank" style="color: #007bff; text-decoration: none;">ARCore Docs</a>.</p>
+        </details>
+        
+        <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Структура проекту</summary>
+            <p style="margin-top: 10px; text-align: justify; font-size: 26px;">Assets/, Scenes/, Plugins/Android/. Послідовність: Імпорт, налаштування, код, тест. Обсяг: 100-600 файлів.</p>
+        </details>
+        
+        <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Експорт та рушії</summary>
+            <p style="margin-top: 10px; text-align: justify; font-size: 26px;">Експорт на Android. Інтеграція з Unity, native в Android Studio.</p>
+        </details>
+        
+        <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Інтеграція з платформами</summary>
+            <p style="margin-top: 10px; text-align: justify; font-size: 26px;">GitHub: <a href="https://github.com/google-ar/arcore-unity-sdk" target="_blank" style="color: #007bff; text-decoration: none;">ARCore Unity SDK</a>. Jira: Стандартно.</p>
+        </details>
+        
+        <details style="cursor: pointer; display: inline-block; margin-top: 10px;">
+            <summary style="display: inline-block; background: #eee; padding: 5px; border-radius: 50%; color: #333; font-weight: bold;">🔍</summary>
+            <ul style="list-style: none; padding: 0; margin-top: 10px; font-size: 26px;">
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Скачати</summary><p style="margin-top: 5px;"><a href="https://developers.google.com/ar/develop" target="_blank" style="color: #007bff; text-decoration: none;">ARCore</a>.</p></details></li>
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Docs</summary><p style="margin-top: 5px;"><a href="https://developers.google.com/ar" target="_blank" style="color: #007bff; text-decoration: none;">Docs</a>.</p></details></li>
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Samples</summary><p style="margin-top: 5px;"><a href="https://github.com/google-ar/arcore-unity-extensions" target="_blank" style="color: #007bff; text-decoration: none;">Samples</a>.</p></details></li>
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Tutorial</summary><p style="margin-top: 5px;"><a href="https://developers.google.com/ar/develop/unity-arf/getting-started-ar-foundation" target="_blank" style="color: #007bff; text-decoration: none;">Guide</a>.</p></details></li>
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Forum</summary><p style="margin-top: 5px;"><a href="https://github.com/google-ar/arcore-unity-sdk/issues" target="_blank" style="color: #007bff; text-decoration: none;">Issues</a>.</p></details></li>
+            </ul>
+        </details>
     
       <ul style="animation: fadeIn 1s 3s ease-out; padding-left:1.2rem; list-style-type:disc; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
         <li><strong>Core Features:</strong> Motion Tracking, Environmental Understanding, Light Estimation.</li>
@@ -573,12 +733,151 @@ onmouseout="this.style.color='#004080';"
         2) Налаштувати <code>AndroidManifest.xml</code> з правами камери та OpenGL;<br>
         3) Використати <code>ArFragment</code> для швидкого старту та відстеження площин.
       </p>
+    </div>
+     
+      <div style="border-radius: 8px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444; font-size: 33px; line-height: 1.3;">
+        <h3 style="font-size: 42px; color: #003366; margin-top: 2rem; transition: color 0.3s;"
+            onmouseover="this.style.color='#0055aa';"
+            onmouseout="this.style.color='#003366';">
+            5. Meta XR SDK (раніше Oculus SDK) для VR/AR
+        </h3>
     
-      <!-- Підсумок -->
+        <p style="animation: fadeIn 1s 0.4s ease-out; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color: #2F1B0C;">
+            <strong>Meta XR SDK</strong> — потужний інструмент для створення VR/AR-додатків на пристроях Meta Quest, що підтримує hand tracking, passthrough AR та інтерактивні VR-функції.
+        </p>
+    
+        <p style="text-align: justify; margin-bottom: 15px; font-family: 'Garamond', 'Georgia', serif; font-size: 18px; color: #2F1B0C;">
+            Meta XR SDK — це набір інструментів для розробки додатків віртуальної (VR) та доповненої реальності (AR) для пристроїв Meta Quest (Quest 2, Quest 3, Quest Pro). SDK підтримує hand tracking, passthrough AR, контролери, голосові команди та інтеграцію з Unity через OpenXR. Основні компоненти: Interaction SDK (жести, взаємодія з об’єктами), Voice SDK (голосові команди), Presence Platform (AR-функції, як passthrough). Приклад використання: у грі Beat Saber Meta XR SDK забезпечує точне відстеження контролерів для ритмічної взаємодії з віртуальними об’єктами, що створює ефект повного занурення. У промислових сценаріях, наприклад, у Ford, SDK використовували для створення віртуальних симуляцій складання автомобілів, що скоротило час прототипування на 30%.
+        </p>
+    
+        <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Деталі інтеграції в Unity (розгорніть для покрокової інструкції)</summary>
+            <ol style="padding-left: 20px; margin-top: 10px; font-family: 'Garamond', 'Georgia', serif; font-size: 26px;">
+                <li>Завантажте Unity з офіційного сайту <a href="https://unity.com/download" target="_blank" style="color: #007bff; text-decoration: none;">unity.com</a>.</li>
+                <li>Створіть новий проект у Unity Editor (рекомендується Unity 2021.3 LTS або новіша).</li>
+                <li>У Unity Package Manager додайте “Meta XR All-in-One SDK” з Asset Store або завантажте з <a href="https://developers.meta.com/horizon/downloads/package/unity-integration/" target="_blank" style="color: #007bff; text-decoration: none;">developers.meta.com</a>.</li>
+                <li>У Project Settings увімкніть OpenXR і додайте Meta Quest як підтримувану платформу.</li>
+                <li>Налаштуйте XR Rig (з камерою та контролерами) у сцені через prefab Meta XR SDK.</li>
+                <li>Додайте скрипт OVRInput для обробки вводу з контролерів або Hand Tracking для жестів.</li>
+                <li>Налаштуйте passthrough AR у Meta XR Core SDK для змішаної реальності (Mixed Reality).</li>
+                <li>Тестуйте в Unity Play Mode або експортуйте APK для Quest через Build Settings.</li>
+            </ol>
+            <p style="margin-top: 10px; font-family: 'Garamond', 'Georgia', serif; font-size: 16px;">
+                Повна документація: <a href="https://developers.meta.com/horizon/documentation/unity/" target="_blank" style="color: #007bff; text-decoration: none;">Meta XR Docs</a>. Приклади коду: <a href="https://developers.meta.com/horizon/downloads/" target="_blank" style="color: #007bff; text-decoration: none;">Meta Samples</a>.
+            </p>
+        </details>
+    
+        <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Структура проекту для новачків</summary>
+            <p style="margin-top: 10px; text-align: justify; font-family: 'Garamond', 'Georgia', serif; font-size: 16px;">
+                Проект Meta XR в Unity має чітку структуру, що спрощує роботу навіть для новачків. Основні компоненти:
+            </p>
+            <ul style="padding-left: 20px; margin-top: 10px; font-family: 'Garamond', 'Georgia', serif; font-size: 26px;">
+                <li><strong>Assets/MetaXR/</strong>: Містить пакети SDK (MetaXRCore, InteractionSDK, VoiceSDK), prefab’и (XR Rig, контролери), текстури та матеріали.</li>
+                <li><strong>Scenes/</strong>: Головна сцена з XR Rig (камера, трекінг рук/контролерів), інтерактивними об’єктами та UI.</li>
+                <li><strong>Scripts/</strong>: Скрипти для обробки вводу (OVRInput.cs), жестів (HandTracking.cs) або голосових команд (VoiceSDK.cs).</li>
+                <li><strong>Plugins/</strong>: Native плагіни для Android (OVRPlugin.aar) та OpenXR для сумісності.</li>
+                <li><strong>ProjectSettings/</strong>: Конфігурація XR Management та Meta XR SDK з ключами для автентифікації.</li>
+            </ul>
+            <p style="margin-top: 10px; text-align: justify; font-family: 'Garamond', 'Georgia', serif; font-size: 16px;">
+                Послідовність роботи: Імпортуйте Meta XR SDK, налаштуйте XR Rig, додайте інтерактивні об’єкти, напишіть скрипти для логіки, тестуйте в Play Mode або на Quest. Обсяг кодової бази: базовий проект — 200-500 файлів; розширений (з кастомними моделями, анімаціями) — до 1000+ файлів.
+            </p>
+        </details>
+    
+        <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Можливості експорту та інтеграція з рушіями</summary>
+            <p style="margin-top: 10px; text-align: justify; font-family: 'Garamond', 'Georgia', serif; font-size: 26px;">
+                Експорт: З Unity підтримується побудова APK для Meta Quest (Android). Використовуйте Build Settings для вибору платформи та оптимізації. Meta XR SDK оптимізовано для Unity з OpenXR, але також підтримує native розробку через Android Studio. Альтернативні рушії: Unreal Engine через плагіни, але Unity залишається основним вибором. Для гібридних AR/VR проєктів: комбінуйте з passthrough AR для змішаної реальності. SDK також підтримує експериментальні функції, як Spatial Anchors для збереження позицій об’єктів у просторі.
+            </p>
+        </details>
+    
+        <details style="margin-bottom: 10px;">
+            <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Інтеграція з іншими платформами</summary>
+            <p style="margin-top: 10px; text-align: justify; font-family: 'Garamond', 'Georgia', serif; font-size: 26px;">
+                GitHub: Зберігайте проекти як Unity-репозиторії. Офіційні приклади: <a href="https://github.com/oculus-samples" target="_blank" style="color: #007bff; text-decoration: none;">oculus-samples</a>. Для командної роботи: використовуйте Unity Collaborate або плагіни для Jira/Confluence для трекінгу завдань. Спільнота: Meta Developer Forum для обміну досвідом та вирішення проблем. Asset Store також пропонує додаткові інструменти для оптимізації Meta XR проєктів.
+            </p>
+        </details>
+    
+        <details style="cursor: pointer; display: inline-block; margin-top: 10px;">
+            <summary style="display: inline-block; background: #eee; padding: 5px; border-radius: 50%; color: #333; font-weight: bold;">🔍</summary>
+            <ul style="list-style: none; padding: 0; margin-top: 10px; font-family: 'Garamond', 'Georgia', serif; font-size: 26px;">
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Завантажити SDK</summary><p style="margin-top: 5px;"><a href="https://developers.meta.com/horizon/downloads/package/unity-integration/" target="_blank" style="color: #007bff; text-decoration: none;">Meta XR SDK</a>.</p></details></li>
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Документація</summary><p style="margin-top: 5px;"><a href="https://developers.meta.com/horizon/documentation/unity/" target="_blank" style="color: #007bff; text-decoration: none;">Meta XR Docs</a>.</p></details></li>
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Зразки коду</summary><p style="margin-top: 5px;"><a href="https://developers.meta.com/horizon/downloads/" target="_blank" style="color: #007bff; text-decoration: none;">Meta Samples</a>.</p></details></li>
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Форум</summary><p style="margin-top: 5px;"><a href="https://communityforums.atmeta.com/" target="_blank" style="color: #007bff; text-decoration: none;">Meta Forum</a>.</p></details></li>
+                <li><details><summary style="cursor: pointer; color: #0056b3;">Відео-туторіал</summary><p style="margin-top: 5px;"><a href="https://www.youtube.com/watch?v=3kD0qD4M7nQ" target="_blank" style="color: #007bff; text-decoration: none;">YouTube Guide</a>.</p></details></li>
+            </ul>
+        </details>
+    
+        <ul style="animation: fadeIn 1s 0.6s ease-out; padding-left: 1.2rem; list-style-type: disc; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color: #2F1B0C;">
+            <li><strong>Основні функції:</strong> Hand Tracking, Passthrough AR, Interaction SDK, Voice SDK.</li>
+            <li><strong>Підтримка платформ:</strong> Meta Quest (Android), сумісність з OpenXR для Unity.</li>
+            <li><strong>Продуктивність:</strong> Оптимізація для низької затримки трекінгу та рендерингу.</li>
+        </ul>
+    
+        <p style="animation: fadeIn 1s 0.8s ease-out; margin-bottom: 1rem; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color: #2F1B0C;">
+            <em>Приклад:</em> У грі Beat Saber Meta XR SDK забезпечує точне відстеження контролерів, створюючи ефект повного занурення. У промислових сценаріях, наприклад, у Ford, SDK використовували для віртуальних симуляцій складання автомобілів, що скоротило час прототипування на 30%.
+        </p>
+    
+        <p style="animation: fadeIn 1s 1s ease-out; margin-bottom: 1.5rem; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color: #2F1B0C;">
+            <strong>Кроки інтеграції в Unity:</strong><br>
+            1) Додати Meta XR All-in-One SDK через Unity Package Manager;<br>
+            2) Налаштувати OpenXR і XR Rig у Project Settings;<br>
+            3) Додати скрипт <code>OVRInput</code> для обробки вводу з контролерів або жестів.
+        </p>
+    </div>
+
+    
+    <div style="border-radius: 8px; background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif; line-height: 1.8; color: #444; font-size: 33px; line-height: 1.3;">
+      <h3 style="color: #007bff; margin-bottom: 10px;">6. ARKit (Apple SDK для AR)</h3>
+      <p style="text-align: justify; margin-bottom: 15px;">ARKit — офіційний SDK від Apple для AR на iOS. Підтримує face tracking, image recognition, plane detection, світлову оцінку. Основні функції: World Tracking, Body Tracking, Object Detection, Collaborative Sessions. Підтримка 3D: Інтеграція з RealityKit для рендерингу. Приклад: У додатках як IKEA Place ARKit використовується для віртуального розміщення меблів у реальному середовищі, покращуючи UX покупок.</p>
+      
+      <details style="margin-bottom: 10px;">
+          <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Деталі інтеграції в Unity</summary>
+          <ol style="padding-left: 20px; margin-top: 10px; font-size: 26px;">
+              <li>Завантажте Unity та додайте AR Foundation package через Package Manager.</li>
+              <li>Додайте ARKit XR Plugin для iOS підтримки.</li>
+              <li>Створіть сцену з AR Session Origin, AR Plane Manager, AR Raycast Manager.</li>
+              <li>Налаштуйте Build Settings для iOS, підключіть пристрій через Xcode.</li>
+              <li>Додайте скрипти для подій, як OnPlaneDetected.</li>
+          </ol>
+          <p style="margin-top: 10px;">Документація: <a href="https://developer.apple.com/documentation/arkit" target="_blank" style="color: #007bff; text-decoration: none;">ARKit Docs</a>. Зразки: <a href="https://developer.apple.com/augmented-reality/arkit/" target="_blank" style="color: #007bff; text-decoration: none;">ARKit Samples</a>.</p>
+      </details>
+      
+      <details style="margin-bottom: 10px;">
+          <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Структура проекту для новачків</summary>
+          <p style="margin-top: 10px; text-align: justify; font-size: 26px;">Структура в Unity з ARKit: Assets/ з плагінами (ARKit.unitypackage), Scenes/ з AR Session, Scripts/ для логіки (PlaneVisualizer.cs), Plugins/iOS/ для native коду. Послідовність: Імпорт пакетів, налаштування сцени, кодування взаємодій, тест на iPhone/iPad. Обсяг: Базовий — 100 файлів; з моделями — 500+.</p>
+      </details>
+      
+      <details style="margin-bottom: 10px;">
+          <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Можливості експорту та інтеграція з рушіями</summary>
+          <p style="margin-top: 10px; text-align: justify; font-size: 26px;">Експорт: Лише на iOS пристрої. Інтеграція: З Unity через AR Foundation (абстракція); native з Swift/Objective-C в Xcode. Не для VR, але комбінується з Reality Composer для гібридів.</p>
+      </details>
+      
+      <details style="margin-bottom: 10px;">
+          <summary style="cursor: pointer; color: #0056b3; font-weight: bold;">Інтеграція з іншими платформами</summary>
+          <p style="margin-top: 10px; text-align: justify; font-size: 26px;">GitHub: Репозиторії з зразками <a href="https://github.com/Unity-Technologies/arfoundation-samples" target="_blank" style="color: #007bff; text-decoration: none;">AR Foundation Samples</a>. Jira: Для управління задачами в командах. Спеціалізовані: Apple Developer Forums.</p>
+      </details>
+      
+      <details style="cursor: pointer; display: inline-block; margin-top: 10px;">
+          <summary style="display: inline-block; background: #eee; padding: 5px; border-radius: 50%; color: #333; font-weight: bold;">🔍</summary>
+          <ul style="list-style: none; padding: 0; margin-top: 10px; font-size: 26px;">
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Скачати SDK</summary><p style="margin-top: 5px;">Через Xcode: <a href="https://developer.apple.com/arkit/" target="_blank" style="color: #007bff; text-decoration: none;">ARKit</a>.</p></details></li>
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Документація</summary><p style="margin-top: 5px;"><a href="https://developer.apple.com/documentation/arkit" target="_blank" style="color: #007bff; text-decoration: none;">Docs</a>.</p></details></li>
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Зразки</summary><p style="margin-top: 5px;"><a href="https://developer.apple.com/augmented-reality/arkit/" target="_blank" style="color: #007bff; text-decoration: none;">Samples</a>.</p></details></li>
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Туторіал</summary><p style="margin-top: 5px;"><a href="https://www.youtube.com/watch?v=FWyTf3USDCQ" target="_blank" style="color: #007bff; text-decoration: none;">YouTube</a>.</p></details></li>
+              <li><details><summary style="cursor: pointer; color: #0056b3;">Форум</summary><p style="margin-top: 5px;"><a href="https://developer.apple.com/forums/" target="_blank" style="color: #007bff; text-decoration: none;">Apple Forums</a>.</p></details></li>
+          </ul>
+      </details>
+  </div>
+
+
+       <!-- Підсумок -->
       <h3 style="font-size:42px; color:#003366; margin-top:2rem;">Підсумок</h3>
       <p style="animation: fadeIn 1s 3.6s ease-out; font-family: 'Garamond', 'Georgia', serif; font-size: 36px; color:  #2F1B0C;">
         Вибір правильного SDK залежить від цілей проєкту: маркерне чи маркер-менше AR, платформи (мобільні чи стаціонарні гарнітури) та необхідного рівня інтерактивності. Комбінуючи SDK та API, можна створити багатофункціональні AR/VR-застосунки із швидким часом розробки й високою якістю користувацького досвіду.
       </p>
+
     </div>
     
     
