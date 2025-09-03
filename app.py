@@ -32,7 +32,11 @@ def rayban_firmware_map():
 
 @app.route('/applevisionpro_software')
 def applevisionpro_software_map():
-    return render_template('applevisionpro_software.html')     
+    return render_template('applevisionpro_software.html')  
+
+@app.route('/ar_vr_examples')       
+def ar_vr_examples_map():       
+    return render_template('ar_vr_examples.html')   
 
 @app.route('/immersive_world')
 def cloning_methods():
