@@ -42,11 +42,6 @@
 
 <p>Всі інструменти безкоштовні для особистих/освітніх проектів (платні версії для комерції). Вказую посилання, розміри, час установки (орієнтовний, залежить від швидкості інтернету 50+ Mbps) та точні кроки з меню.</p>
 
-<div id="draggable-intro" class="draggable" style="top: 150px; left: 50px;">
-    <div class="draggable-header">Вступ</div>
-    <button onclick="toggleDescription('desc-intro')">Показати/Сховати</button>
-    <div id="desc-intro" class="toggle-content">Клікніть для деталей, переміщуйте мишкою.</div>
-</div>
 
 <h2>1. Підготовка середовища розробки</h2>
 
@@ -80,11 +75,7 @@
 <img src="https://cdn-icons-png.flaticon.com/512/3646/3646965.png" alt="Unity Editor Illustration" style="width: 300px;" onclick="toggleDescription('unity-desc')">
 <div id="unity-desc" class="toggle-content">Ілюстрація Unity Editor: Показує інтерфейс для налаштування AR/VR-проектів.</div>
 
-<div id="draggable-unity" class="draggable" style="top: 300px; left: 800px;">
-    <div class="draggable-header">Unity Встановлення</div>
-    <button onclick="toggleDescription('desc-unity')">Показати/Сховати</button>
-    <div id="desc-unity" class="toggle-content">Деталі кроку 1.1: Встановлення Unity Hub та Editor.</div>
-</div>
+
 
 <h3>Крок 1.2: Встановлення Android SDK (для Android/ARCore)</h3>
 <p>Потрібно для білду на Android-пристрої.</p>
@@ -170,11 +161,6 @@
 
 <div id="sdk-desc" class="toggle-content">Ілюстрація SDK плагінів: Показує інтеграцію AR Foundation, Vuforia тощо в Unity.</div>
 
-<div id="draggable-sdk" class="draggable" style="top: 900px; left: 50px;">
-    <div class="draggable-header">SDK Плагіни</div>
-    <button onclick="toggleDescription('desc-sdk')">Показати/Сховати</button>
-    <div id="desc-sdk" class="toggle-content">Деталі кроку 1.4: Встановлення AR/VR SDK в Unity.</div>
-</div>
 
 <h3>Крок 1.5: Налаштування емуляторів та пристроїв</h3>
 <ul>
@@ -190,9 +176,8 @@
     <li><strong>Тест на пристрої:</strong> Для Android — увімкніть USB Debugging (Settings > Developer Options). Для iOS — Apple Developer Program (безкоштовно для тестів).</li>
 </ul>
 
-<img src="https://cdn-icons-png.flaticon.com/512/2177/2177328.png" alt="Emulator Setup Illustration" style="width: 300px;" onclick="toggleDescription('emulator-desc')">
-<div id="emulator-desc" class="toggle-content">Ілюстрація налаштування емуляторів: Для тестування AR/VR на пристроях.</div>
 
+<div id="emulator-desc" class="toggle-content">Ілюстрація налаштування емуляторів: Для тестування AR/VR на пристроях.</div>
 
 
 <h2>2. Створення та накладення 3D-моделей</h2>
@@ -292,12 +277,6 @@ public class PlaceObject : MonoBehaviour {
 
 <div id="testing-desc" class="toggle-content">Ілюстрація тестування: Деплоїмент та оптимізація AR/VR-додатків.</div>
 
-<div id="draggable-test" class="draggable" style="top: 1900px; left: 800px;">
-    <div class="draggable-header">Тестування</div>
-    <button onclick="toggleDescription('desc-test')">Показати/Сховати</button>
-    <div id="desc-test" class="toggle-content">Деталі розділу 4: Тестування та деплоїмент.</div>
-</div>
-
 <h2>Альтернатива: Unreal Engine</h2>
 <p>Якщо Unity не підходить (для фотореалізму):</p>
 <ul>
@@ -310,12 +289,6 @@ public class PlaceObject : MonoBehaviour {
 </ul>
 
 <div id="unreal-desc" class="toggle-content">Ілюстрація Unreal Engine: Альтернатива для фотореалістичних AR/VR-проектів.</div>
-
-<div id="draggable-unreal" class="draggable" style="top: 2100px; left: 50px;">
-    <div class="draggable-header">Unreal Engine</div>
-    <button onclick="toggleDescription('desc-unreal')">Показати/Сховати</button>
-    <div id="desc-unreal" class="toggle-content">Деталі альтернативи: Unreal Engine.</div>
-</div>
 
 <p>Цей посібник дозволяє створити складний додаток, наприклад, AR-меблі з жестами та анімаціями. Якщо потрібно розширити (e.g., multiplayer), додайте Photon або Mirror. Почніть з простої сцени та додавайте складність. Успіхів!</p>
 
