@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR/VR Development Blueprint</title>
+    <style>
+        body { background-color: #fcf8f0; color: #5C3317; font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        h1, h2, h3 { color: #8B4513; }
+        a { color: #DAA520; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul { list-style-type: square; }
+        ol { margin-left: 20px; }
+        code { background-color: #E0E0E0; padding: 10px; border-radius: 5px; display: block; white-space: pre-wrap; }
+        .draggable { position: absolute; z-index: 10; background-color: #dbc58c; border: 1px solid #8B4513; text-align: center; color: #5C3317; cursor: move; padding: 10px; border-radius: 5px; width: 120px; }
+        .draggable-header { padding: 5px; background-color: #8B4513; color: #F5F5DC; font-weight: bold; }
+        .toggle-content { display: none; background-color: #F5F5DC; border: 1px solid #DAA520; padding: 10px; margin-top: 10px; border-radius: 5px; }
+        img { max-width: 100%; height: auto; border-radius: 5px; margin: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .icon { cursor: pointer; width: 60px; height: 60px; margin: 10px; transition: transform 0.2s; }
+        .icon:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+<h1 id="top">Практичний посібник з AR/VR-розробки в Unity</h1>
+
+<p>Цей посібник розкриває основи створення AR/VR-застосунків, пояснюючи роль Unity Hub, Unity Editor, ключових SDK (AR Foundation, Vuforia, MRTK, Google ARCore) та їх інтеграцію для платформ, включаючи браузери та спеціалізовані пристрої, такі як Meta Quest, Ray-Ban Meta та Apple Vision Pro.</p>
+
+
+<div id="vr-desc-intro" class="toggle-content">Ілюстрація VR-окулярів: Символізує вступ до AR/VR-розробки.</div>
+
+<h2>1. Пояснення щодо Unity Hub і його зв'язку з Unity як десктопною програмою</h2>
+
+<p>Unity часто сприймається як "просто десктопна програма" (тобто Unity Editor — основний інструмент для створення ігор та застосунків), але екосистема Unity включає кілька компонентів. Unity Hub — це <strong>менеджер (launcher)</strong> для Unity Editor. Він встановлюється як окрема десктопна програма на ваш ПК (Windows, macOS або Linux) і слугує "центром керування" для Unity.</p>
+
+<h3>Як насправді працює Unity Hub?</h3>
+<ul>
+    <li><strong>Завантаження та установка:</strong> Завантажте Unity Hub з офіційного сайту (<a href="https://unity.com/download">https://unity.com/download</a>), оберіть вашу ОС (.exe для Windows, .dmg для Mac). Файл ~100 MB встановлюється як звичайна програма. Після запуску Hub пропонує увійти в акаунт Unity (безкоштовний) і дозволяє завантажувати Unity Editor з різними версіями та модулями.</li>
+    <li><strong>Зв'язок з Unity Editor:</strong> Unity Editor — основна програма для створення проектів (моделі, скрипти, сцени). Hub керує Editor: встановлює версії (наприклад, 2022.3 LTS або 6000.0 на 2025 рік), додає модулі (Android, iOS, XR/AR/VR). Editor запускається через Hub, але проекти можна відкривати напряму.</li>
+    <li><strong>Поєднання з плагінами (Vuforia, AR Foundation, MRTK, Google ARCore):</strong> Hub не встановлює плагіни — це робиться в Unity Editor через Package Manager або Asset Store. Hub забезпечує сумісність, дозволяючи перемикатися між версіями Editor для AR/VR-плагінів.</li>
+</ul>
+
+<h3>Основні функції та можливості Unity Hub (2025):</h3>
+<ul>
+    <li><strong>Керування версіями Unity Editor:</strong> Встановлення, оновлення, видалення версій (LTS для стабільності, Tech Stream для нових функцій).</li>
+    <li><strong>Керування проектами:</strong> Список проектів, створення нових, перевірка сумісності.</li>
+    <li><strong>Доступ до Asset Store та Package Manager:</strong> Швидкий перехід до плагінів (<a href="https://assetstore.unity.com">Asset Store</a>).</li>
+    <li><strong>Ліцензії та активація:</strong> Керування Personal/Pro/Enterprise ліцензіями.</li>
+    <li><strong>Колаборація та Cloud:</strong> Інтеграція з Unity Cloud для Git, командної роботи.</li>
+    <li><strong>Додаткові інструменти:</strong> Розділ "Learn" для туториалів, аддони (Visual Studio).</li>
+    <li><strong>Переваги:</strong> Економія часу, ~200 MB, офлайн-режим.</li>
+</ul>
+
+<p>Коротко: Unity Hub — це "диспетчер" для Unity Editor, який спрощує керування, але не створює контент. Це десктопний інструмент з онлайн-інтеграцією.</p>
+
+
+<div id="unity-hub-desc" class="toggle-content">Ілюстрація Unity Hub: Показує центр керування для Unity Editor.</div>
+
+
+
+<h2>2. Пояснення щодо Vuforia, AR Foundation, MRTK, Google ARCore: Як вони підключаються в Unity, їх роль як middleware</h2>
+
+<p>Ці інструменти — <strong>SDK/плагіни</strong>, що додають AR/VR-функції в Unity Editor. Вони не є окремими програмами, а бібліотеками, які інтегруються в проект. Підключення відбувається в Unity, але для білду на Android/iOS потрібні Android Studio/Xcode.</p>
+
+<h3>Загальний процес підключення в Unity:</h3>
+<ol>
+    <li>Відкрийте Unity Editor (через Hub).</li>
+    <li>Перейдіть до <strong>Window > Package Manager</strong> (або Asset Store).</li>
+    <li>Шукайте пакет (наприклад, "AR Foundation"), натисніть "Install" або "Import".</li>
+    <li>Додайте компоненти до сцени (наприклад, AR Session).</li>
+    <li>Налаштуйте: <strong>Edit > Project Settings > XR Plug-in Management</strong> — оберіть платформи (Android, iOS).</li>
+    <li>Тестуйте: Build & Run на пристрої.</li>
+</ol>
+
+
+<div id="sdk-desc" class="toggle-content">Ілюстрація SDK: Інтеграція плагінів у Unity для AR/VR.</div>
+
+<h3>Детально по кожному:</h3>
+
+<ul>
+    <li><strong>AR Foundation:</strong>
+        <ul>
+            <li><strong>Що це?</strong> Кросплатформенний фреймворк Unity для AR. Працює з iOS (ARKit) та Android (ARCore), підтримує відстеження площин, якорів, облич, зображень.</li>
+            <li><strong>Як підключається?</strong> У Package Manager: Search "AR Foundation" > Install (версія 6.1+ на 2025, ~100 MB). Додайте "ARCore XR Plugin" (Android) та "ARKit XR Plugin" (iOS).</li>
+            <li><strong>Middleware?</strong> Так, абстрагує код від ARKit/ARCore. Unity компілює для Android Studio (APK) або Xcode (IPA), ховаючи деталі.</li>
+        </ul>
+    </li>
+    <li><strong>Vuforia:</strong>
+        <ul>
+            <li><strong>Що це?</strong> SDK від PTC для маркер-based AR (розпізнавання зображень, об'єктів). Корисно для QR-кодів, 3D-моделей.</li>
+            <li><strong>Як підключається?</strong> Реєстрація на <a href="https://developer.vuforia.com">https://developer.vuforia.com</a>, завантажте ключ. У Package Manager: Add package from git URL > "com.ptc.vuforia.engine" > Add. Або Asset Store: Search "Vuforia Engine" > Import. Додайте Vuforia Behaviour до камери. Безкоштовно з watermark, платно без.</li>
+            <li><strong>Middleware?</strong> Так, забезпечує взаємодію з камерою/сенсорами через Unity.</li>
+        </ul>
+    </li>
+    <li><strong>MRTK (Mixed Reality Toolkit):</strong>
+        <ul>
+            <li><strong>Що це?</strong> Інструментарій Microsoft для MR/AR/VR. Включає UI, жести, голос, взаємодію (HoloLens, Quest, Android/iOS).</li>
+            <li><strong>Як підключається?</strong> Завантажте Mixed Reality Feature Tool з <a href="https://aka.ms/MRFeatureTool">https://aka.ms/MRFeatureTool</a> (~50 MB). У інструменті: Import MRTK3 (Core, UX). У Unity: Mixed Reality > MRTK3 > Configure.</li>
+            <li><strong>Middleware?</strong> Так, абстрагує інпут/інтерфейси для кросплатформенності.</li>
+        </ul>
+    </li>
+    <li><strong>Google ARCore:</strong>
+        <ul>
+            <li><strong>Що це?</strong> SDK Google для AR на Android (motion tracking, environmental understanding).</li>
+            <li><strong>Як підключається?</strong> Через AR Foundation: Install ARCore XR Plugin в Package Manager. Прямо: <a href="https://developers.google.com/ar">https://developers.google.com/ar</a>. Додайте AR Session.</li>
+            <li><strong>Middleware?</strong> Так, інтегрується через Unity для Android-білдів.</li>
+        </ul>
+    </li>
+</ul>
+
+<p>Всі вони — middleware, спрощують роботу з hardware (камера, сенсори), дозволяючи фокусуватися на коді в Unity. Android Studio/Xcode потрібні для фінального пакування (APK/IPA).</p>
+
+
+
+<h2>3. Третій варіант: Запуск та використання в браузері (WebGL/WebXR)</h2>
+
+<p>Unity підтримує білд для браузерів через <strong>WebGL</strong> (2D/3D) та <strong>WebXR</strong> (AR/VR). Це дозволяє запускати додатки без установки в Chrome/Firefox/Edge.</p>
+
+<h3>Як реалізувати?</h3>
+<ol>
+    <li>В Unity: File > Build Settings > Platform = WebGL > Switch Platform.</li>
+    <li>Налаштуйте: Edit > Project Settings > Player > WebGL > Compression Format (Gzip/Brotli).</li>
+    <li>Build: Створить папку (.js, .wasm, .data). Завантажте на сервер (GitHub Pages, AWS).</li>
+    <li>Для AR/VR: Встановіть WebXR Export (Package Manager > "WebXR"). Додайте WebXR Manager. Підтримує AR на мобільних браузерах.</li>
+</ol>
+
+<p><strong>Особливості:</strong> Безкоштовно, але обмежено (базовий доступ до hardware). AR — відстеження площин, VR — для гарнітур (Quest). Тестуйте в Chrome (chrome://flags > WebXR). На 2025 рік WebXR покращився для мобільного AR.</p>
+
+
+<div id="webxr-desc" class="toggle-content">Ілюстрація WebXR: Запуск AR/VR у браузері.</div>
+
+
+
+<h2>4. Четвертий варіант: Застосунки для спеціальних девайсів</h2>
+
+<p>Unity підтримує спеціальні пристрої через XR-плагіни: оберіть платформу, додайте SDK, білд.</p>
+
+<h3>Oculus/Meta Quest:</h3>
+<ul>
+    <li><strong>SDK/Інтеграція:</strong> Install "Oculus XR Plugin" або "OpenXR" в Package Manager. Завантажте Oculus Integration з Asset Store (безкоштовно).</li>
+    <li><strong>Кроки:</strong> Edit > Project Settings > XR Plug-in Management > Android > Oculus/OpenXR. Увімкніть Developer Mode на Quest через app Meta. Build APK, завантажте через SideQuest (<a href="https://sidequestvr.com">https://sidequestvr.com</a>) або Oculus Developer Hub. Підтримує контролери, hand tracking.</li>
+</ul>
+
+<h3>Ray-Ban Meta AR glasses:</h3>
+<ul>
+    <li><strong>SDK/Інтеграція:</strong> Meta XR SDK або OpenXR. Використовуйте Meta XR Simulator. Підтримує voice AI, camera (не повний AR).</li>
+    <li><strong>Кроки:</strong> Install Meta XR All-in-One SDK з <a href="https://developers.meta.com">https://developers.meta.com</a>. Project Settings > XR > OpenXR. Build для Android. Тестуйте з simulator.</li>
+</ul>
+
+<h3>Apple Vision Pro:</h3>
+<ul>
+    <li><strong>SDK/Інтеграція:</strong> visionOS SDK (PolySpatial). Install "visionOS Build Support" в Hub, "Apple visionOS XR Plugin" в Package Manager.</li>
+    <li><strong>Кроки:</strong> Потрібен Mac з Xcode 16+. Edit > Project Settings > Player > visionOS. Додайте VisionOS Session. Build IPA, тестуйте через Apple Developer Program ($99/рік). Підтримує eye-tracking, gestures, spatial audio.</li>
+</ul>
+
+<p>Ці варіанти забезпечують нативні додатки з повним доступом до hardware.</p>
+
+
+<div id="devices-desc" class="toggle-content">Ілюстрація спеціальних пристроїв: Meta Quest, Ray-Ban, Vision Pro.</div>
+
+
+
+<a href="#top" style="display: block; text-align: center; margin-top: 20px;">Повернутися нагору</a>
+
+<script>
+    function toggleDescription(id) {
+        var element = document.getElementById(id);
+        element.style.display = (element.style.display === 'block' || element.style.display === '') ? 'none' : 'block';
+    }
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        var header = document.getElementById(elmnt.id + "-header") || elmnt;
+        header.onmousedown = dragMouseDown;
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    document.querySelectorAll('.draggable').forEach(dragElement);
+</script>
+
+</body>
+</html>

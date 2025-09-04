@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Практичний посібник з створення AR/VR-застосунків у Unity</title>
+    <style>
+        body { background-color: #f0f0e3; color: #5C3317; font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        h1, h2, h3 { color: #8B4513; }
+        a { color: #DAA520; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul { list-style-type: square; }
+        ol { margin-left: 20px; }
+        code { background-color: #E0E0E0; padding: 10px; border-radius: 5px; display: block; white-space: pre-wrap; }
+        .draggable { position: absolute; z-index: 10; background-color: rgb(216, 200, 159); border: 1px solid #8B4513; text-align: center; color: #5C3317; cursor: move; padding: 10px; border-radius: 5px; width: 120px; }
+        .draggable-header { padding: 5px; background-color: #8B4513; color: #F5F5DC; font-weight: bold; }
+        .toggle-content { display: none; background-color: #F5F5DC; border: 1px solid #DAA520; padding: 10px; margin-top: 10px; border-radius: 5px; }
+        img { max-width: 100%; height: auto; border-radius: 5px; margin: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .icon { cursor: pointer; width: 60px; height: 60px; margin: 10px; transition: transform 0.2s; }
+        .icon:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+<h1 id="top">Практичний посібник з створення складних та динамічних AR/VR-застосунків у Unity</h1>
+
+<p>Практичний, детальний та покроковий алгоритм, щоб навіть початківець міг створити складний інтерактивний додаток (наприклад, AR-додаток для розміщення меблів з жестами, голосовим керуванням та динамічними анімаціями, або VR-сцену з взаємодією об'єктів).</p>
+
+<p>Я фокусуюся на <strong>Unity</strong> як основному рушії, оскільки він популярніший для AR/VR-початківців (підтримує AR Foundation для кросплатформенності, має велику спільноту та легший інтерфейс). Як альтернатива, наприкінці розділу декілька слів про Unreal Engine.</p>
+
+<img src="https://cdn-icons-png.flaticon.com/512/4262/4262596.png" alt="VR Glasses Illustration" class="icon" onclick="toggleDescription('vr-desc-intro')">
+<div id="vr-desc-intro" class="toggle-content">Ілюстрація VR-окулярів: Символізує вступ до AR/VR-розробки в Unity.</div>
+
+<h2>Вимоги до вашого ПК/Мак:</h2>
+<ul>
+    <li>ОС: Windows 10/11, macOS 10.15+ або Linux.</li>
+    <li>Процесор: Intel Core i5 або еквівалент, 8 GB RAM (рекомендовано 16 GB для складних проектів).</li>
+    <li>Диск: Мінімум 20 GB вільного місця (для Unity + SDK + інструментів).</li>
+    <li>Інтернет: Стабільне з'єднання (завантаження може зайняти години).</li>
+    <li>Пристрої для тестування: Android-смартфон з ARCore (наприклад, Google Pixel), iPhone з ARKit (iPhone 8+), або VR-гарнітура як Meta Quest 3.</li>
+</ul>
+
+<p>Всі інструменти безкоштовні для особистих/освітніх проектів (платні версії для комерції). Вказую посилання, розміри, час установки (орієнтовний, залежить від швидкості інтернету 50+ Mbps) та точні кроки з меню.</p>
+
+<div id="draggable-intro" class="draggable" style="top: 150px; left: 50px;">
+    <div class="draggable-header">Вступ</div>
+    <button onclick="toggleDescription('desc-intro')">Показати/Сховати</button>
+    <div id="desc-intro" class="toggle-content">Клікніть для деталей, переміщуйте мишкою.</div>
+</div>
+
+<h2>1. Підготовка середовища розробки</h2>
+
+<h3>Крок 1.1: Встановлення Unity</h3>
+<p>Unity — кросплатформенний рушій для AR/VR. Підтримує AR Foundation (для ARKit/ARCore), Vuforia, MRTK тощо.</p>
+<ul>
+    <li><strong>Посилання:</strong> <a href="https://unity.com/download">https://unity.com/download</a></li>
+    <li><strong>Платність:</strong> Безкоштовно (Unity Personal для проектів з бюджетом &lt; $100k/рік).</li>
+    <li><strong>Розмір:</strong> Unity Hub ~100 MB (завантаження), Unity Editor з модулями ~2-3 GB (встановлений ~5-10 GB з AR/VR-модулями).</li>
+    <li><strong>Час установки:</strong> 10-30 хв (завантаження Hub: 1-2 хв; Editor: 5-20 хв залежно від модулів).</li>
+</ul>
+
+<p><strong>Покрокова установка:</strong></p>
+<ol>
+    <li>Завантажте Unity Hub з сайту (виберіть вашу ОС).</li>
+    <li>Запустіть інсталятор. У вікні "Unity Hub Setup" оберіть шлях (наприклад, C:\Program Files\Unity Hub), натисніть "Next" > "Install".</li>
+    <li>Відкрийте Unity Hub. Натисніть "Sign in" (створіть акаунт, якщо немає).</li>
+    <li>У Hub натисніть "Installs" > "Install Editor".</li>
+    <li>Оберіть останню LTS-версію (наприклад, Unity 6000.0 LTS на 2025 рік). У вікні "Add modules" оберіть:
+        <ul>
+            <li>Android Build Support (для ARCore/Android).</li>
+            <li>iOS Build Support (для ARKit/iOS, потребує Mac).</li>
+            <li>Windows Build Support (якщо на Windows).</li>
+            <li>Додаткові: OpenXR (для VR), WebGL (якщо потрібно).</li>
+        </ul>
+    </li>
+    <li>Натисніть "Install". Чекайте завершення (прогрес у Hub).</li>
+    <li>Створіть новий проект: "Projects" > "New Project" > Оберіть шаблон "3D" або "AR/VR" (якщо доступний), вкажіть ім'я (наприклад, "MyARApp"), натисніть "Create Project".</li>
+</ol>
+
+<img src="https://cdn-icons-png.flaticon.com/512/3646/3646965.png" alt="Unity Editor Illustration" style="width: 300px;" onclick="toggleDescription('unity-desc')">
+<div id="unity-desc" class="toggle-content">Ілюстрація Unity Editor: Показує інтерфейс для налаштування AR/VR-проектів.</div>
+
+<div id="draggable-unity" class="draggable" style="top: 300px; left: 800px;">
+    <div class="draggable-header">Unity Встановлення</div>
+    <button onclick="toggleDescription('desc-unity')">Показати/Сховати</button>
+    <div id="desc-unity" class="toggle-content">Деталі кроку 1.1: Встановлення Unity Hub та Editor.</div>
+</div>
+
+<h3>Крок 1.2: Встановлення Android SDK (для Android/ARCore)</h3>
+<p>Потрібно для білду на Android-пристрої.</p>
+<ul>
+    <li><strong>Посилання:</strong> <a href="https://developer.android.com/studio">https://developer.android.com/studio</a></li>
+    <li><strong>Платність:</strong> Безкоштовно.</li>
+    <li><strong>Розмір:</strong> Android Studio ~1 GB (завантаження), SDK з компонентами ~5-10 GB (встановлений до 52 GB, якщо всі API, але можна обмежити).</li>
+    <li><strong>Час установки:</strong> 30-60 хв (завантаження: 5-10 хв; установка + SDK: 20-50 хв).</li>
+</ul>
+
+<p><strong>Покрокова установка:</strong></p>
+<ol>
+    <li>Завантажте Android Studio (виберіть .exe для Windows або .dmg для Mac).</li>
+    <li>Запустіть інсталятор. У "Android Studio Setup" оберіть "Standard" > "Next".</li>
+    <li>У процесі установки оберіть SDK-компоненти: Android SDK Platform (API 33+ для ARCore), Android SDK Tools.</li>
+    <li>Після установки відкрийте Android Studio. Натисніть "SDK Manager" (іконка шестерні > SDK Manager).</li>
+    <li>У SDK Manager оберіть вкладку "SDK Platforms" > Встановіть API 34 (Android 14) та 33.</li>
+    <li>Вкладка "SDK Tools" > Встановіть "Android SDK Build-Tools", "Android Emulator" (якщо потрібно емулятор).</li>
+    <li>Натисніть "Apply" > "OK". Чекайте завантаження (~2-5 GB).</li>
+    <li>У Unity: Edit > Project Settings > Player > Android > Other Settings > Minimum API Level = 24 (для ARCore).</li>
+</ol>
+
+
+<div id="android-desc" class="toggle-content">Ілюстрація Android Studio: Для налаштування ARCore на Android пристроях.</div>
+
+
+
+<h3>Крок 1.3: Встановлення iOS SDK (Xcode, для iOS/ARKit)</h3>
+<p>Тільки на Mac.</p>
+<ul>
+    <li><strong>Посилання:</strong> <a href="https://developer.apple.com/xcode/">https://developer.apple.com/xcode/</a> (або App Store).</li>
+    <li><strong>Платність:</strong> Безкоштовно (потрібен Apple ID).</li>
+    <li><strong>Розмір:</strong> Завантаження ~12 GB, встановлений ~23 GB (для Xcode 16+).</li>
+    <li><strong>Час установки:</strong> 1-3 години (завантаження: 30-60 хв; розпакування: 30-120 хв, особливо на Intel Mac).</li>
+</ul>
+
+<p><strong>Покрокова установка:</strong></p>
+<ol>
+    <li>Відкрийте Mac App Store, пошукайте "Xcode", натисніть "Get" (або завантажте з developer.apple.com).</li>
+    <li>Чекайте завантаження (прогрес в App Store).</li>
+    <li>Після завантаження відкрийте Xcode. У першому запуску воно розпакує компоненти (може зайняти 30+ хв).</li>
+    <li>У Xcode: Xcode > Settings > Platforms > Встановіть iOS SDK (якщо не автоматично).</li>
+    <li>У Unity: Edit > Project Settings > Player > iOS > Other Settings > Target SDK = iPhone Only, Architecture = ARM64.</li>
+</ol>
+
+<div id="xcode-desc" class="toggle-content">Ілюстрація Xcode: Для розробки ARKit на iOS.</div>
+
+
+<h3>Крок 1.4: Встановлення AR/VR SDK та плагінів у Unity</h3>
+<ul>
+    <li><strong>AR Foundation (кросплатформенний для ARKit/ARCore):</strong>
+        <ul>
+            <li>Безкоштовно, ~100 MB.</li>
+            <li>У Unity: Window > Package Manager > Search "AR Foundation" > Install (версія 6.0+).</li>
+            <li>Додайте провайдери: Search "ARCore XR Plugin" та "ARKit XR Plugin" > Install.</li>
+        </ul>
+    </li>
+    <li><strong>Vuforia (для маркер-based AR):</strong>
+        <ul>
+            <li>Безкоштовно базова версія (watermark), повна — платна.</li>
+            <li>Посилання: <a href="https://developer.vuforia.com/downloads/sdk">https://developer.vuforia.com/downloads/sdk</a></li>
+            <li>У Unity: Window > Package Manager > Add package from git URL > Вставте "com.ptc.vuforia.engine" > Add.</li>
+            <li>Або завантажте з Asset Store: Assets > Asset Store > Search "Vuforia" > Import.</li>
+        </ul>
+    </li>
+    <li><strong>MRTK (Mixed Reality Toolkit, для VR/AR з жестами):</strong>
+        <ul>
+            <li>Безкоштовно.</li>
+            <li>Посилання: <a href="https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/">https://learn.microsoft.com/en-us/windows/mixed-reality/mrtk-unity/</a></li>
+            <li>Завантажте Mixed Reality Feature Tool з <a href="https://aka.ms/MRFeatureTool">https://aka.ms/MRFeatureTool</a> (~50 MB, установка 5 хв).</li>
+            <li>У інструменті: Import MRTK3 packages > Select features (Core, UX, Input) > Import to Unity.</li>
+            <li>У Unity: Mixed Reality > MRTK3 > Configure > Assign Default Profile.</li>
+        </ul>
+    </li>
+    <li><strong>ARCore SDK (для Android):</strong>
+        <ul>
+            <li>Безкоштовно, ~50 MB.</li>
+            <li>Посилання: <a href="https://developers.google.com/ar/develop/downloads">https://developers.google.com/ar/develop/downloads</a></li>
+            <li>Інтегрується через ARCore XR Plugin (вже в AR Foundation).</li>
+        </ul>
+    </li>
+</ul>
+
+<div id="sdk-desc" class="toggle-content">Ілюстрація SDK плагінів: Показує інтеграцію AR Foundation, Vuforia тощо в Unity.</div>
+
+<div id="draggable-sdk" class="draggable" style="top: 900px; left: 50px;">
+    <div class="draggable-header">SDK Плагіни</div>
+    <button onclick="toggleDescription('desc-sdk')">Показати/Сховати</button>
+    <div id="desc-sdk" class="toggle-content">Деталі кроку 1.4: Встановлення AR/VR SDK в Unity.</div>
+</div>
+
+<h3>Крок 1.5: Налаштування емуляторів та пристроїв</h3>
+<ul>
+    <li><strong>Android емулятор:</strong> У Android Studio > AVD Manager > Create Virtual Device > Оберіть Pixel з ARCore > System Image API 30+.</li>
+    <li><strong>Meta Quest (для VR):</strong> 
+        <ul>
+            <li>Посилання: <a href="https://developers.meta.com/horizon/documentation/native/android/mobile-device-setup/">https://developers.meta.com/horizon/documentation/native/android/mobile-device-setup/</a></li>
+            <li>Безкоштовно.</li>
+            <li>У мобільному app Meta Quest: Menu > Devices > Ваш Quest > Headset Settings > Developer Mode > Enable.</li>
+            <li>Під'єднайте USB: У Unity Edit > Project Settings > XR Plug-in Management > Android > OpenXR.</li>
+        </ul>
+    </li>
+    <li><strong>Тест на пристрої:</strong> Для Android — увімкніть USB Debugging (Settings > Developer Options). Для iOS — Apple Developer Program (безкоштовно для тестів).</li>
+</ul>
+
+<img src="https://cdn-icons-png.flaticon.com/512/2177/2177328.png" alt="Emulator Setup Illustration" style="width: 300px;" onclick="toggleDescription('emulator-desc')">
+<div id="emulator-desc" class="toggle-content">Ілюстрація налаштування емуляторів: Для тестування AR/VR на пристроях.</div>
+
+
+
+<h2>2. Створення та накладення 3D-моделей</h2>
+
+<h3>Крок 2.1: Встановлення Blender (для моделювання)</h3>
+<ul>
+    <li><strong>Посилання:</strong> <a href="https://www.blender.org/download/">https://www.blender.org/download/</a></li>
+    <li><strong>Платність:</strong> Безкоштовно.</li>
+    <li><strong>Розмір:</strong> Завантаження ~200-300 MB, встановлений ~1.5 GB.</li>
+    <li><strong>Час установки:</strong> 2-3 хв.</li>
+</ul>
+
+<p><strong>Покрокова установка:</strong></p>
+<ol>
+    <li>Завантажте останню версію (Blender 4.5+).</li>
+    <li>Запустіть інсталятор > "Next" > Install.</li>
+</ol>
+
+<div id="blender-desc" class="toggle-content">Ілюстрація Blender: Інструмент для створення 3D-моделей для AR/VR.</div>
+
+
+<h3>Крок 2.2: Створення моделі покроково</h3>
+<ol>
+    <li>Відкрийте Blender. Натисніть "General" шаблон.</li>
+    <li>Моделювання: View > Add > Mesh > Cube (створіть каркас). Використовуйте інструменти в Toolbar (ліворуч): Extrude (E), Loop Cut (Ctrl+R).</li>
+    <li>Текстурування: Перейдіть до закладки "Shading" > Add Material > Використовуйте Node Editor для додавання текстур (Image Texture Node > Open image з Photoshop/Substance Painter).</li>
+    <li>Експорт: File > Export > glTF (.glb) або FBX. Оберіть шлях, натисніть "Export glTF 2.0". (glTF сумісний з Unity AR).</li>
+</ol>
+
+<div id="modeling-desc" class="toggle-content">Ілюстрація процесу моделювання: Покрокове створення 3D-об'єктів у Blender.</div>
+
+<h3>Крок 2.3: Імпорт у Unity</h3>
+<ol>
+    <li>У Unity: Assets > Import Package > Custom Package (або перетягніть файл .glb/.fbx у Project вікно).</li>
+    <li>Перетягніть модель на Scene. Додайте компоненти: GameObject > XR > AR Session (для AR), AR Session Origin.</li>
+    <li>Визначення якоря: Додайте AR Anchor Manager до AR Session Origin. У скрипті (C#): Використовуйте ARRaycastManager для hit-testing (промінь на площину).</li>
+    <li>Відстеження: AR Foundation використовує SLAM автоматично. У Inspector: AR Plane Manager > Detection Mode = Horizontal/Vertical.</li>
+    <li>Рендеринг: Додайте AR Camera Manager до Main Camera.</li>
+</ol>
+
+<div id="import-desc" class="toggle-content">Ілюстрація імпорту: Накладення 3D-моделей у Unity для AR.</div>
+
+
+<h2>3. Додавання інтерактивності</h2>
+
+<p>Інтерактивність — реакція на дотики, жести, голос тощо, як ви описали.</p>
+
+<h3>Крок 3.1: Базова інтерактивність</h3>
+<ol>
+    <li>Сцена: У Hierarchy створіть ієрархію (Scene Graph): Parent Object > Child Model з Transform.</li>
+    <li>Hit-testing: Додайте AR Raycast Manager до AR Session Origin. Створіть скрипт (Assets > Create > C# Script): 
+        <code>using UnityEngine.XR.ARFoundation;
+public class PlaceObject : MonoBehaviour {
+    public ARRaycastManager raycastManager;
+    void Update() {
+        if (Input.touchCount > 0) {
+            Touch touch = Input.GetTouch(0);
+            List&lt;ARRaycastHit&gt; hits = new List&lt;ARRaycastHit&gt;();
+            raycastManager.Raycast(touch.position, hits, TrackableType.Planes);
+            if (hits.Count > 0) { /* Інстанціюйте модель на hits[0].pose */ }
+        }
+    }
+}</code>
+        Прикріпіть до AR Session Origin.
+    </li>
+    <li>Жести: Використовуйте MRTK: Додайте MRTK Input System. Для pinch/rotate — Object Manipulator компонент на модель.</li>
+    <li>Голос: Інтегруйте Speech Recognition (Window > Package Manager > "Windows Speech" для Windows, або third-party як Google Cloud Speech-to-Text API).
+        <ul>
+            <li>Приклад: У скрипті використайте KeywordRecognizer для команд ("open door").</li>
+        </ul>
+    </li>
+    <li>Eye-tracking: Для Quest — використовуйте Oculus Integration (Asset Store > "Oculus Integration" > Import). Додайте EyeTracking компонент.</li>
+</ol>
+
+<div id="interactivity-desc" class="toggle-content">Ілюстрація інтерактивності: Жести, дотики та голосове керування в AR/VR.</div>
+
+
+<h3>Крок 3.2: Анімації</h3>
+<ol>
+    <li>У Blender: Створіть анімацію (Animation закладка > Insert Keyframe).</li>
+    <li>Експорт з анімацією в glTF.</li>
+    <li>У Unity: Додайте Animator компонент > Create Animator Controller > Додайте стани (Idle, Open).</li>
+    <li>У скрипті: animator.SetTrigger("Open") на подію (наприклад, touch).</li>
+</ol>
+
+
+<div id="animation-desc" class="toggle-content">Ілюстрація анімацій: Динамічні ефекти в 3D-моделях.</div>
+
+<h2>4. Тестування та деплоїмент</h2>
+
+<ol>
+    <li>Тест у Editor: Play Mode з XR Simulation (Window > XR > Simulation > Enable).</li>
+    <li>Build: File > Build Settings > Add Open Scenes > Platform = Android/iOS > Build & Run (під'єднайте пристрій).</li>
+    <li>Для Quest: Змініть платформу на Android, додайте OpenXR. Build APK > Перенесіть на Quest через SideQuest (<a href="https://sidequestvr.com/">https://sidequestvr.com/</a>, безкоштовно).</li>
+    <li>Оптимізація: Використовуйте Profiler (Window > Analysis > Profiler) для CPU/GPU.</li>
+</ol>
+
+<div id="testing-desc" class="toggle-content">Ілюстрація тестування: Деплоїмент та оптимізація AR/VR-додатків.</div>
+
+<div id="draggable-test" class="draggable" style="top: 1900px; left: 800px;">
+    <div class="draggable-header">Тестування</div>
+    <button onclick="toggleDescription('desc-test')">Показати/Сховати</button>
+    <div id="desc-test" class="toggle-content">Деталі розділу 4: Тестування та деплоїмент.</div>
+</div>
+
+<h2>Альтернатива: Unreal Engine</h2>
+<p>Якщо Unity не підходить (для фотореалізму):</p>
+<ul>
+    <li>Посилання: <a href="https://www.unrealengine.com/en-US/download">https://www.unrealengine.com/en-US/download</a></li>
+    <li>Платність: Безкоштовно.</li>
+    <li>Розмір: ~35 GB завантаження, встановлений ~115 GB (можна зменшити, виключивши шаблони).</li>
+    <li>Час: 1-3 години.</li>
+    <li>Установка: Завантажте Epic Games Launcher > Install UE 5.6+ > Options > Виключіть непотрібні (e.g., no iOS якщо не потрібно).</li>
+    <li>AR/VR: Project > Plugins > Enable AR Utilities, OpenXR.</li>
+</ul>
+
+<div id="unreal-desc" class="toggle-content">Ілюстрація Unreal Engine: Альтернатива для фотореалістичних AR/VR-проектів.</div>
+
+<div id="draggable-unreal" class="draggable" style="top: 2100px; left: 50px;">
+    <div class="draggable-header">Unreal Engine</div>
+    <button onclick="toggleDescription('desc-unreal')">Показати/Сховати</button>
+    <div id="desc-unreal" class="toggle-content">Деталі альтернативи: Unreal Engine.</div>
+</div>
+
+<p>Цей посібник дозволяє створити складний додаток, наприклад, AR-меблі з жестами та анімаціями. Якщо потрібно розширити (e.g., multiplayer), додайте Photon або Mirror. Почніть з простої сцени та додавайте складність. Успіхів!</p>
+
+<a href="#top" style="display: block; text-align: center; margin-top: 20px;">Повернутися нагору</a>
+
+<script>
+    function toggleDescription(id) {
+        var element = document.getElementById(id);
+        element.style.display = (element.style.display === 'block' || element.style.display === '') ? 'none' : 'block';
+    }
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        var header = document.getElementById(elmnt.id + "-header") || elmnt;
+        header.onmousedown = dragMouseDown;
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    // Застосувати draggable до всіх елементів
+    document.querySelectorAll('.draggable').forEach(dragElement);
+</script>
+
+</body>
+</html>

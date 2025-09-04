@@ -20,8 +20,16 @@ def unity_map():
 
 @app.route('/blender')
 def blender_map():
-    return render_template('blender.html')   
+    return render_template('blender.html')  
 
+@app.route('/guide_AR_VR_apps_creation')
+def guide_map():
+    return render_template('guide_AR_VR_apps_creation.html')  
+
+@app.route('/unityhub_unityeditor_plagins')
+def unityhub_map():
+    return render_template('unityhub_unityeditor_plagins.html')      
+ 
 @app.route('/ar_vr_devices')
 def ar_vr_devices_map():
     return render_template('ar_vr_devices.html') 
