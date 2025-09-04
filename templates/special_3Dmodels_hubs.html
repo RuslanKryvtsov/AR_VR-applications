@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR/VR 3D Modeling Guide</title>
+    <style>
+        body { background-color: #f0f0e3; color: #5C3317; font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        h1, h2, h3 { color: #8B4513; }
+        a { color: #DAA520; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        ul { list-style-type: square; }
+        ol { margin-left: 20px; }
+        code { background-color: #E0E0E0; padding: 10px; border-radius: 5px; display: block; white-space: pre-wrap; }
+        .draggable { position: absolute; z-index: 10; background-color: #DAA520; border: 1px solid #8B4513; text-align: center; color: #5C3317; cursor: move; padding: 10px; border-radius: 5px; width: 120px; }
+        .draggable-header { padding: 5px; background-color: #8B4513; color: #F5F5DC; font-weight: bold; }
+        .toggle-content { display: none; background-color: #F5F5DC; border: 1px solid #DAA520; padding: 10px; margin-top: 10px; border-radius: 5px; }
+        img { max-width: 100%; height: auto; border-radius: 5px; margin: 10px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .icon { cursor: pointer; width: 60px; height: 60px; margin: 10px; transition: transform 0.2s; }
+        .icon:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+<h1 id="top">Детальне пояснення: Створення та накладення 3D-моделей для AR/VR</h1>
+
+<p>Цей посібник детально описує процес створення 3D-моделей для AR/VR-застосунків у Unity. 3D-моделі — основа AR/VR, адже вони накладаються на реальний світ (AR) або формують віртуальний (VR). Процес охоплює моделювання, текстурування, експорт і інтеграцію з AR/VR-функціями (відстеження, якорі, рендеринг). Розділ розширений для початківців, з актуальними даними на вересень 2025 року.</p>
+
+
+<div id="modeling-desc-intro" class="toggle-content">Ілюстрація 3D-моделювання: Символізує створення віртуальних об’єктів для AR/VR.</div>
+
+<h2>Коментар до ваших міркувань</h2>
+
+<p>Ваші твердження про Unity Hub, плагіни та інструменти (Android Studio, Xcode) загалом правильні, але потребують уточнень:</p>
+<ul>
+    <li><strong>Unity Hub як "диспетчер":</strong> Точно. Hub керує Unity Editor (основною програмою для створення контенту), версіями та модулями. Без нього робота з Editor була б складнішою.</li>
+    <li><strong>Плагіни через Package Manager:</strong> 100% вірно. Плагіни (AR Foundation, WebXR, Oculus XR) додаються для адаптації до платформ:
+        <ul>
+            <li>Android (ARCore): ARCore XR Plugin + Android Build Support.</li>
+            <li>iOS (ARKit): ARKit XR Plugin + iOS Build Support.</li>
+            <li>Браузери: WebGL + WebXR Export.</li>
+            <li>Спеціальні девайси (Meta Quest, Ray-Ban Meta, Apple Vision Pro, HoloLens): Oculus XR Plugin, Meta XR SDK, visionOS XR Plugin, MRTK.</li>
+        </ul>
+    </li>
+    <li><strong>Android Studio/Xcode для білду:</strong> Правильно. Вони компілюють код у APK (Android) або IPA (iOS), а не створюють контент.</li>
+    <li><strong>Рендеринг і плагіни:</strong> Частково правильно. Рендеринг — це функція Unity Editor (GPU). Плагіни забезпечують трекінг (SLAM, якорі) та сумісність з hardware через Studio/Xcode. Рендеринг відбувається в Unity, але плагіни зв’язують його з пристроями.</li>
+    <li><strong>3D/4D моделі та анімації:</strong> Так, моделі створюються в програмах як Blender, Maya, Cinema 4D (термін "4D" — маркетинг, означає 3D + анімація). Cinema 4D популярний у кіно (наприклад, "Spider-Man: No Way Home").</li>
+</ul>
+
+
+
+<h2>Розширений покроковий процес створення та накладення 3D-моделей</h2>
+
+<h3>Крок 2.1: Встановлення Blender (для моделювання)</h3>
+<p>Blender — безкоштовний open-source інструмент для 3D-моделювання, анімації та текстурування, ідеальний для AR/VR завдяки сумісності з Unity (glTF/FBX). На вересень 2025 року: Blender 4.5 LTS (стабільна, підтримка до липня 2027).</p>
+<ul>
+    <li><strong>Посилання:</strong> <a href="https://www.blender.org/download/">https://www.blender.org/download/</a></li>
+    <li><strong>Платність:</strong> Безкоштовно (GPL-ліцензія).</li>
+    <li><strong>Розмір:</strong> Завантаження ~250-350 MB, встановлений ~1.5-2 GB.</li>
+    <li><strong>Час установки:</strong> 2-5 хвилин.</li>
+</ul>
+
+<p><strong>Покрокова установка:</strong></p>
+<ol>
+    <li>Перейдіть на сайт, оберіть "Download Blender 4.5" (або нову стабільну).</li>
+    <li>Завантажте файл (наприклад, blender-4.5.0-windows-x64.msi).</li>
+    <li>Запустіть інсталятор: "Next" > Шлях (C:\Program Files\Blender Foundation\Blender 4.5) > "Install".</li>
+    <li>Запустіть Blender: Натисніть "New File" > "General".</li>
+    <li>Налаштування: Edit > Preferences > Interface > Resolution Scale = 1.5; Add-ons > Enable "Node Wrangler".</li>
+</ol>
+<p><strong>Альтернативи:</strong> Maya (<a href="https://www.autodesk.com/products/maya/free-trial">30-денний тріал</a>), Cinema 4D (<a href="https://www.maxon.net/en/cinema-4d">student-версія</a>).</p>
+
+
+<div id="blender-desc" class="toggle-content">Ілюстрація встановлення Blender: Інструмент для 3D-моделювання.</div>
+
+
+
+<h3>Крок 2.2: Створення моделі покроково</h3>
+<p>Створимо модель столу з анімацією шухляди для AR-додатка.</p>
+<ol>
+    <li><strong>Відкрийте Blender:</strong> "New" > "General" (сцена з кубом).</li>
+    <li><strong>Моделювання:</strong>
+        <ul>
+            <li>Edit Mode (Tab) > View > Add > Mesh > Cube.</li>
+            <li>Toolbar: "Extrude" (E) для форми (ноги столу); "Loop Cut" (Ctrl+R) для деталізації.</li>
+            <li>Інструменти: "Bevel" (Ctrl+B) для кутів; "Subdivide" (Right-click) для вершин.</li>
+            <li>Складність: Add > Mesh > Cylinder; Modifier > Subdivision Surface.</li>
+        </ul>
+    </li>
+    <li><strong>Текстурування:</strong>
+        <ul>
+            <li>Закладка "Shading" > Material Properties > "New" > Назвіть "Wood".</li>
+            <li>Node Editor: Add > Texture > Image Texture > Open (wood.jpg).</li>
+            <li>З’єднайте: Image Texture > Color до Base Color (Principled BSDF).</li>
+            <li>Деталі: Add > Texture > Noise Texture; Metallic = 0.1, Roughness = 0.5.</li>
+            <li>UV Mapping: Edit Mode > UV > Unwrap.</li>
+        </ul>
+    </li>
+    <li><strong>Анімація:</strong>
+        <ul>
+            <li>Закладка "Animation" > Insert Keyframe (I) на Timeline.</li>
+            <li>Шухляда: Frame 1: Закрита (I > LocRot); Frame 50: Відкрита (I > LocRot).</li>
+            <li>Ефекти: Add > Effect > Particle System (дим); Geometry Nodes (зростання).</li>
+        </ul>
+    </li>
+    <li><strong>Експорт:</strong>
+        <ul>
+            <li>File > Export > glTF 2.0 (.glb) — оптимально для Unity.</li>
+            <li>Альтернатива: FBX.</li>
+            <li>Налаштування: Apply Modifiers > Include > Selected Objects > "Export glTF 2.0".</li>
+        </ul>
+    </li>
+</ol>
+
+
+<div id="modeling-process-desc" class="toggle-content">Ілюстрація моделювання: Створення 3D-об’єктів у Blender.</div>
+
+
+
+<h3>Крок 2.3: Імпорт у Unity</h3>
+<p>Інтеграція моделі в Unity для AR/VR.</p>
+<ol>
+    <li><strong>Імпорт:</strong>
+        <ul>
+            <li>Assets > Import New Asset (або перетягніть .glb/.fbx).</li>
+            <li>Альтернатива: Assets > Import Package > Custom Package.</li>
+        </ul>
+    </li>
+    <li><strong>Налаштування:</strong>
+        <ul>
+            <li>Перетягніть модель на Scene (Hierarchy).</li>
+            <li>Inspector: Mesh Renderer, Mesh Collider.</li>
+            <li>AR: AR Tracked Image Manager (маркери) або AR Anchor (якорі).</li>
+            <li>Текстури: Materials > Extract Materials > Призначте вручну (якщо потрібно).</li>
+            <li>Анімація: Animator > New Controller > Додайте кліпи.</li>
+        </ul>
+    </li>
+    <li><strong>Інтеграція з AR/VR:</strong>
+        <ul>
+            <li>AR Session Origin > Скрипт для Raycast: Instantiate модель.</li>
+            <li>Тест: Play Mode > Перевірте рендеринг.</li>
+        </ul>
+    </li>
+</ol>
+
+
+<div id="unity-import-desc" class="toggle-content">Ілюстрація імпорту: Накладення моделі в Unity для AR/VR.</div>
+
+
+<h2>Хаби/портали для готових моделей та лайфхаки</h2>
+<p>Використовуйте готові моделі з хабів, щоб економити час:</p>
+<ul>
+    <li><strong>Unity Asset Store:</strong> <a href="https://assetstore.unity.com">assetstore.unity.com</a> — безкоштовні моделі ("Free 3D Models").</li>
+    <li><strong>Sketchfab:</strong> <a href="https://sketchfab.com">sketchfab.com</a> — фільтр "Downloadable & Free" (glTF/FBX).</li>
+    <li><strong>Poly Haven:</strong> <a href="https://polyhaven.com">polyhaven.com</a> — безкоштовні HDRI, текстури, моделі.</li>
+    <li><strong>CGTrader:</strong> <a href="https://www.cgtrader.com/free-3d-models">cgtrader.com/free-3d-models</a> — безкоштовні моделі.</li>
+    <li><strong>TurboSquid:</strong> <a href="https://www.turbosquid.com/Free-3D-Models">turbosquid.com/Free-3D-Models</a>.</li>
+    <li><strong>Thingiverse:</strong> <a href="https://www.thingiverse.com">thingiverse.com</a> — для 3D-друку, але сумісно.</li>
+    <li><strong>Itch.io:</strong> <a href="https://itch.io/game-assets/free">itch.io/game-assets/free</a>.</li>
+    <li><strong>Quaternius:</strong> <a href="https://quaternius.com">quaternius.com</a> — low-poly.</li>
+    <li><strong>Kenney:</strong> <a href="https://kenney.nl/assets">kenney.nl/assets</a> — безкоштовні набори.</li>
+    <li><strong>BlenderKit:</strong> Аддон у Blender, безкоштовний план.</li>
+</ul>
+<p><strong>Лайфхаки для початківців:</strong></p>
+<ol>
+    <li>Починайте з простих форм (куб/сфера), додавайте складність поступово (<10k вершин для AR).</li>
+    <li>Аддони в Blender: LoopTools (Edit > Preferences > Add-ons).</li>
+    <li>Текстури: <a href="https://ambientcg.com">AmbientCG.com</a>.</li>
+    <li>Тестуйте імпорт у Unity одразу (фіксуйте нормалі).</li>
+    <li>Туториали: Blender Guru, CG Cookie (YouTube).</li>
+    <li>Оптимізація: LOD (Level of Detail) у Unity.</li>
+    <li>Анімація: Ключові кадри для об’єктів; Rigging для персонажів.</li>
+    <li>Бекапи: File > Save As.</li>
+</ol>
+
+
+<div id="hubs-desc" class="toggle-content">Ілюстрація хабів: Портали для готових 3D-моделей.</div>
+
+
+<a href="#top" style="display: block; text-align: center; margin-top: 20px;">Повернутися нагору</a>
+
+<script>
+    function toggleDescription(id) {
+        var element = document.getElementById(id);
+        element.style.display = (element.style.display === 'block' || element.style.display === '') ? 'none' : 'block';
+    }
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        var header = document.getElementById(elmnt.id + "-header") || elmnt;
+        header.onmousedown = dragMouseDown;
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+
+    document.querySelectorAll('.draggable').forEach(dragElement);
+</script>
+
+</body>
+</html>

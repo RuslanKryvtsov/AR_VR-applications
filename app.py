@@ -28,8 +28,13 @@ def guide_map():
 
 @app.route('/unityhub_unityeditor_plagins')
 def unityhub_map():
-    return render_template('unityhub_unityeditor_plagins.html')      
- 
+    return render_template('unityhub_unityeditor_plagins.html')   
+
+@app.route('/special_3Dmodels_hubs')
+def scenes_map():
+    return render_template('special_3Dmodels_hubs.html')   
+       
+
 @app.route('/ar_vr_devices')
 def ar_vr_devices_map():
     return render_template('ar_vr_devices.html') 
