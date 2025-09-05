@@ -30,6 +30,10 @@ def guide_map():
 def unityhub_map():
     return render_template('unityhub_unityeditor_plagins.html')   
 
+@app.route('/csharp_scriptscreation')
+def csharp_map():
+    return render_template('csharp_scriptscreation.html')       
+
 @app.route('/special_3Dmodels_hubs')
 def scenes_map():
     return render_template('special_3Dmodels_hubs.html')   

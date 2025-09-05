@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Створення та Інтеграція Скриптів C# для AR/VR у Unity</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #3C2F2F; /* Темно-коричневий */
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            animation: fadeIn 1s ease-in;
+        }
+        h1, h2, h3 {
+            color: #2A3F5F; /* Темно-синій */
+        }
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: slideInDown 0.8s ease-out;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin-top: 30px;
+            border-bottom: 2px solid #2A3F5F;
+            padding-bottom: 10px;
+            animation: slideInLeft 0.8s ease-out;
+        }
+        h3 {
+            font-size: 1.4em;
+            margin-top: 20px;
+        }
+        p {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+        strong {
+            color: #2A3F5F;
+            font-weight: 700;
+        }
+        code {
+            background-color: #E8E8E8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #3C2F2F;
+        }
+        pre {
+            background-color: #2A3F5F;
+            color: #E8E8E8;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeInCode 1s ease-in;
+        }
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+        li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        /* Анімації */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes fadeInCode {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        /* Hover ефекти */
+        h2:hover, h3:hover {
+            color: #4A5F7F;
+            transition: color 0.3s ease;
+        }
+        pre:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.3s ease;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Створення та Інтеграція Скриптів C# для AR/VR у Unity</h1>
+
+        <div class="section">
+            
+            <p>Як <strong>розробник AR/VR додатків</strong> на Unity, процес створення <strong>скриптів C#</strong> та їх інтеграції з <strong>3D моделями</strong> (імпортованими з Blender у форматах <code>FBX</code> або <code>GLTF</code>) є стандартизованим і базується на <strong>workflow Unity Editor</strong>. Спочатку переконайтеся, що Unity встановлено (рекомендую версію <strong>2022.3+ LTS</strong> для стабільності AR/VR), і імпортовано необхідні пакети через <code>Window > Package Manager</code>: <strong>AR Foundation</strong> (для AR basics), <strong>Mixed Reality Toolkit (MRTK)</strong> для жестів/інтерактивності, <strong>Oculus XR Plugin</strong> для Quest-specific features, та <strong>Unity's XR Interaction Toolkit</strong> для cross-platform. Для <strong>голосового розпізнавання</strong> може знадобитися <strong>Windows Speech</strong> (вбудовано для Windows targets) або third-party assets, як <strong>Wit.ai</strong> (з Asset Store).</p>
+
+            <h3>Загальна послідовність для будь-якого скрипту:</h3>
+            <ol>
+                <li><strong>Підготовка проекту:</strong> <code>File > New Project > 3D</code> (або URP/HDRP для кращої графіки). Налаштуйте платформу: <code>Edit > Project Settings > XR Plug-in Management > Виберіть Android/iOS</code> для AR, або Standalone для VR. Для Quest: Установіть <strong>OpenXR</strong> як провайдера.</li>
+                <li><strong>Імпорт 3D моделей з Blender:</strong> Експортуйте модель з Blender (<code>File > Export > FBX</code> або <code>GLTF</code>). У Unity: <code>Assets > Import New Asset > Виберіть файл</code>. Перетягніть модель у <strong>Hierarchy</strong> для створення GameObject, або створіть <strong>Prefab</strong> (перетягніть у <code>Project > Assets</code> для збереження як префаб).</li>
+                <li><strong>Створення скрипту:</strong> У Project вікні: Правою кнопкою миші > <code>Create > C# Script</code>. Назвіть скрипт (наприклад, <code>ARObjectPlacer</code>). Відкрийте в <strong>Visual Studio</strong> (подвійний клік) і вставте код.</li>
+                <li><strong>Інтеграція з моделлю/сценою:</strong> Перетягніть скрипт на GameObject у <strong>Hierarchy</strong> (модель або parent об'єкт). Налаштуйте public поля в <strong>Inspector</strong> (наприклад, присвойте префаб моделі).</li>
+                <li><strong>Тестування:</strong> <code>Window > XR > Simulation > Enable</code> для симуляції в Editor. Або Build: <code>File > Build Settings > Add Open Scenes > Build and Run</code> на пристрої.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>1. Hit-Testing та Розміщення Об'єктів (Скрипт: ARObjectPlacer)</h2>
+            <p>Цей скрипт інтегрується з <strong>AR сценою</strong> для розміщення моделей на виявлених планах. Він вимагає <strong>AR Foundation</strong>.</p>
+            <h3>Послідовність створення та інтеграції:</h3>
+            <ol>
+                <li><strong>Налаштування AR сцени:</strong> У <strong>Hierarchy</strong>: Правою кнопкою > <code>XR > AR Session</code> (створює AR Session GameObject). Потім Правою > <code>XR > AR Session Origin</code> (додає камеру та raycast support).</li>
+                <li><strong>Додайте AR Raycast Manager:</strong> Виберіть AR Session Origin у <strong>Hierarchy</strong> > <strong>Inspector</strong> > <code>Add Component > XR > AR Raycast Manager</code>.</li>
+                <li><strong>Створіть префаб моделі:</strong> Імпортуйте 3D модель з Blender (<code>Assets > Import New Asset</code>). Перетягніть її у <strong>Hierarchy</strong>, налаштуйте <strong>Transform</strong> (позиція/ротація/масштаб). Потім перетягніть назад у <code>Project > Assets</code> для створення префабу (наприклад, <code>MyModel.prefab</code>).</li>
+                <li><strong>Створіть скрипт:</strong> У <code>Project > Assets</code>: Правою > <code>Create > C# Script > Назвіть ARObjectPlacer</code>. Відкрийте в код-едиторі та вставте код.</li>
+                <li><strong>Інтегруйте скрипт:</strong> Виберіть AR Session Origin у <strong>Hierarchy</strong> > <strong>Inspector</strong> > <code>Add Component > Script > Виберіть ARObjectPlacer</code>. У Inspector для скрипту: Присвойте <strong>Raycast Manager</strong> (перетягніть з AR Session Origin). Присвойте <strong>Object Prefab</strong> (перетягніть <code>MyModel.prefab</code> з Assets).</li>
+                <li><strong>Інтеграція з сценою:</strong> Якщо модель є частиною складної сцени (наприклад, <strong>Hierarchy</strong>: <code>ParentScene > ChildModels</code>), прикріпіть скрипт до <code>ParentScene</code>. Для множинних моделей: Створіть пустий GameObject (<code>Pравою > Create Empty</code>) як <code>PlacementManager</code> і прикріпіть скрипт туди.</li>
+                <li><strong>Тестування:</strong> У Editor: <strong>Play Mode</strong>. Торкніться екрану (симулюйте touch мишкою). На пристрої: Build для Android/iOS. Якщо jitter: <code>Edit > Project Settings > XR > AR Foundation > Plane Detection Mode = Horizontal</code>.</li>
+            </ol>
+            <pre>
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+
+public class ARObjectPlacer : MonoBehaviour
+{
+    [SerializeField] private ARRaycastManager raycastManager;  // Посилання на ARRaycastManager для виконання raycasts
+    [SerializeField] private GameObject objectPrefab;  // Префаб 3D моделі для інстанціювання (з Blender)
+    [SerializeField] private TrackableType trackableTypes = TrackableType.Planes;  // Типи trackables для raycast (плоскості)
+
+    private void Update()
+    {
+        if (Input.touchCount > 0)  // Перевіряємо наявність дотику (для мобільного AR)
+        {
+            Touch touch = Input.GetTouch(0);  // Отримуємо перший дотик
+            if (touch.phase == TouchPhase.Began)  // Реагуємо тільки на початок дотику, щоб уникнути багаторазового розміщення
+            {
+                List<ARRaycastHit> hits = new List<ARRaycastHit>();  // Список хітів від raycast
+                if (raycastManager.Raycast(touch.position, hits, trackableTypes))  // Виконуємо raycast з позиції дотику
+                {
+                    if (hits.Count > 0)  // Якщо є хоча б один хіт
+                    {
+                        Pose hitPose = hits[0].pose;  // Отримуємо позу (позиція + ротація) першого хіта
+                        Instantiate(objectPrefab, hitPose.position, hitPose.rotation);  // Інстанціюємо об'єкт на поверхні
+                        Debug.Log("Object placed at: " + hitPose.position);  // Лог для дебагу
+                    }
+                }
+            }
+        }
+    }
+}
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>2. Жести Руками (Скрипт: GestureInteractor)</h2>
+            <p>Інтеграція з <strong>MRTK</strong> для маніпуляцій об'єктами. Вимагає <strong>MRTK Foundation</strong> та Input пакети.</p>
+            <h3>Послідовність створення та інтеграції:</h3>
+            <ol>
+                <li><strong>Налаштування MRTK:</strong> <code>Window > Package Manager > Search "Mixed Reality Toolkit" > Install MRTK Foundation, Examples, Tools</code>. Потім <code>MRTK > Add to Scene > Default Profile</code> (додає MRTK GameObject з Input System).</li>
+                <li><strong>Підготуйте модель:</strong> Імпортуйте з Blender як префаб (наприклад, <code>InteractableObject.prefab</code>). Додайте <strong>Collider</strong> (<code>Inspector > Add Component > Box Collider</code>) для raycast/hit detection.</li>
+                <li><strong>Додайте MRTK компоненти:</strong> Виберіть префаб у <strong>Hierarchy</strong> > <code>Add Component > MRTK > Input > Object Manipulator</code> (для pinch/drag/rotate). Додайте <strong>Near Interaction Grabbable</strong> якщо для VR hands.</li>
+                <li><strong>Створіть скрипт:</strong> <code>Project > Assets</code>: Правою > <code>Create > C# Script > GestureInteractor</code>. Вставте код.</li>
+                <li><strong>Інтегруйте скрипт:</strong> Перетягніть скрипт на префаб у <strong>Hierarchy</strong>. <strong>Inspector</strong> автоматично покаже Manipulator (якщо не, присвойте вручну). Для сцени з множинними об'єктами: Створіть <strong>Hierarchy</strong>: <code>SceneRoot > InteractableGroup > ChildObject1</code> (з скриптом), <code>ChildObject2</code> тощо.</li>
+                <li><strong>Інтеграція з сценою:</strong> Якщо модель анімована, додайте <strong>RigidBody</strong> (<code>Add Component > Physics > RigidBody</code>) для фізики під час маніпуляцій. Для AR: Комбінуйте з <strong>AR Plane Manager</strong> для anchored interactions.</li>
+                <li><strong>Тестування:</strong> <strong>Play Mode</strong> з MRTK simulation (<code>MRTK > Tools > Simulation > Enable Hand Simulation</code>). На Quest: Build для Android, sideload via SideQuest. Оптимізуйте: <code>Edit > Project Settings > MRTK > Input > Gesture Settings</code> для чутливості.</li>
+            </ol>
+            <pre>
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;
+using UnityEngine;
+
+[RequireComponent(typeof(ObjectManipulator))]  // Вимагаємо компонент MRTK для маніпуляцій
+public class GestureInteractor : MonoBehaviour
+{
+    private ObjectManipulator manipulator;  // Посилання на MRTK компонент для жестів
+
+    private void Start()
+    {
+        manipulator = GetComponent<ObjectManipulator>();  // Отримуємо компонент
+        manipulator.OnManipulationStarted.AddListener(OnManipulationStart);  // Підписуємося на подію початку маніпуляції
+        manipulator.OnManipulationEnded.AddListener(OnManipulationEnd);  // Підписуємося на кінець
+    }
+
+    private void OnManipulationStart(ManipulationEventData eventData)
+    {
+        // Логіка на початок жесту (наприклад, pinch або drag)
+        Debug.Log("Gesture started: " + eventData.ManipulationSource);  // Лог джерела жесту (рука/контролер)
+        // Можна додати ефекти, як зміна кольору об'єкта
+        GetComponent<Renderer>().material.color = Color.yellow;
+    }
+
+    private void OnManipulationEnd(ManipulationEventData eventData)
+    {
+        // Логіка на кінець жесту
+        Debug.Log("Gesture ended. New position: " + transform.position);
+        GetComponent<Renderer>().material.color = Color.white;  // Повертаємо колір
+    }
+}
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>3. Голосові Команди (Скрипт: VoiceCommandHandler)</h2>
+            <p>Інтеграція з <strong>голосовим API</strong>. Для cross-platform використовуйте <strong>Wit.ai</strong> або вбудований <strong>Windows Speech</strong>.</p>
+            <h3>Послідовність створення та інтеграції:</h3>
+            <ol>
+                <li><strong>Налаштування голосового API:</strong> Для Windows/HoloLens: Нічого додаткового. Для інших: <code>Asset Store > Search "Wit.ai" > Import</code>. Setup: <code>Window > Wit.ai > Configuration > Вставте API ключ</code>.</li>
+                <li><strong>Підготуйте модель:</strong> Імпортуйте з Blender. Якщо анімована (наприклад, двері), додайте <strong>Animator</strong> (<code>Add Component > Miscellaneous > Animator</code>) і створіть <strong>Controller</strong> (<code>Assets > Create > Animator Controller</code>).</li>
+                <li><strong>Створіть скрипт:</strong> <code>Project > Assets</code>: Правою > <code>Create > C# Script > VoiceCommandHandler</code>. Вставте код.</li>
+                <li><strong>Інтегруйте скрипт:</strong> Перетягніть на модель у <strong>Hierarchy</strong> (наприклад, <code>DoorObject</code>). Якщо з анімацією: Присвойте <strong>Animator</strong> у <strong>Inspector</strong>. Додайте ключові слова в коді (наприклад, <code>"open door"</code> тригерить <code>animator.SetTrigger("Open")</code>).</li>
+                <li><strong>Інтеграція з сценою:</strong> Для складної сцени: Створіть <strong>AudioManager</strong> (<code>Create Empty</code>) і прикріпіть скрипт туди, роблячи його global. Використовуйте <strong>events</strong>: У коді додайте <strong>UnityEvents</strong> для виклику з інших об'єктів.</li>
+                <li><strong>Тестування:</strong> <strong>Play Mode</strong>: Говоріть команди (забезпечте мікрофон). Для мобільних: <code>Edit > Project Settings > Player > Other Settings > Microphone Usage</code>. Build і тест на пристрої. Якщо шум: Додайте confidence threshold в коді (<code>args.confidence > 0.8</code>).</li>
+            </ol>
+            <pre>
+using UnityEngine;
+using UnityEngine.Windows.Speech;
+
+public class VoiceCommandHandler : MonoBehaviour
+{
+    private KeywordRecognizer keywordRecognizer;
+    private Dictionary<string, Action> keywords = new Dictionary<string, Action>();
+
+    private void Start()
+    {
+        keywords.Add("open door", OpenDoor);
+        keywords.Add("close door", CloseDoor);
+
+        keywordRecognizer = new KeywordRecognizer(keywords.Keys.ToArray());
+        keywordRecognizer.OnPhraseRecognized += OnPhraseRecognized;
+        keywordRecognizer.Start();
+    }
+
+    private void OnPhraseRecognized(PhraseRecognizedEventArgs args)
+    {
+        keywords[args.text].Invoke();
+        Debug.Log("Recognized command: " + args.text);
+    }
+
+    private void OpenDoor()
+    {
+        GetComponent<Animator>().SetTrigger("Open");
+    }
+
+    private void CloseDoor()
+    {
+        GetComponent<Animator>().SetTrigger("Close");
+    }
+
+    private void OnDestroy()
+    {
+        keywordRecognizer.Stop();
+    }
+}
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>4. Погляд та Eye-Tracking (Скрипт: EyeGazeInteractor)</h2>
+            <p>Для VR, інтеграція з <strong>Oculus API</strong>. Вимагає <strong>Oculus Integration</strong>.</p>
+            <h3>Послідовність створення та інтеграції:</h3>
+            <ol>
+                <li><strong>Налаштування Oculus:</strong> <code>Asset Store > Search "Oculus Integration" > Import</code>. <code>Edit > Project Settings > XR Plug-in Management > Oculus</code>.</li>
+                <li><strong>Підготуйте модель:</strong> Імпортуйте з Blender. Додайте <strong>Collider</strong> для raycast. Якщо анімована, налаштуйте <strong>Animator</strong>.</li>
+                <li><strong>Створіть скрипт:</strong> <code>Project > Assets</code>: Правою > <code>Create > C# Script > EyeGazeInteractor</code>. Вставте код.</li>
+                <li><strong>Інтегруйте скрипт:</strong> Перетягніть на модель у <strong>Hierarchy</strong>. Для eye-tracking: Додайте <strong>OVRManager</strong> (<code>Hierarchy > Create Empty > Add Component > Oculus > OVR Manager</code>) і ввімкніть eye tracking.</li>
+                <li><strong>Інтеграція з сценою:</strong> У VR сцені: <strong>Hierarchy</strong>: <code>XR Rig > Head > Attach скрипт</code> до interactive об'єктів. Для множинних: Використовуйте <strong>layer masks</strong> в Raycast (<code>Edit > Project Settings > Physics > Layer Collision Matrix</code>).</li>
+                <li><strong>Тестування:</strong> <strong>Play Mode</strong> з Oculus Link. Build APK: <code>File > Build Settings > Android > Build</code>. Sideload via SideQuest. Моніторте latency в <strong>Profiler</strong> (<code>Window > Analysis > Profiler > XR модуль</code>).</li>
+            </ol>
+            <pre>
+using Oculus.Platform;
+using UnityEngine;
+
+public class EyeGazeInteractor : MonoBehaviour
+{
+    [SerializeField] private float gazeDuration = 2f;
+    private float gazeTimer = 0f;
+    private bool isGazed = false;
+
+    private void Update()
+    {
+        Ray gazeRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        if (Physics.Raycast(gazeRay, out RaycastHit hit))
+        {
+            if (hit.collider.gameObject == this.gameObject)
+            {
+                isGazed = true;
+                gazeTimer += Time.deltaTime;
+                if (gazeTimer >= gazeDuration)
+                {
+                    ActivateObject();
+                    gazeTimer = 0f;
+                }
+            }
+            else
+            {
+                ResetGaze();
+            }
+        }
+        else
+        {
+            ResetGaze();
+        }
+    }
+
+    private void ActivateObject()
+    {
+        GetComponent<Animator>().Play("Activate");
+        Debug.Log("Object activated by gaze");
+    }
+
+    private void ResetGaze()
+    {
+        isGazed = false;
+        gazeTimer = 0f;
+    }
+}
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>5. Тригер Анімацій на Події (Скрипт: AnimationTrigger)</h2>
+            <p>Інтеграція анімацій з Blender в <strong>Unity's Animator</strong>.</p>
+            <h3>Послідовність створення та інтеграції:</h3>
+            <ol>
+                <li><strong>Імпорт анімації:</strong> У Blender: <code>Animation > Insert Keyframes > Export FBX</code>. У Unity: Import > Налаштуйте <strong>Import Settings</strong> (<code>Inspector > Animation > Loop Time</code> якщо потрібно).</li>
+                <li><strong>Налаштуйте Animator:</strong> Виберіть модель у <code>Assets > Create > Animator Controller > Назвіть MyAnimController</code>. <code>Window > Animation > Animator</code> > Додайте стани (<code>Idle</code>, <code>Open</code>) і transitions з triggers.</li>
+                <li><strong>Створіть скрипт:</strong> <code>Project > Assets</code>: Правою > <code>Create > C# Script > AnimationTrigger</code>. Вставте код.</li>
+                <li><strong>Інтегруйте скрипт:</strong> Перетягніть на модель у <strong>Hierarchy</strong> > <code>Add Component > Animator > Присвойте Controller</code>. У скрипті: Викликайте <code>TriggerAnimation</code> з подій.</li>
+                <li><strong>Інтеграція з сценою:</strong> Для сцени: <strong>Hierarchy</strong>: <code>AnimatedGroup > ChildAnimatedObject</code> (з скриптом). Комбінуйте з інтерактивністю.</li>
+                <li><strong>Тестування:</strong> <strong>Play Mode</strong>: Симулюйте події (клік/жест). Build і перевірте на пристрої. Оптимізуйте: <code>Window > Analysis > Profiler > Animation</code>.</li>
+            </ol>
+            <pre>
+using UnityEngine;
+
+public class AnimationTrigger : MonoBehaviour
+{
+    private Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+    public void TriggerAnimation(string triggerName)
+    {
+        if (animator != null)
+        {
+            animator.SetTrigger(triggerName);
+            Debug.Log("Animation triggered: " + triggerName);
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        TriggerAnimation("Open");
+    }
+}
+            </pre>
+        </div>
+
+        <div class="section">
+            <h2>Уточнення щодо створення скриптів для Unity Editor: Unity Editor vs Сторонні інструменти</h2>
+            <p>Процес створення та редагування скриптів у Unity стосується <strong>робочого процесу (workflow)</strong>.</p>
+            <h3>Чи пишуться скрипти програмними засобами Unity Editor?</h3>
+            <p>Так, Unity Editor дозволяє створювати скрипти C# <strong>безпосередньо в самому редакторі</strong>, але з нюансами:</p>
+            <ol>
+                <li><strong>Створення скриптів у Unity Editor:</strong> У <code>Project > Assets</code>, Правою кнопкою миші > <code>Create > C# Script</code>. Це створює файл з базовим шаблоном (<code>MonoBehaviour</code>). Назвіть скрипт (наприклад, <code>ARObjectPlacer</code>).</li>
+                <li><strong>Редагування скриптів:</strong> Unity Editor <strong>не має вбудованого текстового редактора</strong>. Подвійний клік на файл відкриває <strong>Visual Studio</strong> або <strong>Visual Studio Code</strong>.</li>
+                <li><strong>Чому згадується Visual Studio?</strong> Visual Studio є стандартним вибором, оскільки Unity налаштовує інтеграцію з ним.</li>
+                <li><strong>Чи можна обійтися без сторонніх інструментів?</strong> Технічно, так, але <strong>не рекомендується</strong>. Сучасні редактори надають <strong>автодоповнення</strong>, <strong>дебагінг</strong>, і <strong>виявлення помилок</strong>.</li>
+                <li><strong>Налаштування Visual Studio Code:</strong> <code>Edit > Preferences > External Tools > External Script Editor > Visual Studio Code</code>. Встановіть розширення: <strong>C#</strong>, <strong>Unity Snippets</strong>.</li>
+                <li><strong>Практичний процес у Unity Editor:</strong> Створення, редагування в VSC/Visual Studio, компіляція в Unity, інтеграція через <strong>Hierarchy</strong> або <strong>Inspector</strong>.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>Висновок</h2>
+            <p>Цей процес забезпечує <strong>модульність</strong>: скрипти можна реюзати як компоненти, а моделі — як префаби для швидкої ітерації. Для production: Використовуйте <strong>Version Control (Git)</strong> і <strong>Addressables</strong> для asset management. Якщо виникають помилки, перевірте <code>Window > Console</code> і перекомпілюйте (<code>Assets > Reimport All</code>).</p>
+        </div>
+    </div>
+</body>
+</html>
