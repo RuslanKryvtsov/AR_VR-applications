@@ -64,58 +64,11 @@ onmouseout="this.style.color='#004080';"
       контролери: користувач не бачить реальний світ і повністю занурюється у
       віртуальний, взаємодіючи з об’єктами.
     </p>
-    
+    <img src="https://www.tech-sparks.com/wp-content/uploads/2024/09/Comparison-between-AR-and-VR.jpg" style="width:710px; height:400px;" alt="Comparison between AR and VR">
 
-    
-    <div id="interactive-image" style="cursor: pointer; width: 710px;">
-      <img src="https://www.tech-sparks.com/wp-content/uploads/2024/09/Comparison-between-AR-and-VR.jpg" style="width:710px; height:400px;" alt="Comparison between AR and VR">
-      <div id="explanation" style="display: none; width: 710px; font-family: 'Arial', sans-serif; font-size: 19.2px; font-style: italic; color: #8B5A2B; text-align: justify;">
-      </div>
-  </div>
-  
-  <script>
-      let state = 0;
-      const arText = `
-          <p>AR на практиці дійсно можлива в трьох основних варіантах:</p>
-          <ol>
-              <li>на мобільних пристроях/планшетах під управлінням <span style="color: #5C4033;">Android</span> (через <span style="color: #5C4033;">ARCore</span>),</li>
-              <li>на мобільних пристроях/планшетах під управлінням <span style="color: #5C4033;">iOS</span> (через <span style="color: #5C4033;">ARKit</span>) та</li>
-              <li>для перегляду AR-додатків у <span style="color: #5C4033;">браузері</span> на комп'ютері (через <span style="color: #5C4033;">WebXR</span>).</li>
-          </ol>
-          <p>Це логічний поділ, оскільки <span style="color: #5C4033;">AR залежить від апаратних можливостей пристрою</span> для відстеження оточення (<span style="color: #5C4033;">камера</span>, <span style="color: #5C4033;">сенсори руху</span>, <span style="color: #5C4033;">GPS</span>).</p>
-          <p>Щодо браузерного варіанту: так, <span style="color: #5C4033;">WebXR</span> дозволяє AR на десктопах або мобільних браузерах (наприклад, <span style="color: #5C4033;">Chrome</span>, <span style="color: #5C4033;">Edge</span>), але для повноцінного AR на комп'ютері потрібна <span style="color: #5C4033;">веб-камера</span> для сканування оточення. Однак, цей варіант обмежений: на десктопах AR часто менш іммерсивний через відсутність <span style="color: #5C4033;">мобільних сенсорів</span> (наприклад, <span style="color: #5C4033;">акселерометр</span>), і він більше підходить для <span style="color: #5C4033;">прототипів</span> або <span style="color: #5C4033;">демонстрацій</span>, ніж для повноцінних додатків.</p>
-          <p>Доповнюючи, існують гібридні варіанти, такі як <span style="color: #5C4033;">WebXR на мобільних пристроях</span> (наприклад, AR у браузері на Android з ARCore під капотом), або розширення для <span style="color: #5C4033;">емуляції AR</span> на ПК, як-от <span style="color: #5C4033;">Meta Quest/Immersive Web Emulator</span> для тестування.</p>
-          <p>Крім того, для <span style="color: #5C4033;">enterprise-рівня</span> AR інтегрується з <span style="color: #5C4033;">хмарними сервісами</span>, як <span style="color: #5C4033;">Azure Kinect</span> для глибокого сканування, але це виходить за рамки базових SDK.</p>
-      `;
-      const vrText = `
-          <p>Щодо <span style="color: #5C4033;">VR-технологій</span> (<span style="color: #5C4033;">Oculus SDK</span>, <span style="color: #5C4033;">SteamVR</span> або <span style="color: #5C4033;">OpenXR</span>), вони практично завжди (у близько 95-99% випадків, але не 100%) застосовуються з використанням спеціальних пристроїв, таких як <span style="color: #5C4033;">head-mounted displays (HMD)</span>, шоломи (наприклад, <span style="color: #5C4033;">Meta Quest 3</span>, <span style="color: #5C4033;">Valve Index</span>), контролери або аксесуари як <span style="color: #5C4033;">smart gloves</span> (наприклад, <span style="color: #5C4033;">HaptX Gloves</span> для тактильного фідбеку).</p>
-          <p>Не 100%, бо існують базові форми VR, як <span style="color: #5C4033;">cardboard-гарнітури</span> з смартфонами (наприклад, <span style="color: #5C4033;">Google Cardboard</span>), де смартфон вставляється в простий холдер, але це <span style="color: #5C4033;">low-end</span> і не повноцінне <span style="color: #5C4033;">immersive VR</span>.</p>
-          <p><span style="color: #5C4033;">Smart gloves</span>: так, вони використовуються для покращення <span style="color: #5C4033;">інтерактивності</span>, але не обов'язкові; базовий VR працює з <span style="color: #5C4033;">контролерами</span> або <span style="color: #5C4033;">hand-tracking</span> (наприклад, в Quest via камери).</p>
-          <p>Проект <span style="color: #5C4033;">HoloLens</span> від Microsoft — це не VR, а <span style="color: #5C4033;">Mixed Reality (MR/AR)</span>, де віртуальні об'єкти накладаються на реальний світ через <span style="color: #5C4033;">прозорі лінзи</span>; він самодостатній (<span style="color: #5C4033;">untethered</span>) і використовує <span style="color: #5C4033;">Windows Mixed Reality</span> для голографічних досвідів, але може інтегруватися з VR елементами.</p>
-          <p><span style="color: #5C4033;">Розумні контактні лінзи</span> (як <span style="color: #5C4033;">Mojo Vision's AR lenses</span>) — це експериментальні, не масові, і більше для AR, ніж VR.</p>
-          <p>Щодо <span style="color: #5C4033;">екосистем розумних пристроїв</span>: так, це можливо і стає нормою. VR може інтегруватися з <span style="color: #5C4033;">навушниками</span> (для <span style="color: #5C4033;">spatial audio</span>), <span style="color: #5C4033;">мікрофоном</span> (для <span style="color: #5C4033;">voice chat</span>), <span style="color: #5C4033;">смартфоном</span> (для мобільного VR, як <span style="color: #5C4033;">Qualcomm's ecosystem</span>), комп'ютером (для <span style="color: #5C4033;">PC VR streaming</span>) чи <span style="color: #5C4033;">хмарними сервісами</span> (для <span style="color: #5C4033;">cloud VR</span>, де рендеринг відбувається на серверах, зменшуючи навантаження на локальний hardware).</p>
-          <p>Наприклад, <span style="color: #5C4033;">cloud VR</span> через <span style="color: #5C4033;">5G/edge computing</span> дозволяє стримінг високоякісного контенту на легкі гарнітури, як у проектах <span style="color: #5C4033;">Google Immersive Stream for XR</span> або <span style="color: #5C4033;">Azure</span> для enterprise.</p>
-          <p>У професійному баченні, VR еволюціонує до <span style="color: #5C4033;">екосистем</span>: <span style="color: #5C4033;">standalone + cloud</span> для доступності, з інтеграцією <span style="color: #5C4033;">AI</span> для адаптивного контенту. Це зменшує бар'єри, але вимагає <span style="color: #5C4033;">стабільного з'єднання</span>.</p>
-          <p>Загалом, VR — це не ізольована технологія, а частина <span style="color: #5C4033;">connected ecosystem</span>, де пристрої (<span style="color: #5C4033;">шоломи</span>, <span style="color: #5C4033;">gloves</span>) комбінуються з софтом і хмарою для повного досвіду.</p>
-      `;
-  
-      document.getElementById('interactive-image').addEventListener('click', function() {
-          const explanationDiv = document.getElementById('explanation');
-          state = (state + 1) % 3;
-          if (state === 1) {
-              explanationDiv.innerHTML = arText;
-              explanationDiv.style.display = 'block';
-          } else if (state === 2) {
-              explanationDiv.innerHTML = vrText;
-              explanationDiv.style.display = 'block';
-          } else {
-              explanationDiv.innerHTML = '';
-              explanationDiv.style.display = 'none';
-          }
-      });
-  </script>
 
-  
+
+
     <p style="margin-bottom: 12px; font-family: 'Garamond', 'Georgia', serif; font-size: 30px; color:  #2F1B0C; text-align: justify;">
       <strong>Доповнена реальність</strong> чи <em>AR (Augmented Reality)</em> —
       накладає цифрові елементи, зображення, текст або звуки поверх реального

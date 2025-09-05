@@ -270,26 +270,46 @@ onmouseout="this.style.color='#004080';"
   <div id="detail-1" style="display:none; padding:2rem; line-height:1.6; font-size: 27px; color: #311432; height:90vh; overflow-y: auto;">
     
       <!-- Заголовок розділу -->
-      <h2 style="font-size:2rem; color:#003b5c; margin-bottom:1.5rem; transition:color 0.3s;"
+      <h1 style="font-size: 45px; color:#003b5c; margin-bottom:1.5rem; transition:color 0.3s;"
           onmouseover="this.style.color='#1e6a91';"
           onmouseout="this.style.color='#003b5c'; animation: fadeIn 1s ease-out;">
          Digital Twin: віртуальні копії реального світу у VR/AR
-      </h2>
+      </h1>
     
       <!-- Вступ -->
       <p style="animation: fadeIn 1s 0.2s ease-out; margin-bottom:1rem;">
         Однією з найперспективніших концепцій у сфері AR/VR є <strong>Digital Twin</strong> — цифрові двійники фізичних об’єктів,  
         що дозволяють моделювати, аналізувати й взаємодіяти з реальними системами у віртуальному середовищі.  
-        Вперше ця концепція отримала розвиток у аерокосмічній промисловості, а сьогодні — поширена в промисловості, міському управлінні,  
+        сьогодні — поширена в промисловості, міському управлінні,  
         логістиці та навіть медичній освіті.
       </p>
-    
+
+      <p style="animation: fadeIn 1s 0.2s ease-out; margin-bottom:1rem; text-align: justify;">
+        Ідея технології цифрових двійників була вперше висловлена 1991 року з публікацією книги Девіда Гелернтера «Дзеркальні світи». Проте вважається, що доктор Майкл Грівз, тодішній викладач Мічиганського університету, першим застосував концепцію цифрових двійників у виробництві 2002 року та офіційно представив концепцію програмного забезпечення, заснованого на цифрових двійниках. <br>Зрештою, 2010 року Джон Вікерс із НАСА ввів новий термін — «цифровий двійник».
+
+         <br><br>Однак основна ідея використання цифрового двійника як засобу вивчення фізичного об’єкта виникла значно раніше. З повним правом можна стверджувати, що НАСА стало піонером у використанні технології цифрових двійників під час своїх космічних дослідницьких місій 1960-х років, коли кожен космічний апарат створювався у вигляді точної копії на Землі, яку використовували співробітники НАСА, зокрема члени екіпажів, для вивчення та моделювання.
+      </p>
+      
       <!-- Визначення -->
       <p style="animation: fadeIn 1s 0.4s ease-out; margin-bottom:1rem;">
         <strong>Digital Twin</strong> — це не просто 3D-модель. Це повноцінна динамічна система, яка синхронізується з реальним об'єктом через датчики,  
         телеметрію, камери чи API. У результаті ми отримуємо «живе дзеркало» фабрики, обладнання чи міста, з яким можна взаємодіяти  
         через AR-окуляри, VR-шолом або навіть через WebXR.
       </p>
+
+     
+      <h2>Гіперпосилання на сайти проектів та бізнесів які використовують дану концепцію:</h2>
+    <p>Нижче наведено список релевантних ресурсів, що стосуються технології Digital Twins, включаючи офіційні сайти консорціумів, компаній та приклади впровадження.</p>
+    <ul>
+        <li><a href="https://www.digitaltwinconsortium.org/" target="_blank">Digital Twin Consortium (офіційний сайт для розвитку технології)</a></li>
+        <li><a href="https://www.ibm.com/think/topics/what-is-a-digital-twin" target="_blank">IBM: What is a Digital Twin? (пояснення та приклади від IBM)</a></li>
+        <li><a href="https://www.nist.gov/digital-twins" target="_blank">NIST: Digital Twins (державні стандарти та ресурси від NIST)</a></li>
+        <li><a href="https://azure.microsoft.com/en-us/products/digital-twins" target="_blank">Microsoft Azure Digital Twins (платформа для моделювання від Microsoft)</a></li>
+        <li><a href="https://www.gevernova.com/software/innovation/digital-twin-technology" target="_blank">GE Vernova Digital Twin Technology (приклади в енергетиці від GE)</a></li>
+        <li><a href="https://www.cio.com/article/189121/digital-twins-4-success-stories.html" target="_blank">CIO: Digital Twins Success Stories (приклади компаній, як Siemens та інші)</a></li>
+        <li><a href="https://www.sap.com/blogs/digital-twins-at-work" target="_blank">SAP: Digital Twins at Work (приклади в бізнесі, включаючи BMW та Lowe's)</a></li>
+        <li><a href="https://builtin.com/software-engineering-perspectives/top-digital-twin-companies" target="_blank">Built In: Top Digital Twin Companies (компанії як Siemens, GE, Microsoft, NVIDIA)</a></li>
+    </ul>
     
       <!-- Приклад: фабрика -->
       <h3 style="font-size:1.5rem; color:#003b5c; margin-top:2rem; transition:color 0.3s;"
@@ -304,6 +324,9 @@ onmouseout="this.style.color='#004080';"
         Всі ці дані передаються у віртуальну копію у реальному часі. Якщо в якомусь сегменті починається перегрів — у VR-додатку  
         відповідна зона підсвічується червоним.
       </p>
+      `
+       <img src="https://as1.ftcdn.net/jpg/12/92/35/20/1000_F_1292352072_o69ygfBgLRSXcw7snHq82eiIdZzn0onw.jpg" alt="Digital Twin Visualization" style="width: 750px; height: 460px;">
+```
     
       <p style="animation: fadeIn 1s 1s ease-out; margin-bottom:1rem;">
         Завдяки VR-шолому інженер, який фізично перебуває в іншій країні, може оглянути весь об'єкт в деталях, виконати віртуальний аудит,  
@@ -316,11 +339,14 @@ onmouseout="this.style.color='#004080';"
           onmouseout="this.style.color='#003b5c'; animation: fadeIn 1s 1.2s ease-out;">
         Приклад 2: Віртуальні копії міст — Smart City у VR
       </h3>
+        
     
       <p style="animation: fadeIn 1s 1.4s ease-out; margin-bottom:1rem;">
         У мегаполісах створюють цифрові копії цілих районів або транспортних систем. Наприклад, компанія <a href="https://www.bentley.com/software/digital-twins/" target="_blank">Bentley Systems</a>  
         надає інструменти для побудови інфраструктурних Digital Twins. Кожна зупинка, світлофор, перехрестя, будівля — все синхронізується з реальним часом.
       </p>
+
+      <img src="https://scwcontent.affino.com/AcuCustom/Sitename/DAM/050/city_digital_twin5_smart_cities_Adobe1_rt.jpg" alt="Smart City Digital Twin" style="width: 750px; height: 520px;">
     
       <p style="animation: fadeIn 1s 1.6s ease-out; margin-bottom:1rem;">
         У VR-режимі оператори можуть:
